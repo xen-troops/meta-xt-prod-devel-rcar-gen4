@@ -1,0 +1,136 @@
+From 828bb3a6b8d7a0f47c0e0b73724d813f8e6de549 Mon Sep 17 00:00:00 2001
+From: Oleksandr Andrushchenko <oleksandr_andrushchenko@epam.com>
+Date: Tue, 12 Oct 2021 10:30:54 +0300
+Subject: [PATCH] ARM: renesas: Port memory nodes scrubbing for Gen4
+
+This is a port of the commit 7a1c667ed98592a1517c514e4415a95fdf052f27
+
+    Author: Marek Vasut <marek.vasut+renesas@gmail.com>
+    Date:   Sat Apr 3 16:58:49 2021 +0200
+
+    ARM: renesas: Scrub duplicate memory nodes from DT on Gen3
+
+    Scrub duplicate /memory@* node entries here. Some R-Car DTs might
+    contain multiple /memory@* nodes, however fdt_fixup_memory_banks()
+    either generates single /memory node or updates the first /memory
+    node. Any remaining memory nodes are thus potential duplicates.
+
+    However, it is not possible to delete all the memory nodes right
+    away, since some of those might not be DRAM memory nodes, but some
+    sort of other memory. Thus, delete only the memory nodes which are
+    in the R-Car3 DBSC ranges.
+
+    Signed-off-by: Marek Vasut <marek.vasut+renesas@gmail.com>
+    (cherry picked from commit 8f76c9d73ab2ae58a84094990de3d0733ce23b13)
+    Signed-off-by: Hai Pham <hai.pham.ud@renesas.com>
+
+Signed-off-by: Oleksandr Andrushchenko <oleksandr_andrushchenko@epam.com>
+---
+ arch/arm/mach-rmobile/Kconfig           |  1 +
+ board/renesas/rcar-common/gen4-common.c | 81 +++++++++++++++++++++++++
+ 2 files changed, 82 insertions(+)
+
+diff --git a/arch/arm/mach-rmobile/Kconfig b/arch/arm/mach-rmobile/Kconfig
+index 959d79e7da6d..d37b2904b69a 100644
+--- a/arch/arm/mach-rmobile/Kconfig
++++ b/arch/arm/mach-rmobile/Kconfig
+@@ -39,6 +39,7 @@ config RCAR_GEN4
+ 	select ARM64
+ 	select PHY
+ 	select CMD_CACHE
++	select OF_BOARD_SETUP
+ 	select PINCTRL
+ 	select PINCONF
+ 	select PINCTRL_PFC
+diff --git a/board/renesas/rcar-common/gen4-common.c b/board/renesas/rcar-common/gen4-common.c
+index 20a376e00f6e..e2e0ca18991b 100644
+--- a/board/renesas/rcar-common/gen4-common.c
++++ b/board/renesas/rcar-common/gen4-common.c
+@@ -60,3 +60,84 @@ void board_add_ram_info(int use_default)
+ 	}
+ }
+ #endif
++
++#if defined(CONFIG_OF_BOARD_SETUP)
++static int is_mem_overlap(void *blob, int first_mem_node, int curr_mem_node)
++{
++	struct fdt_resource first_mem_res, curr_mem_res;
++	int curr_mem_reg, first_mem_reg = 0;
++	int ret;
++
++	for (;;) {
++		ret = fdt_get_resource(blob, first_mem_node, "reg",
++				       first_mem_reg++, &first_mem_res);
++		if (ret) /* No more entries, no overlap found */
++			return 0;
++
++		curr_mem_reg = 0;
++		for (;;) {
++			ret = fdt_get_resource(blob, curr_mem_node, "reg",
++					       curr_mem_reg++, &curr_mem_res);
++			if (ret) /* No more entries, check next tuple */
++				break;
++
++			if (curr_mem_res.end < first_mem_res.start)
++				continue;
++
++			if (curr_mem_res.start >= first_mem_res.end)
++				continue;
++
++			pr_debug("Overlap found: 0x%llx..0x%llx / 0x%llx..0x%llx\n",
++				 first_mem_res.start, first_mem_res.end,
++				 curr_mem_res.start, curr_mem_res.end);
++
++			return 1;
++		}
++	}
++
++	return 0;
++}
++
++int ft_board_setup(void *blob, struct bd_info *bd)
++{
++	/*
++	 * Scrub duplicate /memory@* node entries here. Some R-Car DTs might
++	 * contain multiple /memory@* nodes, however fdt_fixup_memory_banks()
++	 * either generates single /memory node or updates the first /memory
++	 * node. Any remaining memory nodes are thus potential duplicates.
++	 *
++	 * However, it is not possible to delete all the memory nodes right
++	 * away, since some of those might not be DRAM memory nodes, but some
++	 * sort of other memory. Thus, delete only the memory nodes which are
++	 * in the R-Car3 DBSC ranges.
++	 */
++	int mem = 0, first_mem_node = 0;
++
++	for (;;) {
++		mem = fdt_node_offset_by_prop_value(blob, mem,
++						    "device_type", "memory", 7);
++		if (mem < 0)
++			break;
++		if (!fdtdec_get_is_enabled(blob, mem))
++			continue;
++
++		/* First memory node, patched by U-Boot */
++		if (!first_mem_node) {
++			first_mem_node = mem;
++			continue;
++		}
++
++		/* Check the remaining nodes and delete duplicates */
++		if (!is_mem_overlap(blob, first_mem_node, mem))
++			continue;
++
++		/* Delete duplicate node, start again */
++		fdt_del_node(blob, mem);
++		first_mem_node = 0;
++		mem = 0;
++	}
++
++	return 0;
++}
++#endif
++
+-- 
+2.25.1
+
