@@ -20,8 +20,6 @@ SRC_URI_remove = "\
     file://0001-arm64-dts-r8a77961-Fix-video-codec-relation-node.patch \
     file://0001-scripts-Add-module.lds-to-fix-out-of-tree-modules-bu.patch \
     file://0001-arm64-dts-r8a77995-Add-optee-node.patch \
-    https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/plain/r8a779x_usb3_v2.dlmem;md5sum=645db7e9056029efa15f158e51cc8a11 \
-    https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/plain/r8a779x_usb3_v3.dlmem;md5sum=687d5d42f38f9850f8d5a6071dca3109 \
     file://disable_fw_loader_user_helper.cfg \
     file://ulcb-ab.dtsi;subdir=git/arch/arm64/boot/dts/renesas \
 "
@@ -34,6 +32,7 @@ SRC_URI_append_spider = " \
     file://r8a779f0-spider-xen.dts \
     file://rswitch.cfg \
     file://dmatest.cfg \
+    file://xen-chosen.dtsi;subdir=git/arch/arm64/boot/dts/renesas \
 "
 
 KERNEL_MODULE_PROBECONF_spider += "rswitch"
