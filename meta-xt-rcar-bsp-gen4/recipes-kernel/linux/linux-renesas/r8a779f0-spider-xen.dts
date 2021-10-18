@@ -6,6 +6,23 @@
 	model = "Renesas Spider CPU and Breakout boards based on r8a779f0, running XEN hypervisor";
 };
 
+&ipmmu_mm {
+	status = "okay";
+};
+
+&ipmmu_rt0 {
+	status = "okay";
+};
+
+
+&ipmmu_ds0{
+	status = "okay";
+};
+
+&ipmmu_hc {
+	status = "okay";
+};
+
 &dmac1			{ xen,passthrough; };
 &dmac2			{ xen,passthrough; };
 &rt_dmac0		{ xen,passthrough; };
