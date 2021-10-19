@@ -28,6 +28,7 @@ SRC_URI_remove = "\
 # Spider
 ###############################################################################
 SRC_URI_append_spider = " \
+    file://r8a779f0.cfg \
     file://r8a779f0-spider-domd.dts \
     file://r8a779f0-spider-xen.dts \
     file://rswitch.cfg \
