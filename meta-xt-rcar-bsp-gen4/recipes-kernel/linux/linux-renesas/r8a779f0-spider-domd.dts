@@ -44,6 +44,11 @@
 	compatible = "";
 };
 
+/* Xen serial console */
+&scif3	{
+	status = "disabled";
+};
+
 &rswitch {
 	/delete-property/iommus;
 };
