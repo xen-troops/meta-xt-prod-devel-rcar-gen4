@@ -37,7 +37,10 @@
 &i2c4			{ xen,passthrough; };
 &mmc0			{ xen,passthrough; };
 &pciec0			{ xen,passthrough; };
+&pciec0_ep		{ xen,passthrough; };
 &scif0			{ xen,passthrough; };
+
+&iccom00		{ xen,passthrough; };
 
 &soc {
 	iccom01		{ xen,passthrough; };
@@ -71,5 +74,4 @@
 	iccom113	{ xen,passthrough; };
 	iccom114	{ xen,passthrough; };
 	iccom115	{ xen,passthrough; };
-	iccom00		{ xen,passthrough; };
 };

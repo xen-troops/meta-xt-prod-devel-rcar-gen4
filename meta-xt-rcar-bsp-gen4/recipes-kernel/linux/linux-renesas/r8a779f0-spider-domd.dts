@@ -8,7 +8,7 @@
 
 / {
 	soc {
-		//this must point to Xen interrupt-parent
+		/* This must point to Xen interrupt-parent. */
 		interrupt-parent = <PHANDLE_GIC>;
 	};
 
@@ -42,6 +42,7 @@
 /* Xen will provide its own GIC, mask ours */
 &gic {
 	compatible = "";
+	status = "disabled";
 };
 
 /* Xen serial console */
