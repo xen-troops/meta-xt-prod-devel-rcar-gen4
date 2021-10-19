@@ -36,6 +36,3 @@ SRC_URI_append_spider = " \
     file://xen-chosen.dtsi;subdir=git/arch/arm64/boot/dts/renesas \
     file://0001-clk-shmobile-Hide-clock-for-scif3.patch \
 "
-
-KERNEL_MODULE_PROBECONF_spider += "rswitch"
-module_conf_rswitch_spider = "blacklist rswitch"
