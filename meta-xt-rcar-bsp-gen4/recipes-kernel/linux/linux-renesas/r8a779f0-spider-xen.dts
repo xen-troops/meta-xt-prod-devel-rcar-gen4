@@ -42,7 +42,11 @@
 	iommus = <&ipmmu_hc 0>, <&ipmmu_hc 1>,
 		 <&ipmmu_hc 2>, <&ipmmu_hc 3>,
 		 <&ipmmu_hc 4>, <&ipmmu_hc 5>,
-		 <&ipmmu_hc 6>, <&ipmmu_hc 7>;
+		 <&ipmmu_hc 6>, <&ipmmu_hc 7>,
+		 <&ipmmu_hc 16>, <&ipmmu_hc 17>,
+		 <&ipmmu_hc 18>, <&ipmmu_hc 19>,
+		 <&ipmmu_hc 20>, <&ipmmu_hc 21>,
+		 <&ipmmu_hc 22>, <&ipmmu_hc 23>;
 };
 
 &dmac1 {
