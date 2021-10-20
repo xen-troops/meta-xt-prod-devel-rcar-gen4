@@ -24,7 +24,7 @@ common_data:
       rev: master
     - type: git
       url: "https://github.com/xen-troops/meta-xt-prod-devel-rcar-gen4.git"
-      rev: main
+      rev: spider-alpha
     - type: git
       url: "https://github.com/xen-troops/meta-xt-rcar.git"
       rev: master
