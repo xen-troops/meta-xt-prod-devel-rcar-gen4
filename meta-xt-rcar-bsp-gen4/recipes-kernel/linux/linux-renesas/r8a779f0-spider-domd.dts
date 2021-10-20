@@ -52,6 +52,15 @@
 
 &rswitch {
 	/delete-property/iommus;
+	/* XXX: Fix mistake in the dtsi. */
+	ports {
+		port@1 {
+			phy-handle = <&etha1>;
+		};
+		port@2 {
+			phy-handle = <&etha2>;
+		};
+	};
 };
 
 &dmac1 {
