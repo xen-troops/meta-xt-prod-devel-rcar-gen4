@@ -98,6 +98,7 @@ components:
         - "../meta-openembedded/meta-python"
         - "../meta-openembedded/meta-networking"
         - "../meta-xt-common/meta-xt-domx"
+        - "../meta-xt-common/meta-xt-dom0"
         - "../meta-xt-prod-devel-rcar-gen4/meta-xt-dom0-gen4"
         - "../meta-xt-common/meta-xt-control-domain"
         - "../meta-xt-prod-devel-rcar-gen4/meta-xt-prod-devel-rcar-control-gen4"
