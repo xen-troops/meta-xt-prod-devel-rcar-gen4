@@ -12,7 +12,7 @@ fi
 
 # Special case for NFS - we want to quite different cmd line
 if [ $BOOT_STORAGE = nfs ] ; then
-    BOOT_STR="nfs nfsroot=192.168.1.100:\/srv\/domd,vers=3 ip=dhcp"
+    BOOT_STR="nfs nfsroot=192.168.1.100:\/srv\/domd,vers=3 ip=192.168.1.2"
     echo "Mangling domain configuration: setting storage to network boot"
     sed -i "s/STORAGE_PART[0-9]/${BOOT_STR}/g" $DOMD_CFG_FILE
     exit 0
