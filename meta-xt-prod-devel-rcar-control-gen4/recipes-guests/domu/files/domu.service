@@ -1,0 +1,13 @@
+[Unit]
+Description=DomU
+Requires=backend-ready@bridge.service
+After=backend-ready@bridge.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/xl create /etc/xen/domu.cfg
+ExecStop=/usr/sbin/xl destroy DomU
+RemainAfterExit=true
+
+[Install]
+WantedBy=multi-user.target
