@@ -1,4 +1,5 @@
 desc: "Xen-Troops development setup for Renesas RCAR Gen4 hardware"
+min_ver: 0.4
 
 variables:
   YOCTOS_WORK_DIR: "yocto"
@@ -182,6 +183,25 @@ components:
       target_images:
         - "tmp/deploy/images/%{MACHINE}/Image"
 
+images:
+  full:
+    type: gpt
+    desc: "Full SD-card/eMMC image"
+    partitions:
+      boot:
+        gpt_type: 21686148-6449-6E6F-744E-656564454649 # BIOS boot partition (kinda...)
+        type: ext4
+        files:
+          "Image": "%{YOCTOS_WORK_DIR}/build-dom0/tmp/deploy/images/generic-armv8-xt/Image"
+          "uInitramfs": "%{YOCTOS_WORK_DIR}/build-dom0/tmp/deploy/images/generic-armv8-xt/uInitramfs"
+          "xen": "%{YOCTOS_WORK_DIR}/build-domd/tmp/deploy/images/%{MACHINE}/xen-%{MACHINE}.uImage"
+          "xenpolicy": "%{YOCTOS_WORK_DIR}/build-domd/tmp/deploy/images/%{MACHINE}/xenpolicy-%{MACHINE}"
+          "xen.dtb": "%{YOCTOS_WORK_DIR}/build-domd/tmp/deploy/images/%{MACHINE}/%{XT_XEN_DTB_NAME}"
+      domd_rootfs:
+        gpt_type: B921B045-1DF0-41C3-AF44-4C6F280D3FAE # Linux aarch64 root
+        type: raw_image
+        image_path: "%{YOCTOS_WORK_DIR}/build-domd/tmp/deploy/images/%{MACHINE}/core-image-minimal-s4.ext4"
+
 parameters:
   # Machines
   MACHINE:
@@ -209,4 +229,11 @@ parameters:
                 - "%{DOMU_BUILD_DIR}/tmp/deploy/images/%{MACHINE}/Image"
               external_src:
                 domu: "%{YOCTOS_WORK_DIR}/%{DOMU_BUILD_DIR}/tmp/deploy/images/%{MACHINE}/"
+        images:
+          full:
+            partitions:
+              domu-rootfs:
+                type: raw_image
+                gpt_type: 0FC63DAF-8483-4772-8E79-3D69D8477DE4 # Linux filesystem data
+                image_path: "%{YOCTOS_WORK_DIR}/%{DOMU_BUILD_DIR}/tmp/deploy/images/%{MACHINE}/core-image-minimal-s4.ext4"
 
