@@ -116,7 +116,7 @@ components:
     sources:
       - *COMMON_SOURCES
       - type: git
-        url: https://github.com/lorc/meta-renesas.git
+        url: https://github.com/xen-troops/meta-renesas.git
         rev: "Renesas-Yocto-v5.1-patched"
       - type: git
         url: git://git.yoctoproject.org/meta-selinux
