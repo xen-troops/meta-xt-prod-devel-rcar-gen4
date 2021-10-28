@@ -126,7 +126,7 @@ For that you may want booting the board via TFTP and sharing DomD's
 root file system via NFS. Once booted it is possible to flash the image:
 
 ```
-# dd=/full.img of=/dev/mmcblk0 bs=1M
+# dd if=/full.img of=/dev/mmcblk0 bs=1M
 ```
 
 For more information about `rouge` check its
