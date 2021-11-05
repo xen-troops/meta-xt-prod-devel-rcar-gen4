@@ -124,6 +124,7 @@
 		 <&ipmmu_hc 42>, <&ipmmu_hc 43>,
 		 <&ipmmu_hc 44>, <&ipmmu_hc 45>,
 		 <&ipmmu_hc 46>, <&ipmmu_hc 47>;
+	iommu-map = <0x0 &ipmmu_hc 0x0 0x10000>;
 };
 
 &pciec1 {
@@ -135,6 +136,7 @@
 		 <&ipmmu_hc 58>, <&ipmmu_hc 56>,
 		 <&ipmmu_hc 60>, <&ipmmu_hc 58>,
 		 <&ipmmu_hc 62>, <&ipmmu_hc 60>;
+	iommu-map = <0x0 &ipmmu_hc 0x0 0x10000>;
 };
 
 &dmac1			{ xen,passthrough; };
