@@ -68,14 +68,12 @@ line option:
 
 ```
 # moulin prod-devel-rcar-s4.yaml --help-config
-usage: moulin prod-devel-rcar-s4.yaml
-       [--MACHINE {spider}] [--ENABLE_DOMU {no,yes}]
+usage: moulin prod-devel-rcar-s4.yaml [--ENABLE_DOMU {no,yes}]
 
 Config file description: Xen-Troops development setup for Renesas RCAR Gen4
 hardware
 
 optional arguments:
-  --MACHINE {spider}    RCAR Gen4-based device
   --ENABLE_DOMU {no,yes}
                         Build generic Yocto-based DomU
 ```
@@ -98,8 +96,7 @@ Image file can be created with `rouge` tool. This is a companion
 application for `moulin`.
 
 Right now it works only in standalone mode, so manual invocation is
-required. It accepts the same parameters: `--MACHINE`,
-`--ENABLE_DOMU`.
+required. It accepts the same parameters: `--ENABLE_DOMU`.
 
 This XT product provides only one image: `full`.
 

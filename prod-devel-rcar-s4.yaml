@@ -10,7 +10,11 @@ variables:
   XT_DOMU_DTB_NAME: "%{SOC_FAMILY}-%{MACHINE}-domu.dtb"
   XT_XEN_DTB_NAME: "%{SOC_FAMILY}-%{MACHINE}-xen.dtb"
   XT_GENERIC_DOMU_TAG: ""
-
+  MACHINE: "spider"
+  MACHINE: "spider"
+  SOC_FAMILY: "r8a779f0"
+  XT_DOMD_CONFIG_NAME: "domd-spider.cfg"
+  XT_DOMU_CONFIG_NAME: "domu-spider.cfg"
 common_data:
   # Sources used by all yocto-based domains
   sources: &COMMON_SOURCES
@@ -204,17 +208,6 @@ images:
         image_path: "%{YOCTOS_WORK_DIR}/build-domd/tmp/deploy/images/%{MACHINE}/core-image-minimal-s4.ext4"
 
 parameters:
-  # Machines
-  MACHINE:
-    desc: "RCAR Gen4-based device"
-    spider:
-      default: true
-      overrides:
-        variables:
-          MACHINE: "spider"
-          SOC_FAMILY: "r8a779f0"
-          XT_DOMD_CONFIG_NAME: "domd-spider.cfg"
-          XT_DOMU_CONFIG_NAME: "domu-spider.cfg"
   ENABLE_DOMU:
     desc: "Build generic Yocto-based DomU"
     "no":
