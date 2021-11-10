@@ -34,9 +34,6 @@
 	 * CPU nodes to be present get broken. This is why we have to explicitly
 	 * remove the following.
 	 */
-	/delete-node/thermal-zones;
-	/delete-node/pmu_a57;
-	/delete-node/pmu_a53;
 };
 
 /* Xen will provide its own GIC, mask ours */
