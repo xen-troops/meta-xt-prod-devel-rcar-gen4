@@ -1,5 +1,5 @@
 desc: "Xen-Troops development setup for Renesas RCAR Gen4 hardware"
-min_ver: 0.4
+min_ver: "0.4"
 
 variables:
   YOCTOS_WORK_DIR: "yocto"
