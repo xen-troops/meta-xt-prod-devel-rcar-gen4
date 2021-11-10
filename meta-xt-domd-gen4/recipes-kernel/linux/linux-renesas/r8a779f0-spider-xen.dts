@@ -154,7 +154,7 @@
 &pciec0_ep		{ xen,passthrough; };
 &scif0			{ xen,passthrough; };
 &rswitch		{ xen,passthrough; };
-
+&tsc			{ xen,passthrough; };
 &iccom00		{ xen,passthrough; };
 
 &soc {
