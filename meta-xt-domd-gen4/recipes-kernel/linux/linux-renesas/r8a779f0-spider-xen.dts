@@ -4,6 +4,10 @@
 / {
 
 	model = "Renesas Spider CPU and Breakout boards based on r8a779f0, running XEN hypervisor";
+
+	/* Second memory bank is inoperational */
+	/delete-node/ memory@480000000;
+
 };
 
 &ipmmu_mm {
