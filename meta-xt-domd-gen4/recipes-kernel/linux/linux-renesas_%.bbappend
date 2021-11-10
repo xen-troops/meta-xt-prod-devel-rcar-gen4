@@ -10,6 +10,8 @@ SRC_URI_append = " \
     file://dmatest.cfg \
     file://xen-chosen.dtsi;subdir=git/arch/arm64/boot/dts/renesas \
     file://0001-clk-shmobile-Hide-clock-for-scif3.patch \
+    file://0001-xen-pciback-allow-compiling-on-other-archs-than-x86.patch \
+    file://0002-HACK-Allow-DomD-enumerate-PCI-devices.patch \
 "
 
 ADDITIONAL_DEVICE_TREES = "${XT_DEVICE_TREES}"
