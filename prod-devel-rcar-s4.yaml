@@ -33,9 +33,6 @@ common_data:
     - type: git
       url: "https://github.com/xen-troops/meta-xt-prod-devel-rcar-gen4.git"
       rev: spider-alpha
-    - type: git
-      url: "https://github.com/xen-troops/meta-xt-rcar.git"
-      rev: master
   # Common configuration options for all yocto-based domains
   conf: &COMMON_CONF
     - [SSTATE_DIR, "${TOPDIR}/../../../common_data/sstate"]
@@ -113,7 +110,6 @@ components:
         - "../meta-xt-prod-devel-rcar-gen4/meta-xt-dom0-gen4"
         - "../meta-xt-prod-devel-rcar-gen4/meta-xt-domx-gen4"
         - "../meta-xt-prod-devel-rcar-gen4/meta-xt-prod-devel-rcar-control-gen4"
-        - "../meta-xt-rcar/meta-xt-rcar-dom0"
       build_target: core-image-thin-initramfs
       external_src:
         domd: "%{YOCTOS_WORK_DIR}/%{DOMD_BUILD_DIR}/tmp/deploy/images/%{MACHINE}/"
@@ -126,8 +122,8 @@ components:
     sources:
       - *COMMON_SOURCES
       - type: git
-        url: https://github.com/xen-troops/meta-renesas.git
-        rev: "Renesas-Yocto-v5.1-patched"
+        url: https://github.com/renesas-rcar/meta-renesas.git
+        rev: dunfell
       - type: git
         url: git://git.yoctoproject.org/meta-selinux
         rev: dunfell
@@ -145,17 +141,15 @@ components:
         - "../poky/meta"
         - "../poky/meta-poky"
         - "../poky/meta-yocto-bsp"
-        - "../meta-renesas/meta-rcar-gen3"
         - "../meta-virtualization"
         - "../meta-selinux"
         - "../meta-openembedded/meta-oe"
         - "../meta-openembedded/meta-networking"
         - "../meta-openembedded/meta-python"
         - "../meta-openembedded/meta-filesystems"
+        - "../meta-renesas/meta-rcar-gateway"
         - "../meta-xt-common/meta-xt-domx"
         - "../meta-xt-common/meta-xt-driver-domain"
-        - "../meta-xt-rcar/meta-xt-rcar-fixups"
-        - "../meta-xt-rcar/meta-xt-rcar-driver-domain"
         - "../meta-xt-prod-devel-rcar-gen4/meta-xt-domd-gen4"
         - "../meta-xt-prod-devel-rcar-gen4/meta-xt-domx-gen4"
         - "../meta-xt-prod-devel-rcar-gen4/meta-xt-driver-domain-gen4"
