@@ -136,7 +136,7 @@ components:
         - [XT_DOM_NAME, "domd"]
         - [XT_DEVICE_TREES, "%{XT_DOMD_DTB_NAME} %{XT_XEN_DTB_NAME}"]
 
-      build_target: core-image-minimal
+      build_target: rcar-image-minimal
       layers:
         - "../poky/meta"
         - "../poky/meta-poky"
