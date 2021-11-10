@@ -4,6 +4,19 @@
 / {
 
 	model = "Renesas Spider CPU and Breakout boards based on r8a779f0, running XEN hypervisor";
+
+	/* Disable all but boot CPUs. This is a temporary measure */
+	cpus {
+		/delete-node/ cpu-map;
+		/delete-node/ cpu@100;
+		/delete-node/ cpu@10000;
+		/delete-node/ cpu@10100;
+	};
+	/delete-node/ psci;
+
+	/* Second memory bank is inoperational */
+	/delete-node/ memory@480000000;
+
 };
 
 &ipmmu_mm {
@@ -23,6 +36,11 @@
 			power-domains = <&sysc R8A779F0_PD_ALWAYS_ON>;
 			#iommu-cells = <1>;
 		};
+	};
+
+	firmware {
+	/* Delete optee node, as OP-TEE is absent for now */
+	/delete-node/ optee;
 	};
 };
 
