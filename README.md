@@ -136,7 +136,8 @@ Please make sure 'bootargs' variable is unset while running with Xen:
 unset bootargs
 ```
 
-It is possible to run the build from TFTP+NFS and eMMC.
+It is possible to run the build from TFTP+NFS and eMMC. With NFS boot
+is is possible to configure board IP, server IP and NFS path for DomD.
 Please set the following environment for that:
 
 ```
@@ -150,7 +151,8 @@ setenv mmc0_kernel_load 'ext2load mmc 0:1 0x7a000000 Image'
 setenv mmc0_xen_load 'ext2load mmc 0:1 0x48080000 xen'
 setenv mmc0_xenpolicy_load 'ext2load mmc 0:1 0x7c000000 xenpolicy'
 
-setenv tftp_dtb_load 'tftp 0x48000000 r8a779f0-spider-xen.dtb; fdt addr 0x48000000; fdt resize; fdt mknode / boot_dev; fdt set /boot_dev device nfs'
+setenv tftp_configure_nfs 'fdt set /boot_dev device nfs; fdt set /boot_dev my_ip 192.168.1.2; fdt set /boot_dev nfs_server_ip 192.168.1.100; fdt set /boot_dev nfs_dir "/srv/domd";'
+setenv tftp_dtb_load 'tftp 0x48000000 r8a779f0-spider-xen.dtb; fdt addr 0x48000000; fdt resize; fdt mknode / boot_dev; run tftp_configure_nfs; '
 setenv tftp_initramfs_load 'tftp 0x84000000 uInitramfs'
 setenv tftp_kernel_load 'tftp 0x7a000000 Image'
 setenv tftp_xen_load 'tftp 0x48080000 xen-uImage'
