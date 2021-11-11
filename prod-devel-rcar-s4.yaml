@@ -159,6 +159,9 @@ components:
     build-dir: "%{YOCTOS_WORK_DIR}"
     sources:
       - *COMMON_SOURCES
+      - type: git
+        url: https://github.com/renesas-rcar/meta-renesas.git
+        rev: dunfell
     builder:
       type: yocto
       work_dir: "%{DOMU_BUILD_DIR}"
@@ -171,12 +174,10 @@ components:
         - "../meta-openembedded/meta-oe"
         - "../meta-openembedded/meta-filesystems"
         - "../meta-openembedded/meta-python"
-        - "../meta-renesas/meta-rcar-gen3"
+        - "../meta-renesas/meta-rcar-gateway"
         - "../meta-xt-common/meta-xt-domu"
-        - "../meta-xt-rcar/meta-xt-rcar-fixups"
         - "../meta-xt-prod-devel-rcar-gen4/meta-xt-domu-gen4"
-        - "../meta-xt-prod-devel-rcar-gen4/meta-xt-rcar-bsp-gen4"
-      build_target: core-image-minimal
+      build_target: rcar-image-minimal
       target_images:
         - "tmp/deploy/images/%{MACHINE}/Image"
 
