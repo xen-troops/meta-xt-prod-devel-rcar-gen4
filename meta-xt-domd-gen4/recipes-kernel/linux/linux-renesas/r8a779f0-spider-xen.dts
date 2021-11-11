@@ -120,25 +120,13 @@
 };
 
 &pciec0 {
-	iommus = <&ipmmu_hc 32>, <&ipmmu_hc 33>,
-		 <&ipmmu_hc 34>, <&ipmmu_hc 35>,
-		 <&ipmmu_hc 36>, <&ipmmu_hc 37>,
-		 <&ipmmu_hc 38>, <&ipmmu_hc 39>,
-		 <&ipmmu_hc 40>, <&ipmmu_hc 41>,
-		 <&ipmmu_hc 42>, <&ipmmu_hc 43>,
-		 <&ipmmu_hc 44>, <&ipmmu_hc 45>,
-		 <&ipmmu_hc 46>, <&ipmmu_hc 47>;
+	iommu-map = <0x0 &ipmmu_hc 32 0x1>;
+	iommu-map-mask = <0x0>;
 };
 
 &pciec1 {
-	iommus = <&ipmmu_hc 48>, <&ipmmu_hc 49>,
-		 <&ipmmu_hc 50>, <&ipmmu_hc 50>,
-		 <&ipmmu_hc 52>, <&ipmmu_hc 51>,
-		 <&ipmmu_hc 54>, <&ipmmu_hc 52>,
-		 <&ipmmu_hc 56>, <&ipmmu_hc 54>,
-		 <&ipmmu_hc 58>, <&ipmmu_hc 56>,
-		 <&ipmmu_hc 60>, <&ipmmu_hc 58>,
-		 <&ipmmu_hc 62>, <&ipmmu_hc 60>;
+	iommu-map = <0x0 &ipmmu_hc 48 0x1>;
+	iommu-map-mask = <0x0>;
 };
 
 &dmac1			{ xen,passthrough; };
