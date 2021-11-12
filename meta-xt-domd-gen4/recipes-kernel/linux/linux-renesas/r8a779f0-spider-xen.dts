@@ -120,11 +120,13 @@
 };
 
 &pciec0 {
+	iommus = <&ipmmu_hc 32>;
 	iommu-map = <0x0 &ipmmu_hc 32 0x1>;
 	iommu-map-mask = <0x0>;
 };
 
 &pciec1 {
+	iommus = <&ipmmu_hc 48>;
 	iommu-map = <0x0 &ipmmu_hc 48 0x1>;
 	iommu-map-mask = <0x0>;
 };
