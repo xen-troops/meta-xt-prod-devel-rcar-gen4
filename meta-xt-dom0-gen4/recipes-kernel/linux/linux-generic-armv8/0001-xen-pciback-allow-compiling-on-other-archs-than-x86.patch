@@ -1,7 +1,7 @@
 From df57052a6b3fe9191d63d0a4f8ea8d551de8a838 Mon Sep 17 00:00:00 2001
 From: Oleksandr Andrushchenko <oleksandr_andrushchenko@epam.com>
 Date: Thu, 28 Oct 2021 17:36:20 +0300
-Subject: [PATCH 1/2] xen-pciback: allow compiling on other archs than x86
+Subject: [PATCH] xen-pciback: allow compiling on other archs than x86
 
 Xen-pciback driver was designed to be built for x86 only. But it
 can also be used by other architectures, e.g. Arm.

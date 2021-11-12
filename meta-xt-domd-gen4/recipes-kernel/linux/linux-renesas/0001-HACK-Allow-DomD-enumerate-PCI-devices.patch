@@ -1,7 +1,7 @@
 From a5c6f82d71dcdc8f6e7e520309bacc38052c941e Mon Sep 17 00:00:00 2001
 From: Oleksandr Andrushchenko <oleksandr_andrushchenko@epam.com>
 Date: Tue, 9 Nov 2021 15:25:44 +0200
-Subject: [PATCH 2/2] HACK: Allow DomD enumerate PCI devices
+Subject: [PATCH] HACK: Allow DomD enumerate PCI devices
 
 Signed-off-by: Oleksandr Andrushchenko <oleksandr_andrushchenko@epam.com>
 ---
