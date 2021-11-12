@@ -7,4 +7,5 @@ LINUX_VERSION = "5.10.41"
 SRC_URI = "\
     git://github.com/renesas-rcar/linux-bsp.git;branch=${BRANCH} \
     file://defconfig \
+    file://0001-xen-pciback-allow-compiling-on-other-archs-than-x86.patch \
 "
