@@ -36,6 +36,28 @@
 			power-domains = <&sysc R8A779F0_PD_ALWAYS_ON>;
 			#iommu-cells = <1>;
 		};
+
+		/*
+		 * Delete PCIEC0 Endpoint node for vPCI to be able to trap
+		 * PCI configuration space access.
+		 *
+		 * PCIe controller 0 may operate in two modes: Root Complex or
+		 * Endpoint. The are two corresponding device tree nodes for
+		 * that: pciec0 and pciec0_ep. So, when you want the controller
+		 * to be in a Root Complex mode then you put status = "disabled"
+		 * for the Endpoint entry and vise versa. Please note that both
+		 * nodes define the same "reg" and "interrupts" values.
+		 *
+		 * Xen, when it initializes the trap handlers for PCI
+		 * configuration space access, needs the relevant regions to be
+		 * NOT mapped into Domain-0's address space, but because of the
+		 * current logic implemented it still assumes that the "disabled"
+		 * status is valid and maps. So, it doesn't map MMIOs for
+		 * the "okay" pciec0, but maps the same regions for pciec0_ep
+		 * which is "disabled". for that reason, remove pciec0_ep
+		 * node from the tree.
+		 */
+		/delete-node/ &pciec0_ep;
 	};
 
 	firmware {
