@@ -1,0 +1,33 @@
+From b6a8b9ded324f74fdb1ecd70db312fa7e8cc7c36 Mon Sep 17 00:00:00 2001
+From: Oleksandr Andrushchenko <oleksandr_andrushchenko@epam.com>
+Date: Fri, 26 Nov 2021 15:14:13 +0200
+Subject: [PATCH] [HACK] spider/pci: do not look at PCI link up
+
+While accessing child bus there is a check that PCI link is actually up
+which currently (correctly) prevents the child bus from being scanned.
+As we emulate PCI device at 0000:01:00.0 in Xen this doesn't allow the
+emulation to run, so skip the check for now.
+
+Signed-off-by: Oleksandr Andrushchenko <oleksandr_andrushchenko@epam.com>
+---
+ drivers/pci/controller/dwc/pcie-designware-host.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c b/drivers/pci/controller/dwc/pcie-designware-host.c
+index 44c2a6572199..6af147b01246 100644
+--- a/drivers/pci/controller/dwc/pcie-designware-host.c
++++ b/drivers/pci/controller/dwc/pcie-designware-host.c
+@@ -452,8 +452,10 @@ static void __iomem *dw_pcie_other_conf_map_bus(struct pci_bus *bus,
+ 	 * the system from triggering an SError if the link goes down
+ 	 * after this check is performed.
+ 	 */
++#if 0
+ 	if (!dw_pcie_link_up(pci))
+ 		return NULL;
++#endif
+ 
+ 	busdev = PCIE_ATU_BUS(bus->number) | PCIE_ATU_DEV(PCI_SLOT(devfn)) |
+ 		 PCIE_ATU_FUNC(PCI_FUNC(devfn));
+-- 
+2.33.0
+
