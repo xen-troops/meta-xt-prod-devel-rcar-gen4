@@ -11,6 +11,7 @@ SRC_URI_append = " \
     file://xen-chosen.dtsi;subdir=git/arch/arm64/boot/dts/renesas \
     file://0001-clk-shmobile-Hide-clock-for-scif3.patch \
     file://0001-HACK-Allow-DomD-enumerate-PCI-devices.patch \
+    file://0001-HACK-spider-pci-do-not-look-at-PCI-link-up.patch \
 "
 
 ADDITIONAL_DEVICE_TREES = "${XT_DEVICE_TREES}"
