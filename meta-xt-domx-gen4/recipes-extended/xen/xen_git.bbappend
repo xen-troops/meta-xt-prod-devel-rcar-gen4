@@ -1,4 +1,4 @@
-require xen-4.16-dunfell.inc
+require xen-source.inc
 
 # We are dropping TUNE_CCARGS from for Xen because it won't build for armv8.2, as
 # it conflicts with -mcpu=generic provided by own Xen build system
