@@ -145,11 +145,13 @@
 &pciec0 {
 	iommu-map = <0x0 &ipmmu_hc 32 0x1>;
 	iommu-map-mask = <0x0>;
+	xen,force-assign-without-iommu;
 };
 
 &pciec1 {
 	iommu-map = <0x0 &ipmmu_hc 48 0x1>;
 	iommu-map-mask = <0x0>;
+	xen,force-assign-without-iommu;
 };
 
 &dmac1			{ xen,passthrough; };
