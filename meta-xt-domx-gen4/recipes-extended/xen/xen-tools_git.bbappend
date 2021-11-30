@@ -1,5 +1,11 @@
 require xen-source.inc
 
+FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+
+SRC_URI += " \
+    file://xenpcid-xenstore.conf \
+"
+
 PACKAGES_append = "\
     ${PN}-test \
     ${PN}-pcid \
@@ -12,7 +18,12 @@ FILES_${PN}-test = "\
 
 FILES_${PN}-pcid = "\
     ${systemd_unitdir}/system/xenpcid.service \
+    ${systemd_unitdir}/system/xenpcid.service.d/xenpcid-xenstore.conf \
 "
 
 SYSTEMD_SERVICE_${PN}-pcid = "xenpcid.service"
 
+do_install_append() {
+    install -d ${D}${systemd_unitdir}/system/xenpcid.service.d/
+    install -m 0744 ${WORKDIR}/xenpcid-xenstore.conf ${D}${systemd_unitdir}/system/xenpcid.service.d
+}
