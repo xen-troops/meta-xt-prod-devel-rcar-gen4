@@ -8,6 +8,7 @@ SRC_URI_append = " \
     file://r8a779f0.cfg \
     file://rswitch.cfg \
     file://dmatest.cfg \
+    file://8139.cfg \
     file://xen-chosen.dtsi;subdir=git/arch/arm64/boot/dts/renesas \
     file://0001-clk-shmobile-Hide-clock-for-scif3.patch \
     file://0001-xen-pciback-allow-compiling-on-other-archs-than-x86.patch \
@@ -22,6 +23,12 @@ KBUILD_DEFCONFIG = ""
 
 # Don't build defaul DTBs
 KERNEL_DEVICETREE = ""
+
+KERNEL_MODULE_PROBECONF += "8139cp"
+module_conf_8139cp = "blacklist 8139cp"
+
+KERNEL_MODULE_PROBECONF += "8139too"
+module_conf_8139too = "blacklist 8139too"
 
 # Add ADDITIONAL_DEVICE_TREES to SRC_URIs and to KERNEL_DEVICETREEs
 python __anonymous () {
