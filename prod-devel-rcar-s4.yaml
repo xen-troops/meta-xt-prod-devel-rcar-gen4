@@ -116,7 +116,7 @@ components:
       additional_deps:
         - "%{DOMD_BUILD_DIR}/tmp/deploy/images/%{MACHINE}/Image"
       target_images:
-        - "tmp/deploy/images/yocto-generic/Image"
+        - "tmp/deploy/images/generic-armv8-xt/Image"
   domd:
     build-dir: "%{YOCTOS_WORK_DIR}"
     sources:
