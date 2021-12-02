@@ -23,6 +23,8 @@ FILES_${PN}-pcid = "\
 
 SYSTEMD_SERVICE_${PN}-pcid = "xenpcid.service"
 
+SYSTEMD_PACKAGES += "${PN}-pcid"
+
 do_install_append() {
     install -d ${D}${systemd_unitdir}/system/xenpcid.service.d/
     install -m 0744 ${WORKDIR}/xenpcid-xenstore.conf ${D}${systemd_unitdir}/system/xenpcid.service.d
