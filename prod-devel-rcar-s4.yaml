@@ -20,16 +20,16 @@ common_data:
   sources: &COMMON_SOURCES
     - type: git
       url: "git://git.yoctoproject.org/poky"
-      rev: dunfell
+      rev: 0810ac6b92
     - type: git
       url: "git://git.openembedded.org/meta-openembedded"
-      rev: dunfell
+      rev: 814eec96c
     - type: git
       url: "git://git.yoctoproject.org/meta-virtualization"
-      rev: dunfell
+      rev: 180241e
     - type: git
       url: "https://github.com/xen-troops/meta-xt-common.git"
-      rev: master
+      rev: a5cb426
     - type: git
       url: "https://github.com/xen-troops/meta-xt-prod-devel-rcar-gen4.git"
       rev: spider-beta
@@ -129,7 +129,7 @@ components:
         rev: Renesas-Yocto-v5.8.2_S4
       - type: git
         url: git://git.yoctoproject.org/meta-selinux
-        rev: dunfell
+        rev: 46bcf05
     builder:
       type: yocto
       work_dir: "%{DOMD_BUILD_DIR}"
