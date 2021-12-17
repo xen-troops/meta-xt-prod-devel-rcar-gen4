@@ -11,7 +11,7 @@ as Moulin-based project files provide correct entries in local.conf
 
 # Status
 
-This is an alpha release of the Xen-based development product for the
+This is a gamma release of the Xen-based development product for the
 S4 Spider board.
 
 This release provides the following features:
@@ -31,9 +31,11 @@ The following HW modules were tested and are confirmed to work:
 Known issues:
  - R-Switch is sometimes unreliable during initialization phase,
    so sometimes the board reboot is required for DomD to come up.
- - Only 2GiB are used.
- - Multi-core is not supported yet. Only one CortexA core is enabled.
- - ARM Trusted Firmware is not integrated into this release.
+
+# External dependencies
+
+Latest IPL ("0.4.1 - 25 Nov" at time of writing) is required to ensure
+that second RAM bank is operational.
 
 # Building
 ## Requirements
@@ -56,7 +58,7 @@ reduce possible confuse, we recommend to download only
 `prod-devel-rcar-s4.yaml`:
 
 ```
-# curl -O https://raw.githubusercontent.com/xen-troops/meta-xt-prod-devel-rcar-gen4/spider-alpha/prod-devel-rcar-s4.yaml
+# curl -O https://raw.githubusercontent.com/xen-troops/meta-xt-prod-devel-rcar-gen4/spider-gamma/prod-devel-rcar-s4.yaml
 ```
 
 ## Building
@@ -91,6 +93,28 @@ build the images. This will take some time and disk space as it builds
 3 separate Yocto images.
 
 ## Creating SD card image
+
+### Using Ninja
+
+Latest versions of `moulin` will generate additional ninja targets for
+creating images. In case of this product please use
+
+```
+# ninja image-full
+```
+
+To generate SD/eMMC image `full.img`. You can use `dd` tool to write
+this image file to a SD card:
+
+```
+# dd if=full.img of=/dev/sdX conv=sparse
+```
+
+If you want to write image directly to a SD card (e.g. without
+creating `full.img` file), you will need to use manual mode, which is
+described in the next subsection.
+
+### Manually, using `rouge`
 
 Image file can be created with `rouge` tool. This is a companion
 application for `moulin`.
@@ -137,8 +161,8 @@ unset bootargs
 ```
 
 It is possible to run the build from TFTP+NFS and eMMC. With NFS boot
-is is possible to configure board IP, server IP and NFS path for DomD.
-Please set the following environment for that:
+is is possible to configure board IP, server IP and NFS path for DomD
+and DomU. Please set the following environment for that:
 
 ```
 setenv bootcmd 'run bootcmd_tftp'
@@ -151,7 +175,7 @@ setenv mmc0_kernel_load 'ext2load mmc 0:1 0x7a000000 Image'
 setenv mmc0_xen_load 'ext2load mmc 0:1 0x48080000 xen'
 setenv mmc0_xenpolicy_load 'ext2load mmc 0:1 0x7c000000 xenpolicy'
 
-setenv tftp_configure_nfs 'fdt set /boot_dev device nfs; fdt set /boot_dev my_ip 192.168.1.2; fdt set /boot_dev nfs_server_ip 192.168.1.100; fdt set /boot_dev nfs_dir "/srv/domd";'
+setenv tftp_configure_nfs 'fdt set /boot_dev device nfs; fdt set /boot_dev my_ip 192.168.1.2; fdt set /boot_dev nfs_server_ip 192.168.1.100; fdt set /boot_dev nfs_dir "/srv/domd"; fdt set /boot_dev domu_nfs_dir "/srv/domu"'
 setenv tftp_dtb_load 'tftp 0x48000000 r8a779f0-spider-xen.dtb; fdt addr 0x48000000; fdt resize; fdt mknode / boot_dev; run tftp_configure_nfs; '
 setenv tftp_initramfs_load 'tftp 0x84000000 uInitramfs'
 setenv tftp_kernel_load 'tftp 0x7a000000 Image'
