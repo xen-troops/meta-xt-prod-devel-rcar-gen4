@@ -36,6 +36,10 @@
 	};
 };
 
+/* Make sure Xen console is enabled. */
+&scif3	{
+	status = "okay";
+};
 
 /*
  * Delete PCIEC0 Endpoint node for vPCI to be able to trap
