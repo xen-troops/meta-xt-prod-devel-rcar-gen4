@@ -41,6 +41,37 @@
 	status = "okay";
 };
 
+&pciec0 {
+	reg = <0 0xe65d0000 0 0x3000>,
+	      <0 0xe65d3000 0 0x2000>,
+	      <0 0xe65d5000 0 0x1200>,
+	      <0 0xe65d6200 0 0x0e00>,
+	      <0 0xe65d7000 0 0x1000>,
+	      <0 0xfe000000 0 0x400000>;
+		 /* downstream IO */
+	ranges = <0x81000000 0 0x00000000 0 0xfe000000 0 0x00400000
+		 /* non-prefetchable memory */
+		 0x82000000 0 0x30000000 0 0x30000000 0 0x10000000>;
+	pinctrl-0 = <&pcie0_pins>, <&pcie1_pins>;
+};
+
+/*
+ * FIXME: Xen also parses disabled nodes: according to device tree specification
+ * such nodes may become available at run-time.
+ */
+&pciec1 {
+	reg = <0 0xe65d8000 0 0x3000>,
+	      <0 0xe65db000 0 0x2000>,
+	      <0 0xe65dd000 0 0x1200>,
+	      <0 0xe65de200 0 0x0e00>,
+	      <0 0xe65df000 0 0x1000>,
+	      <0 0xee900000 0 0x400000>;
+		 /* downstream IO */
+	ranges = <0x81000000 0 0x00000000 0 0xee900000 0 0x00400000
+		 /* non-prefetchable memory */
+		 0x82000000 0 0xc0000000 0 0xc0000000 0 0x10000000>;
+};
+
 /*
  * Delete PCIEC0 Endpoint node for vPCI to be able to trap
  * PCI configuration space access.
