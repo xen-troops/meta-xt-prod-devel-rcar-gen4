@@ -66,6 +66,10 @@
 		 /* non-prefetchable memory */
 		 0x82000000 0 0x30000000 0 0x30000000 0 0x10000000>;
 	msi-map = <0x0 &gic_its 0x0 0x1000>;
+	interrupt-map = <0 0 0 1 &gic 0 0 GIC_SPI 416 IRQ_TYPE_LEVEL_HIGH
+			 0 0 0 2 &gic 0 0 GIC_SPI 416 IRQ_TYPE_LEVEL_HIGH
+			 0 0 0 3 &gic 0 0 GIC_SPI 416 IRQ_TYPE_LEVEL_HIGH
+			 0 0 0 4 &gic 0 0 GIC_SPI 416 IRQ_TYPE_LEVEL_HIGH>;
 	pinctrl-0 = <&pcie0_pins>, <&pcie1_pins>;
 };
 
@@ -85,6 +89,10 @@
 		 /* non-prefetchable memory */
 		 0x82000000 0 0xc0000000 0 0xc0000000 0 0x10000000>;
 	msi-map = <0x0 &gic_its 0x0 0x1000>;
+	interrupt-map = <0 0 0 1 &gic 0 0 GIC_SPI 423 IRQ_TYPE_LEVEL_HIGH
+			 0 0 0 2 &gic 0 0 GIC_SPI 423 IRQ_TYPE_LEVEL_HIGH
+			 0 0 0 3 &gic 0 0 GIC_SPI 423 IRQ_TYPE_LEVEL_HIGH
+			 0 0 0 4 &gic 0 0 GIC_SPI 423 IRQ_TYPE_LEVEL_HIGH>;
 };
 
 /*
