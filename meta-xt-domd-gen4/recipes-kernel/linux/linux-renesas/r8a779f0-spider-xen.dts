@@ -41,6 +41,19 @@
 	status = "okay";
 };
 
+&gic {
+	#address-cells = <2>;
+	#size-cells = <2>;
+	ranges;
+
+	gic_its: msi-controller@f1040000 {
+		compatible = "arm,gic-v3-its";
+		msi-controller;
+		#msi-cells = <1>;
+		reg = <0x0 0xf1040000 0 0x20000>;
+	};
+};
+
 &pciec0 {
 	reg = <0 0xe65d0000 0 0x3000>,
 	      <0 0xe65d3000 0 0x2000>,
@@ -52,6 +65,7 @@
 	ranges = <0x81000000 0 0x00000000 0 0xfe000000 0 0x00400000
 		 /* non-prefetchable memory */
 		 0x82000000 0 0x30000000 0 0x30000000 0 0x10000000>;
+	msi-map = <0x0 &gic_its 0x0 0x1000>;
 	pinctrl-0 = <&pcie0_pins>, <&pcie1_pins>;
 };
 
@@ -70,6 +84,7 @@
 	ranges = <0x81000000 0 0x00000000 0 0xee900000 0 0x00400000
 		 /* non-prefetchable memory */
 		 0x82000000 0 0xc0000000 0 0xc0000000 0 0x10000000>;
+	msi-map = <0x0 &gic_its 0x0 0x1000>;
 };
 
 /*
