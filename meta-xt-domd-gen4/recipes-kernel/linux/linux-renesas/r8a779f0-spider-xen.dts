@@ -149,15 +149,17 @@
 };
 
 &pciec0 {
-	iommu-map = <0x0 &ipmmu_hc 32 0x1>;
-	iommu-map-mask = <0x0>;
-	xen,force-assign-without-iommu;
+	iommus = <&ipmmu_hc 32>;
+	iommu-map = <0x0 &ipmmu_hc 32 0x1>,
+				<0x100 &ipmmu_hc 33 0x1>;
+	iommu-map-mask = <0xff00>;
 };
 
 &pciec1 {
-	iommu-map = <0x0 &ipmmu_hc 48 0x1>;
-	iommu-map-mask = <0x0>;
-	xen,force-assign-without-iommu;
+	iommus = <&ipmmu_hc 48>;
+	iommu-map = <0x0 &ipmmu_hc 48 0x1>,
+				<0x100 &ipmmu_hc 49 0x1>;
+	iommu-map-mask = <0xff00>;
 };
 
 &dmac1			{ xen,passthrough; };
