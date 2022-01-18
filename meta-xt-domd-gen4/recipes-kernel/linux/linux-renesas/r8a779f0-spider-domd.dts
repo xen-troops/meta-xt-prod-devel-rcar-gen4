@@ -5,6 +5,7 @@
  * onwards. Reserve a high value for the GIC phandle.
  */
 #define PHANDLE_GIC (65000)
+#define PHANDLE_ITS (64999)
 
 / {
 	soc {
@@ -40,6 +41,17 @@
 &gic {
 	compatible = "";
 	status = "disabled";
+};
+
+/* Xen will provide vITS with phandle == PHANDLE_ITS. */
+/delete-node/&gic_its;
+
+&pciec0 {
+	msi-map = <0x0 PHANDLE_ITS 0x0 0x1000>;
+};
+
+&pciec1 {
+	msi-map = <0x0 PHANDLE_ITS 0x0 0x1000>;
 };
 
 /* Xen serial console */

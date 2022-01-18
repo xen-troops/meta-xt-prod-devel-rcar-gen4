@@ -13,6 +13,7 @@ SRC_URI_append = " \
     file://0001-clk-shmobile-Hide-clock-for-scif3.patch \
     file://0001-xen-pciback-allow-compiling-on-other-archs-than-x86.patch \
     file://0002-HACK-Allow-DomD-enumerate-PCI-devices.patch \
+    file://0001-WIP-PCIe-MSI-support.patch \
 "
 
 ADDITIONAL_DEVICE_TREES = "${XT_DEVICE_TREES}"
