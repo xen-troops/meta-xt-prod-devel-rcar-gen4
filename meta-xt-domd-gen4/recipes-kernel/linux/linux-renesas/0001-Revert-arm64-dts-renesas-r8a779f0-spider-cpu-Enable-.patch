@@ -1,0 +1,70 @@
+From 068bd2e94bba5576604deedecb9013c429a0b756 Mon Sep 17 00:00:00 2001
+From: Oleksandr Andrushchenko <oleksandr_andrushchenko@epam.com>
+Date: Wed, 19 Jan 2022 10:02:58 +0200
+Subject: [PATCH] Revert "arm64: dts: renesas: r8a779f0: spider-cpu: Enable
+ HSCIF and set HSCIF0 as the default debug serial"
+
+This reverts commit 615e6c4f80db66ef87eb96062a6ff2c826770ef5.
+---
+ .../boot/dts/renesas/r8a779f0-spider-cpu.dtsi      | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/arch/arm64/boot/dts/renesas/r8a779f0-spider-cpu.dtsi b/arch/arm64/boot/dts/renesas/r8a779f0-spider-cpu.dtsi
+index 6a13a593644b..b541fd74b23a 100644
+--- a/arch/arm64/boot/dts/renesas/r8a779f0-spider-cpu.dtsi
++++ b/arch/arm64/boot/dts/renesas/r8a779f0-spider-cpu.dtsi
+@@ -13,12 +13,12 @@ / {
+ 	compatible = "renesas,spider-cpu", "renesas,r8a779f0";
+ 
+ 	aliases {
+-		serial0 = &hscif0;
+-		serial1 = &hscif1;
++		serial0 = &scif3;
++		serial1 = &scif0;
+ 	};
+ 
+ 	chosen {
+-		stdout-path = "serial0:1843200n8";
++		stdout-path = "serial0:115200n8";
+ 	};
+ 
+ 	memory@48000000 {
+@@ -228,7 +228,7 @@ &scif0 {
+ 
+ 	uart-has-rtscts;
+ 	/* Please use exclusively to the hscif1 node */
+-	status = "disabled";
++	status = "okay";
+ };
+ 
+ &scif3 {
+@@ -237,7 +237,7 @@ &scif3 {
+ 
+ 	uart-has-rtscts;
+ 	/* Please use exclusively to the hscif0 node */
+-	status = "disabled";
++	status = "okay";
+ };
+ 
+ &hscif0 {
+@@ -246,7 +246,7 @@ &hscif0 {
+ 
+ 	uart-has-rtscts;
+ 	/* Please use exclusively to the scif3 node */
+-	status = "okay";
++	status = "disabled";
+ };
+ 
+ &hscif1 {
+@@ -255,7 +255,7 @@ &hscif1 {
+ 
+ 	uart-has-rtscts;
+ 	/* Please use exclusively to the scif0 node */
+-	status = "okay";
++	status = "disabled";
+ };
+ 
+ &scif_clk {
+-- 
+2.25.1
+
