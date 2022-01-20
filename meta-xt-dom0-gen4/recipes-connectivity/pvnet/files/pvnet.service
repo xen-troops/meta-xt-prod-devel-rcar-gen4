@@ -1,0 +1,11 @@
+[Unit]
+Description=PV Net
+Requires=backend-ready@bridge.service
+After=backend-ready@bridge.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/xl network-attach Domain-0 backend=DomD
+
+[Install]
+WantedBy=multi-user.target

@@ -1,6 +1,12 @@
 # for uboot-mkimage
 DEPENDS += "u-boot-mkimage-native"
 
+IMAGE_INSTALL_append = " \
+    pvnet \
+    dropbear \
+    haveged \
+"
+
 generate_uboot_image() {
     uboot-mkimage -A arm64 -O linux -T ramdisk -C gzip -n "uInitramfs" \
         -d ${IMGDEPLOYDIR}/${IMAGE_NAME}${IMAGE_NAME_SUFFIX}.cpio.gz  ${IMGDEPLOYDIR}/${IMAGE_NAME}${IMAGE_NAME_SUFFIX}.cpio.gz.uInitramfs
