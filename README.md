@@ -11,7 +11,7 @@ as Moulin-based project files provide correct entries in local.conf
 
 # Status
 
-This is a gamma release of the Xen-based development product for the
+This is a release 0.5.1 of the Xen-based development product for the
 S4 Spider board.
 
 This release provides the following features:
@@ -23,19 +23,18 @@ This release provides the following features:
 
 The following HW modules were tested and are confirmed to work:
 
- - Serial console (SCIF)
+ - Serial console (HSCIF)
  - IPMMUs
  - R-Switch (tsn0 interface only)
  - eMMC
-
-Known issues:
- - R-Switch is sometimes unreliable during initialization phase,
-   so sometimes the board reboot is required for DomD to come up.
+ - PCIe with ITS
 
 # External dependencies
 
-Latest IPL ("0.4.1 - 25 Nov" at time of writing) is required to ensure
-that second RAM bank is operational.
+At least IPL 0.5.0 is required for normal operation. Release was
+tested with IPL 0.6.0. User is required to flash ARM TF
+(bl31-spider.srec) provided by built to ensure that Xen will work
+correctly.
 
 # Building
 ## Requirements
@@ -58,7 +57,7 @@ reduce possible confuse, we recommend to download only
 `prod-devel-rcar-s4.yaml`:
 
 ```
-# curl -O https://raw.githubusercontent.com/xen-troops/meta-xt-prod-devel-rcar-gen4/spider-gamma/prod-devel-rcar-s4.yaml
+# curl -O https://raw.githubusercontent.com/xen-troops/meta-xt-prod-devel-rcar-gen4/spider-0.5.1/prod-devel-rcar-s4.yaml
 ```
 
 ## Building
@@ -165,7 +164,9 @@ is is possible to configure board IP, server IP and NFS path for DomD
 and DomU. Please set the following environment for that:
 
 ```
-setenv bootcmd 'run bootcmd_tftp'
+setenv set_pcie 'i2c dev 0; i2c mw 0x6c 0x26 5; i2c mw 0x6c 0x254.2 0x1e; i2c mw 0x6c 0x258.2 0x1e'
+
+setenv bootcmd 'run set_pcie; bootcmd_tftp'
 setenv bootcmd_mmc0 'run mmc0_xen_load; run mmc0_dtb_load; run mmc0_kernel_load; run mmc0_xenpolicy_load; run mmc0_initramfs_load; bootm 0x48080000 0x84000000 0x48000000'
 setenv bootcmd_tftp 'run tftp_xen_load; run tftp_dtb_load; run tftp_kernel_load; run tftp_xenpolicy_load; run tftp_initramfs_load; bootm 0x48080000 0x84000000 0x48000000'
 
