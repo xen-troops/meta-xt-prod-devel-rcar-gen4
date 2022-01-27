@@ -235,6 +235,7 @@
 &mmc0			{ xen,passthrough; };
 &pciec0			{ xen,passthrough; };
 &scif0			{ xen,passthrough; };
+&hscif1			{ xen,passthrough; };
 &rswitch		{ xen,passthrough; };
 &tsc			{ xen,passthrough; };
 &iccom00		{ xen,passthrough; };

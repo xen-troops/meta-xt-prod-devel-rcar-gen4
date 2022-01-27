@@ -54,8 +54,12 @@
 	msi-map = <0x0 PHANDLE_ITS 0x0 0x1000>;
 };
 
-/* Xen serial console */
+/* Xen serial consoles */
 &scif3	{
+	status = "disabled";
+};
+
+&hscif0	{
 	status = "disabled";
 };
 
