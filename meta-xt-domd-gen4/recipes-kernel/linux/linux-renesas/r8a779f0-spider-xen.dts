@@ -14,6 +14,26 @@
 		reg = <0x0 0x48000000 0x0 0x78000000
 		       0x4 0x80000000 0x0 0x80000000>;
 	};
+
+	reserved-memory {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		ranges;
+
+		/* ICCOM CR Shared memory */
+		cr_cta_mem {
+			compatible = "renesas,iccom-memory";
+			no-map;
+			reg = <0x0 0x47fc7000 0x0 0x2000>;
+		};
+
+		/* ICCOM G4MHA Shared memory */
+		g4mh_cta_mem {
+			compatible = "renesas,iccom-memory";
+			no-map;
+			reg = <0x0 0x47fc9000 0x0 0x2000>;
+		};
+	};
 };
 
 &ipmmu_mm {
