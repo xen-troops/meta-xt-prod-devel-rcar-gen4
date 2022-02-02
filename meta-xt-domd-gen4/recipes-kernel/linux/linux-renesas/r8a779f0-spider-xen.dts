@@ -242,12 +242,6 @@
 
 &soc {
 	iccom01		{ xen,passthrough; };
-	iccom010	{ xen,passthrough; };
-	iccom011	{ xen,passthrough; };
-	iccom012	{ xen,passthrough; };
-	iccom013	{ xen,passthrough; };
-	iccom014	{ xen,passthrough; };
-	iccom015	{ xen,passthrough; };
 	iccom02		{ xen,passthrough; };
 	iccom03		{ xen,passthrough; };
 	iccom04		{ xen,passthrough; };
@@ -256,20 +250,18 @@
 	iccom07		{ xen,passthrough; };
 	iccom08		{ xen,passthrough; };
 	iccom09		{ xen,passthrough; };
-	iccom100	{ xen,passthrough; };
-	iccom101	{ xen,passthrough; };
-	iccom102	{ xen,passthrough; };
-	iccom103	{ xen,passthrough; };
-	iccom104	{ xen,passthrough; };
-	iccom105	{ xen,passthrough; };
-	iccom106	{ xen,passthrough; };
-	iccom107	{ xen,passthrough; };
-	iccom108	{ xen,passthrough; };
-	iccom109	{ xen,passthrough; };
-	iccom110	{ xen,passthrough; };
-	iccom111	{ xen,passthrough; };
-	iccom112	{ xen,passthrough; };
-	iccom113	{ xen,passthrough; };
-	iccom114	{ xen,passthrough; };
-	iccom115	{ xen,passthrough; };
+	iccom010	{ xen,passthrough; };
+	iccom011	{ xen,passthrough; };
+	iccom012	{ xen,passthrough; };
+	iccom013	{ xen,passthrough; };
+	iccom014	{ xen,passthrough; };
+	iccom015	{ xen,passthrough; };
+	iccom016	{ xen,passthrough; };
+	iccom017	{ xen,passthrough; };
+	iccom018	{ xen,passthrough; };
+	iccom019	{ xen,passthrough; };
+	iccom020	{ xen,passthrough; };
+	iccom021	{ xen,passthrough; };
+	iccom022	{ xen,passthrough; };
+	iccom023	{ xen,passthrough; };
 };
