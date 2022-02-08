@@ -1,5 +1,8 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
+# Enable virtualization support
+EXTRA_OEMAKE += "CFG_VIRTUALIZATION=y CFG_VIRT_GUEST_COUNT=3"
+
 SRC_URI_append = " \
     file://0002-mk-gcc.mk-return-back-CXX-sm-definition.patch \
 "
