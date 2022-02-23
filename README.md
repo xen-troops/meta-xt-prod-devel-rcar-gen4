@@ -11,7 +11,7 @@ as Moulin-based project files provide correct entries in local.conf
 
 # Status
 
-This is a release 0.5.1 of the Xen-based development product for the
+This is a release 0.5.2 of the Xen-based development product for the
 S4 Spider board.
 
 This release provides the following features:
@@ -20,6 +20,9 @@ This release provides the following features:
  - Thin Dom0
  - Driver domain (DomD), which has access to all available hardware
  - Optional generic domain (DomU)
+ - Support for OP-TEE in virtualization mode
+ - ICCOM partitioning demo (proprietary components are required to
+   test the feature)
 
 The following HW modules were tested and are confirmed to work:
 
@@ -32,9 +35,9 @@ The following HW modules were tested and are confirmed to work:
 # External dependencies
 
 At least IPL 0.5.0 is required for normal operation. Release was
-tested with IPL 0.6.0. User is required to flash ARM TF
-(bl31-spider.srec) provided by built to ensure that Xen will work
-correctly.
+tested with IPL 0.7.0. User is required to flash ARM TF
+(bl31-spider.srec) and OP-TEE (tee-spider.srec) provided by the build
+to ensure that Xen and DomD/DomU will work correctly.
 
 # Building
 ## Requirements
@@ -57,7 +60,7 @@ reduce possible confuse, we recommend to download only
 `prod-devel-rcar-s4.yaml`:
 
 ```
-# curl -O https://raw.githubusercontent.com/xen-troops/meta-xt-prod-devel-rcar-gen4/spider-0.5.1/prod-devel-rcar-s4.yaml
+# curl -O https://raw.githubusercontent.com/xen-troops/meta-xt-prod-devel-rcar-gen4/spider-0.5.2/prod-devel-rcar-s4.yaml
 ```
 
 ## Building
