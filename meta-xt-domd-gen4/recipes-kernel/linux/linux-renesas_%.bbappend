@@ -1,5 +1,8 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
+BRANCH = "v5.10.41/rcar-5.1.3.rc11"
+SRCREV = "9acb07efa6c070d753ac1de4a146603299e51a49"
+
 SRC_URI_append = "\
     file://defconfig \
 "
@@ -14,7 +17,6 @@ SRC_URI_append = " \
     file://0001-xen-pciback-allow-compiling-on-other-archs-than-x86.patch \
     file://0002-HACK-Allow-DomD-enumerate-PCI-devices.patch \
     file://0001-WIP-PCIe-MSI-support.patch \
-    file://0001-arm64-dts-renesas-r8a779f0-Fix-SPI-number-of-ICCOM-U.patch \
 "
 
 ADDITIONAL_DEVICE_TREES = "${XT_DEVICE_TREES}"
