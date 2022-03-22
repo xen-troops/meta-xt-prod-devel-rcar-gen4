@@ -27,7 +27,7 @@ if [ $BOOT_STORAGE = nfs ] ; then
 	NFS_DIR="/srv/domd"
 	echo "WARNING! Using default NFS directory ${NFS_DIR}"
     fi
-    BOOT_STR="nfs nfsroot=${SERVER_IP}:${NFS_DIR},vers=3 ip=${MY_IP}"
+    BOOT_STR="nfs nfsroot=${SERVER_IP}:${NFS_DIR},vers=3 ip=${MY_IP}:::::tsn0"
     # Escape slahes ( / ->\/ )
     BOOT_STR=`echo "${BOOT_STR}" | sed "s/\//\\\\\\\\\//g"`
 
