@@ -16,6 +16,16 @@
 	passthrough {
 	};
 
+	reserved-memory {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		ranges;
+
+		rswitch_linkfix: rswitch_linkfix_mem@44000000 {
+			compatible = "renesas,rswitch-linkfix";
+			reg = <0x0 0x44000000 0x0 0x1000>;
+		};
+	};
 	/*
 	 * When creating DT for the guest domain Xen inserts only dummy CPU nodes.
 	 * And the number of these inserted CPU nodes is equal to the number of
@@ -65,6 +75,7 @@
 
 &rswitch {
 	/delete-property/iommus;
+	memory-region = <&rswitch_linkfix>;
 };
 
 &dmac1 {

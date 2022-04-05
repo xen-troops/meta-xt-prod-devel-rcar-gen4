@@ -33,6 +33,13 @@
 			no-map;
 			reg = <0x0 0x47fc9000 0x0 0x2000>;
 		};
+
+		/* R-Switch LINKFIX table */
+		rswitch_linkfix_mem@48000000 {
+			compatible = "renesas,rswitch-linkfix";
+			no-map;
+			reg = <0x0 0x48000000 0x0 0x200000>;
+		};
 	};
 };
 
@@ -142,14 +149,7 @@
 };
 
 &rswitch {
-	iommus = <&ipmmu_hc 0>, <&ipmmu_hc 1>,
-		 <&ipmmu_hc 2>, <&ipmmu_hc 3>,
-		 <&ipmmu_hc 4>, <&ipmmu_hc 5>,
-		 <&ipmmu_hc 6>, <&ipmmu_hc 7>,
-		 <&ipmmu_hc 16>, <&ipmmu_hc 17>,
-		 <&ipmmu_hc 18>, <&ipmmu_hc 19>,
-		 <&ipmmu_hc 20>, <&ipmmu_hc 21>,
-		 <&ipmmu_hc 22>, <&ipmmu_hc 23>;
+	iommus = <&ipmmu_hc 0>, <&ipmmu_hc 16>;
 };
 
 &dmac1 {
@@ -257,6 +257,35 @@
 &rtdmac_control3	{ xen,passthrough; };
 
 &soc {
+	rswitch_osid1 {
+		xen,passthrough;
+		iommus = <&ipmmu_hc 1>, <&ipmmu_hc 17>;
+	};
+	rswitch_osid2 {
+		xen,passthrough;
+		iommus = <&ipmmu_hc 2>, <&ipmmu_hc 18>;
+	};
+	rswitch_osid3 {
+		xen,passthrough;
+		iommus = <&ipmmu_hc 3>, <&ipmmu_hc 19>;
+	};
+	rswitch_osid4 {
+		xen,passthrough;
+		iommus = <&ipmmu_hc 4>, <&ipmmu_hc 20>;
+	};
+	rswitch_osid5 {
+		xen,passthrough;
+		iommus = <&ipmmu_hc 5>, <&ipmmu_hc 21>;
+	};
+	rswitch_osid6 {
+		xen,passthrough;
+		iommus = <&ipmmu_hc 6>, <&ipmmu_hc 22>;
+	};
+	rswitch_osid7 {
+		xen,passthrough;
+		iommus = <&ipmmu_hc 7>, <&ipmmu_hc 23>;
+	};
+
 	iccom01		{ xen,passthrough; };
 	iccom02		{ xen,passthrough; };
 	iccom03		{ xen,passthrough; };

@@ -12,6 +12,18 @@
 	#address-cells = <2>;
 	#size-cells = <2>;
 
+	reserved-memory {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		ranges;
+
+		/* R-Switch LINKFIX table */
+		rswitch_linkfix: rswitch_linkfix_mem@44000000 {
+			compatible = "renesas,rswitch-linkfix";
+			reg = <0x0 0x44000000 0x0 0x1000>;
+		};
+	};
+
 	passthrough {
 		compatible = "simple-bus";
 		ranges;
@@ -188,6 +200,11 @@
 			reg = <0 0xe6260000 0 0x10000>;
 			interrupts = <GIC_SPI 368 IRQ_TYPE_LEVEL_HIGH>;
 			linux,uio-name = "irq_iccom_00_23";
+		};
+
+		rswitch {
+			compatible = "renesas,etherswitch-xen";
+			memory-region = <&rswitch_linkfix>;
 		};
 	};
 };
