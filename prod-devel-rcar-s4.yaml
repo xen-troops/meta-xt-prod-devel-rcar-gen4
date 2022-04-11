@@ -11,7 +11,6 @@ variables:
   XT_XEN_DTB_NAME: "%{SOC_FAMILY}-%{MACHINE}-xen.dtb"
   XT_GENERIC_DOMU_TAG: ""
   MACHINE: "spider"
-  MACHINE: "spider"
   SOC_FAMILY: "r8a779f0"
   XT_DOMD_CONFIG_NAME: "domd-spider.cfg"
   XT_DOMU_CONFIG_NAME: "domu-spider.cfg"
