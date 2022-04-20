@@ -3,6 +3,7 @@ IMAGE_INSTALL += " \
     devmem2 \
     iccom-support \
     optee-test \
+    vmq-network \
 "
 
 IMAGE_INSTALL += "kernel-module-nvme"
