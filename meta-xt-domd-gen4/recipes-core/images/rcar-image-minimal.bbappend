@@ -5,3 +5,4 @@ IMAGE_INSTALL += " \
     optee-test \
 "
 
+IMAGE_INSTALL += "iproute2 tcpdump"
