@@ -6,6 +6,7 @@ EXTRA_OEMAKE += "CFG_VIRTUALIZATION=y CFG_VIRT_GUEST_COUNT=3"
 SRC_URI_append = " \
     file://0002-mk-gcc.mk-return-back-CXX-sm-definition.patch \
     file://0001-plat_rcar_s4-describe-non-secure-DDR-to-optee.patch \
+    file://0001-plat-rcar_gen4-extend-memory-available-to-OP-TEE.patch \
 "
 
 python __anonymous () {
