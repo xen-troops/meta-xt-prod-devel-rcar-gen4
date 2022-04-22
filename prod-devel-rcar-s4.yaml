@@ -28,10 +28,10 @@ common_data:
       rev: 180241e
     - type: git
       url: "https://github.com/xen-troops/meta-xt-common.git"
-      rev: master
+      rev: 76023c5b4db47d530dd1672ce145ed8a49936571
     - type: git
       url: "https://github.com/xen-troops/meta-xt-prod-devel-rcar-gen4.git"
-      rev: master
+      rev: spider-0.8.0
   # Common configuration options for all yocto-based domains
   conf: &COMMON_CONF
     - [SSTATE_DIR, "${TOPDIR}/../../../common_data/sstate"]
@@ -125,7 +125,7 @@ components:
       - *COMMON_SOURCES
       - type: git
         url: https://github.com/renesas-rcar/meta-renesas.git
-        rev: dunfell
+        rev: ff58fb97c4f9dcaad20445320644ca0f40c599a4
       - type: git
         url: git://git.yoctoproject.org/meta-selinux
         rev: 46bcf05
@@ -164,7 +164,7 @@ components:
       - *COMMON_SOURCES
       - type: git
         url: https://github.com/renesas-rcar/meta-renesas.git
-        rev: dunfell
+        rev: ff58fb97c4f9dcaad20445320644ca0f40c599a4
     builder:
       type: yocto
       work_dir: "%{DOMU_BUILD_DIR}"
