@@ -1,5 +1,6 @@
 [Match]
 Name=tsn0
+KernelCommandLine=ip=dhcp
 
 [Network]
 DHCP=yes
