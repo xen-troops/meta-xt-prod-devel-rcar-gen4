@@ -11,7 +11,7 @@ as Moulin-based project files provide correct entries in local.conf
 
 # Status
 
-This is a release 0.5.2 of the Xen-based development product for the
+This is a release 0.8.0 of the Xen-based development product for the
 S4 Spider board.
 
 This release provides the following features:
@@ -23,6 +23,8 @@ This release provides the following features:
  - Support for OP-TEE in virtualization mode
  - ICCOM partitioning demo (proprietary components are required to
    test the feature)
+ - R-Switch VMQ (R-Switch virtualization feature)
+ - Virtualized OP-TEE support
 
 The following HW modules were tested and are confirmed to work:
 
@@ -60,7 +62,7 @@ reduce possible confuse, we recommend to download only
 `prod-devel-rcar-s4.yaml`:
 
 ```
-# curl -O https://raw.githubusercontent.com/xen-troops/meta-xt-prod-devel-rcar-gen4/spider-0.5.2/prod-devel-rcar-s4.yaml
+# curl -O https://raw.githubusercontent.com/xen-troops/meta-xt-prod-devel-rcar-gen4/spider-0.8.0/prod-devel-rcar-s4.yaml
 ```
 
 ## Building
