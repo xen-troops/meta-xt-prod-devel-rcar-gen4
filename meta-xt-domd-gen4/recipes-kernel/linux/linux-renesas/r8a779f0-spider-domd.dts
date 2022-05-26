@@ -78,11 +78,11 @@
 	memory-region = <&rswitch_linkfix>;
 };
 
-&dmac1 {
+&dmac0 {
 	/delete-property/iommus;
 };
 
-&dmac2 {
+&dmac1 {
 	/delete-property/iommus;
 };
 

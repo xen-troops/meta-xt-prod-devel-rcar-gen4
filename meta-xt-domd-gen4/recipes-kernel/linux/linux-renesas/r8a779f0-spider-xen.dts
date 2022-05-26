@@ -152,7 +152,7 @@
 	iommus = <&ipmmu_hc 0>, <&ipmmu_hc 16>;
 };
 
-&dmac1 {
+&dmac0 {
 	iommus = <&ipmmu_ds0 0>, <&ipmmu_ds0 1>,
 		 <&ipmmu_ds0 2>, <&ipmmu_ds0 3>,
 		 <&ipmmu_ds0 4>, <&ipmmu_ds0 5>,
@@ -163,7 +163,7 @@
 		 <&ipmmu_ds0 14>, <&ipmmu_ds0 15>;
 };
 
-&dmac2 {
+&dmac1 {
 	iommus = <&ipmmu_ds0 16>, <&ipmmu_ds0 17>,
 		 <&ipmmu_ds0 18>, <&ipmmu_ds0 19>,
 		 <&ipmmu_ds0 20>, <&ipmmu_ds0 21>,
@@ -233,8 +233,8 @@
 	iommu-map-mask = <0xff00>;
 };
 
+&dmac0			{ xen,passthrough; };
 &dmac1			{ xen,passthrough; };
-&dmac2			{ xen,passthrough; };
 &rt_dmac0		{ xen,passthrough; };
 &rt_dmac1		{ xen,passthrough; };
 &rt_dmac2		{ xen,passthrough; };
@@ -252,10 +252,70 @@
 &rswitch		{ xen,passthrough; };
 &tsc			{ xen,passthrough; };
 &iccom00		{ xen,passthrough; };
-&rtdmac_control0	{ xen,passthrough; };
-&rtdmac_control1	{ xen,passthrough; };
-&rtdmac_control2	{ xen,passthrough; };
-&rtdmac_control3	{ xen,passthrough; };
+&rtdmac_control0_00     { xen,passthrough; };
+&rtdmac_control0_01     { xen,passthrough; };
+&rtdmac_control0_02     { xen,passthrough; };
+&rtdmac_control0_03     { xen,passthrough; };
+&rtdmac_control0_04     { xen,passthrough; };
+&rtdmac_control0_05     { xen,passthrough; };
+&rtdmac_control0_06     { xen,passthrough; };
+&rtdmac_control0_07     { xen,passthrough; };
+&rtdmac_control0_08     { xen,passthrough; };
+&rtdmac_control0_09     { xen,passthrough; };
+&rtdmac_control0_10     { xen,passthrough; };
+&rtdmac_control0_11     { xen,passthrough; };
+&rtdmac_control0_12     { xen,passthrough; };
+&rtdmac_control0_13     { xen,passthrough; };
+&rtdmac_control0_14     { xen,passthrough; };
+&rtdmac_control0_15     { xen,passthrough; };
+&rtdmac_control1_00     { xen,passthrough; };
+&rtdmac_control1_01     { xen,passthrough; };
+&rtdmac_control1_02     { xen,passthrough; };
+&rtdmac_control1_03     { xen,passthrough; };
+&rtdmac_control1_04     { xen,passthrough; };
+&rtdmac_control1_05     { xen,passthrough; };
+&rtdmac_control1_06     { xen,passthrough; };
+&rtdmac_control1_07     { xen,passthrough; };
+&rtdmac_control1_08     { xen,passthrough; };
+&rtdmac_control1_09     { xen,passthrough; };
+&rtdmac_control1_10     { xen,passthrough; };
+&rtdmac_control1_11     { xen,passthrough; };
+&rtdmac_control1_12     { xen,passthrough; };
+&rtdmac_control1_13     { xen,passthrough; };
+&rtdmac_control1_14     { xen,passthrough; };
+&rtdmac_control1_15     { xen,passthrough; };
+&rtdmac_control2_00     { xen,passthrough; };
+&rtdmac_control2_01     { xen,passthrough; };
+&rtdmac_control2_02     { xen,passthrough; };
+&rtdmac_control2_03     { xen,passthrough; };
+&rtdmac_control2_04     { xen,passthrough; };
+&rtdmac_control2_05     { xen,passthrough; };
+&rtdmac_control2_06     { xen,passthrough; };
+&rtdmac_control2_07     { xen,passthrough; };
+&rtdmac_control2_08     { xen,passthrough; };
+&rtdmac_control2_09     { xen,passthrough; };
+&rtdmac_control2_10     { xen,passthrough; };
+&rtdmac_control2_11     { xen,passthrough; };
+&rtdmac_control2_12     { xen,passthrough; };
+&rtdmac_control2_13     { xen,passthrough; };
+&rtdmac_control2_14     { xen,passthrough; };
+&rtdmac_control2_15     { xen,passthrough; };
+&rtdmac_control3_00     { xen,passthrough; };
+&rtdmac_control3_01     { xen,passthrough; };
+&rtdmac_control3_02     { xen,passthrough; };
+&rtdmac_control3_03     { xen,passthrough; };
+&rtdmac_control3_04     { xen,passthrough; };
+&rtdmac_control3_05     { xen,passthrough; };
+&rtdmac_control3_06     { xen,passthrough; };
+&rtdmac_control3_07     { xen,passthrough; };
+&rtdmac_control3_08     { xen,passthrough; };
+&rtdmac_control3_09     { xen,passthrough; };
+&rtdmac_control3_10     { xen,passthrough; };
+&rtdmac_control3_11     { xen,passthrough; };
+&rtdmac_control3_12     { xen,passthrough; };
+&rtdmac_control3_13     { xen,passthrough; };
+&rtdmac_control3_14     { xen,passthrough; };
+&rtdmac_control3_15     { xen,passthrough; };
 
 &soc {
 	rswitch_osid1 {
@@ -310,64 +370,4 @@
 	iccom021	{ xen,passthrough; };
 	iccom022	{ xen,passthrough; };
 	iccom023	{ xen,passthrough; };
-	rtdmac_control001 { xen,passthrough; };
-	rtdmac_control002 { xen,passthrough; };
-	rtdmac_control003 { xen,passthrough; };
-	rtdmac_control004 { xen,passthrough; };
-	rtdmac_control005 { xen,passthrough; };
-	rtdmac_control006 { xen,passthrough; };
-	rtdmac_control007 { xen,passthrough; };
-	rtdmac_control008 { xen,passthrough; };
-	rtdmac_control009 { xen,passthrough; };
-	rtdmac_control010 { xen,passthrough; };
-	rtdmac_control011 { xen,passthrough; };
-	rtdmac_control012 { xen,passthrough; };
-	rtdmac_control013 { xen,passthrough; };
-	rtdmac_control014 { xen,passthrough; };
-	rtdmac_control015 { xen,passthrough; };
-	rtdmac_control101 { xen,passthrough; };
-	rtdmac_control102 { xen,passthrough; };
-	rtdmac_control103 { xen,passthrough; };
-	rtdmac_control104 { xen,passthrough; };
-	rtdmac_control105 { xen,passthrough; };
-	rtdmac_control106 { xen,passthrough; };
-	rtdmac_control107 { xen,passthrough; };
-	rtdmac_control108 { xen,passthrough; };
-	rtdmac_control109 { xen,passthrough; };
-	rtdmac_control110 { xen,passthrough; };
-	rtdmac_control111 { xen,passthrough; };
-	rtdmac_control112 { xen,passthrough; };
-	rtdmac_control113 { xen,passthrough; };
-	rtdmac_control114 { xen,passthrough; };
-	rtdmac_control115 { xen,passthrough; };
-	rtdmac_control201 { xen,passthrough; };
-	rtdmac_control202 { xen,passthrough; };
-	rtdmac_control203 { xen,passthrough; };
-	rtdmac_control204 { xen,passthrough; };
-	rtdmac_control205 { xen,passthrough; };
-	rtdmac_control206 { xen,passthrough; };
-	rtdmac_control207 { xen,passthrough; };
-	rtdmac_control208 { xen,passthrough; };
-	rtdmac_control209 { xen,passthrough; };
-	rtdmac_control210 { xen,passthrough; };
-	rtdmac_control211 { xen,passthrough; };
-	rtdmac_control212 { xen,passthrough; };
-	rtdmac_control213 { xen,passthrough; };
-	rtdmac_control214 { xen,passthrough; };
-	rtdmac_control215 { xen,passthrough; };
-	rtdmac_control301 { xen,passthrough; };
-	rtdmac_control302 { xen,passthrough; };
-	rtdmac_control303 { xen,passthrough; };
-	rtdmac_control304 { xen,passthrough; };
-	rtdmac_control305 { xen,passthrough; };
-	rtdmac_control306 { xen,passthrough; };
-	rtdmac_control307 { xen,passthrough; };
-	rtdmac_control308 { xen,passthrough; };
-	rtdmac_control309 { xen,passthrough; };
-	rtdmac_control310 { xen,passthrough; };
-	rtdmac_control311 { xen,passthrough; };
-	rtdmac_control312 { xen,passthrough; };
-	rtdmac_control313 { xen,passthrough; };
-	rtdmac_control314 { xen,passthrough; };
-	rtdmac_control315 { xen,passthrough; };
 };
