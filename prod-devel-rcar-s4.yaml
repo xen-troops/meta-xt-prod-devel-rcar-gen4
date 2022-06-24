@@ -1,0 +1,55 @@
+desc: "R-Switch L3 HW offload development setup for Renesas RCAR Gen4 hardware"
+min_ver: "0.4"
+
+variables:
+  YOCTOS_WORK_DIR: "yocto"
+  MACHINE: "spider"
+  SOC_FAMILY: "r8a779f0"
+
+components:
+  bsp:
+    build-dir: "%{YOCTOS_WORK_DIR}"
+    default: true
+    sources:
+      - type: git
+        url: "git://git.yoctoproject.org/poky"
+        rev: 5582ab6aae
+      - type: git
+        url: "git://git.openembedded.org/meta-openembedded"
+        rev: 69f94af4d
+      - type: git
+        url: "https://github.com/renesas-rcar/meta-renesas.git"
+        rev: 9afb804
+      - type: git
+        url: https://github.com/xen-troops/meta-xt-prod-devel-rcar-gen4.git
+        rev: "spider-0.8.2-l3-offload"
+    builder:
+      type: yocto
+      conf:
+        - [MACHINE, "%{MACHINE}"]
+        - [SOC_FAMILY, "%{SOC_FAMILY}"]
+        # Generate ext4 image files
+        - [IMAGE_FSTYPES_append, " ext4"]
+
+      build_target: rcar-image-minimal
+      layers:
+        - "../poky/meta"
+        - "../poky/meta-poky"
+        - "../poky/meta-yocto-bsp"
+        - "../meta-renesas/meta-rcar-gateway"
+        - "../meta-openembedded/meta-oe"
+        - "../meta-openembedded/meta-python"
+        - "../meta-openembedded/meta-networking"
+        - "../meta-xt-prod-devel-rcar-gen4/meta-rcar-l3-offload"
+      target_images:
+        - "tmp/deploy/images/%{MACHINE}/rcar-image-minimal-spider.ext4"
+
+images:
+  full:
+    type: gpt
+    desc: "Full SD-card/eMMC image"
+    partitions:
+      domd_rootfs:
+        gpt_type: B921B045-1DF0-41C3-AF44-4C6F280D3FAE # Linux aarch64 root
+        type: raw_image
+        image_path: "%{YOCTOS_WORK_DIR}/build/tmp/deploy/images/%{MACHINE}/rcar-image-minimal-spider.ext4"
