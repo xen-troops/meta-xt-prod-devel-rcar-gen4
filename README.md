@@ -1,0 +1,173 @@
+# meta-xt-rcar-gen4 #
+
+This repository contains Renesas R-Car Gen4-specific Yocto layer for support R-Switch L3 HW offload feature.
+More information about [L3 Routing offload](https://www.kernel.org/doc/html/latest/networking/switchdev.html#l3-routing-offload)
+
+
+Those layers *may* be added and used manually, but they were written
+with [Moulin](https://moulin.readthedocs.io/en/latest/) build system,
+as Moulin-based project files provide correct entries in local.conf
+
+# Status
+
+This is a release 0.8.2-l3-offload of the L3 development product for the S4 Spider board.
+
+This release provides L3 routing offload feature for IPv4 based on S4 R-Switch MFWD. The feature adds hardware
+configuration to MFWD via FIB notifier in order to offload CPU and use MFWD mechanisms for routing.
+
+# Building
+## Requirements
+
+1. Ubuntu 18.0+ or any other Linux distribution which is supported by Poky/OE
+2. Development packages for Yocto. Refer to [Yocto
+   manual](https://www.yoctoproject.org/docs/current/mega-manual/mega-manual.html#brief-build-system-packages).
+3. You need `Moulin` installed in your PC. Recommended way is to
+   install it for your user only: `pip3 install --user
+   git+https://github.com/xen-troops/moulin`. Make sure that your
+   `PATH` environment variable includes `${HOME}/.local/bin`.
+4. Ninja build system: `sudo apt install ninja-build` on Ubuntu
+
+## Fetching
+
+You can fetch/clone this whole repository, but you actually only need
+one file from it: `prod-devel-rcar-s4.yaml`. During the build `moulin`
+will fetch this repository again into `yocto/` directory. So, to
+reduce possible confuse, we recommend to download only
+`prod-devel-rcar-s4.yaml`:
+
+```
+# curl -O https://raw.githubusercontent.com/xen-troops/meta-xt-prod-devel-rcar-gen4/spider-0.8.2-l3-offload/prod-devel-rcar-s4.yaml
+```
+
+## Building
+
+Moulin is used to generate Ninja build file: `moulin
+prod-devel-rcar-s4.yaml`.
+
+## Creating SD card image
+
+### Using Ninja
+
+Latest versions of moulin will generate additional ninja targets for creating images. In case of this product please use
+
+```
+# ninja image-full
+```
+
+To generate SD/eMMC image `full.img`. You can use `dd` tool to write
+this image file to a SD card:
+
+```
+# dd if=full.img of=/dev/sdX conv=sparse
+```
+
+If you want to write image directly to a SD card (e.g. without
+creating `full.img` file), you will need to use manual mode, which is
+described in the next subsection.
+
+### Manually, using `rouge`
+
+Image file can be created with `rouge` tool. This is a companion
+application for `moulin`.
+
+Right now it works only in standalone mode, so manual invocation is
+required.
+
+This XT product provides only one image: `full`.
+
+You can prepare the image by running
+
+```
+# rouge prod-devel-rcar-s4.yaml -i full
+```
+
+This will create file `full.img` in your current directory.
+
+Also you can write image directly to an SD card by running
+
+```
+# sudo rouge prod-devel-rcar.yaml -i full -so /dev/sdX
+```
+
+**BE SURE TO PROVIDE CORRECT DEVICE NAME**. `rouge` has no
+interactive prompts and will overwrite your device right away. **ALL
+DATA WILL BE LOST**.
+
+It is also possible to flash the image to the internal eMMC.
+For that you may want booting the board via TFTP and sharing system's
+root file system via NFS. Once booted it is possible to flash the image:
+
+```
+# dd if=/full.img of=/dev/mmcblk0 bs=1M
+```
+
+For more information about `rouge` check its
+[manual](https://moulin.readthedocs.io/en/latest/rouge.html).
+
+## U-boot environment
+
+It is possible to run the build from TFTP+NFS or eMMC. With NFS boot
+it is possible to configure board IP, server IP and NFS path for system.
+Please set the following environment for that:
+
+```
+setenv ipaddr '192.168.1.1'
+setenv serverip '192.168.1.100'
+setenv tftp_kernel_rswitch_load 'tftp 0x7a000000 Image'
+setenv tftp_dtb_rswitch_load 'tftp 0x48000000 r8a779f0-spider.dtb'
+setenv bootargs_rswitch 'root=/dev/nfs nfsroot=192.168.1.100:/srv/spider-rswitch,vers=3 ip=192.168.1.1:192.168.1.100::255.255.255.0:board:tsn0::::'
+setenv bootcmd_rswitch 'setenv bootargs $bootargs_rswitch; run tftp_dtb_rswitch_load; run tftp_kernel_rswitch_load; booti 0x7a000000 - 0x48000000'
+setenv bootcmd='run bootcmd_rswitch'
+```
+
+## Testing setup
+
+The setup can be tested using 2 PC or on the same PC. In case of the same PC, the interface connected to TSN2 should be moved to custom network namespace.
+
+## On board:
+
+```
+ifconfig tsn2 up 192.168.3.1
+echo 1 > /proc/sys/net/ipv4/ip_forward
+```
+
+## On host:
+
+### The same PC
+
+```
+sudo ip route add 192.168.3.0/24 via 192.168.1.1
+sudo ip netns add linuxhint
+# Interface, connected to tsn2
+sudo ifconfig enp1s0 down
+sudo ip link set enp1s0 netns linuxhint
+sudo ip netns exec linuxhint ifconfig enp1s0 up
+sudo ip netns exec linuxhint ifconfig enp1s0 192.168.3.100
+```
+
+### 2 PC
+
+On main host, connected to TSN0:
+```
+sudo ip route add 192.168.3.0/24 via 192.168.1.1
+```
+
+On host connected to TSN2:
+```
+sudo ifconfig enp1s0 192.168.3.100
+```
+
+Ping interface connected to TSN2 from host or namespace connected to TSN0:
+```
+ping 192.168.3.100 -c 10
+```
+
+Ensure, that HW routing is used via checking counters on R-Switch interfaces or using `tcpdump` tool.
+Routes offloaded to the device are labeled with `offload` in the ip route listing:
+
+```
+# ip route show
+192.168.1.0/24 dev tsn0 proto kernel scope link src 192.168.1.1 offload
+192.168.3.0/24 dev tsn2 proto kernel scope link src 192.168.3.1 offload
+192.168.5.0/24 via 192.168.3.100 dev tsn2 offload
+```
