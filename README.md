@@ -11,7 +11,7 @@ as Moulin-based project files provide correct entries in local.conf
 
 # Status
 
-This is a release 0.8.1 of the Xen-based development product for the
+This is a release 0.8.2 of the Xen-based development product for the
 S4 Spider board.
 
 This release provides the following features:
@@ -23,7 +23,8 @@ This release provides the following features:
  - Support for OP-TEE in virtualization mode
  - ICCOM partitioning demo (proprietary components are required to
    test the feature)
- - R-Switch VMQ (R-Switch virtualization feature)
+ - R-Switch VMQ: R-Switch virtualization feature
+ - R-Switch VMQ TSN: R-Switch TSN pass-through feature
  - Virtualized OP-TEE support
  - PCIe SR-IOV support
 
@@ -31,14 +32,14 @@ The following HW modules were tested and are confirmed to work:
 
  - Serial console (HSCIF)
  - IPMMUs
- - R-Switch (tsn0 interface only)
+ - R-Switch
  - eMMC
  - PCIe with ITS
 
 # External dependencies
 
 At least IPL 0.5.0 is required for normal operation. Release was
-tested with IPL 0.7.0. User is required to flash ARM TF
+tested with IPL 0.9.0. User is required to flash ARM TF
 (bl31-spider.srec) and OP-TEE (tee-spider.srec) provided by the build
 to ensure that Xen and DomD/DomU will work correctly.
 
@@ -63,7 +64,7 @@ reduce possible confuse, we recommend to download only
 `prod-devel-rcar-s4.yaml`:
 
 ```
-# curl -O https://raw.githubusercontent.com/xen-troops/meta-xt-prod-devel-rcar-gen4/spider-0.8.1/prod-devel-rcar-s4.yaml
+# curl -O https://raw.githubusercontent.com/xen-troops/meta-xt-prod-devel-rcar-gen4/spider-0.8.2/prod-devel-rcar-s4.yaml
 ```
 
 ## Building
@@ -309,3 +310,20 @@ Please note that were we share second device (`01:00.2`) while first one stays i
 Restart DomU. You should see a new `/dev/nvme0n1` device in DomU. This
 is the second namespace attached to a secondary controller of device
 that resides in DomD.
+
+
+## TSN1 pass-through
+
+In this release TSN1 network interface is assigned to DomU. DomU still
+used XEN PV Network for NFS boot, because this is more
+convenient. DomU expects that TSN1 ip address will be assigned using
+DHCP. User can provide own IP address by editing
+`/etc/systemd/network/tsn1.network` file.
+
+vmq0 interface is disabled in this release. But it can be enabled back
+by un-commenting corresponding line in `/etc/xen/domu.cfg` file in
+Dom0.
+
+NOTE: There are stability issues with TSN1 and TSN2 interface. They not
+always come up during boot. Multiple reboots may be needed to bring
+them up successfully.
