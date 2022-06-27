@@ -137,6 +137,7 @@ components:
         - *DOMD_DOMU_CONF
         - [XT_DOM_NAME, "domd"]
         - [XT_DEVICE_TREES, "%{XT_DOMD_DTB_NAME} %{XT_XEN_DTB_NAME}"]
+        - [IMAGE_INSTALL_append, " iperf3"]
 
       build_target: rcar-image-minimal
       layers:
@@ -172,6 +173,7 @@ components:
         - *COMMON_CONF
         - *DOMD_DOMU_CONF
         - [XT_DOM_NAME, "domu"]
+        - [IMAGE_INSTALL_append, " iperf3 "]
 
       layers:
         - "../meta-openembedded/meta-oe"
