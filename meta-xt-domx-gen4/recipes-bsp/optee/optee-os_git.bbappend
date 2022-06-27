@@ -1,7 +1,13 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
 
 # Enable virtualization support
-EXTRA_OEMAKE += "CFG_VIRTUALIZATION=y CFG_VIRT_GUEST_COUNT=3"
+EXTRA_OEMAKE += "CFG_VIRTUALIZATION=y \
+                 CFG_VIRT_GUEST_COUNT=3 \
+		 CFG_REE_FS=y \
+		 CFG_STANDALONE_FS=n \
+		 CFG_CRYPT_HW_CRYPTOENGINE=n \
+		 CFG_RCAR_MUTEX_DELAY=100 \
+"
 
 SRC_URI_append = " \
     file://0001-plat_rcar_s4-describe-non-secure-DDR-to-optee.patch \
