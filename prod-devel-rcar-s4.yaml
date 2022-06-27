@@ -19,19 +19,19 @@ common_data:
   sources: &COMMON_SOURCES
     - type: git
       url: "git://git.yoctoproject.org/poky"
-      rev: 232b5533d
+      rev: 5582ab6aa
     - type: git
       url: "git://git.openembedded.org/meta-openembedded"
-      rev: 814eec96c
+      rev: deee22601
     - type: git
       url: "git://git.yoctoproject.org/meta-virtualization"
-      rev: 180241e
+      rev: f6b88c1d2
     - type: git
       url: "https://github.com/xen-troops/meta-xt-common.git"
-      rev: master
+      rev: 5565aacbe
     - type: git
       url: "https://github.com/xen-troops/meta-xt-prod-devel-rcar-gen4.git"
-      rev: master
+      rev: spider-0.8.2
   # Common configuration options for all yocto-based domains
   conf: &COMMON_CONF
     - [SSTATE_DIR, "${TOPDIR}/../../../common_data/sstate"]
@@ -125,7 +125,7 @@ components:
       - *COMMON_SOURCES
       - type: git
         url: https://github.com/renesas-rcar/meta-renesas.git
-        rev: dunfell
+        rev: 9afb8044
       - type: git
         url: git://git.yoctoproject.org/meta-selinux
         rev: 46bcf05
@@ -165,7 +165,7 @@ components:
       - *COMMON_SOURCES
       - type: git
         url: https://github.com/renesas-rcar/meta-renesas.git
-        rev: dunfell
+        rev: 9afb8044
     builder:
       type: yocto
       work_dir: "%{DOMU_BUILD_DIR}"
