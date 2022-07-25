@@ -11,7 +11,7 @@ as Moulin-based project files provide correct entries in local.conf
 
 # Status
 
-This is a release 0.8.2 of the Xen-based development product for the
+This is a release 0.8.3 of the Xen-based development product for the
 S4 Spider board.
 
 This release provides the following features:
@@ -64,7 +64,7 @@ reduce possible confuse, we recommend to download only
 `prod-devel-rcar-s4.yaml`:
 
 ```
-# curl -O https://raw.githubusercontent.com/xen-troops/meta-xt-prod-devel-rcar-gen4/spider-0.8.2/prod-devel-rcar-s4.yaml
+# curl -O https://raw.githubusercontent.com/xen-troops/meta-xt-prod-devel-rcar-gen4/spider-0.8.3/prod-devel-rcar-s4.yaml
 ```
 
 ## Building
@@ -323,7 +323,3 @@ DHCP. User can provide own IP address by editing
 vmq0 interface is disabled in this release. But it can be enabled back
 by un-commenting corresponding line in `/etc/xen/domu.cfg` file in
 Dom0.
-
-NOTE: There are stability issues with TSN1 and TSN2 interface. They not
-always come up during boot. Multiple reboots may be needed to bring
-them up successfully.
