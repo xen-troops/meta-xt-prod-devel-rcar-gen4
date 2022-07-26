@@ -1,7 +1,7 @@
 # meta-xt-rcar-gen4 #
 
-This repository contains Renesas R-Car Gen4-specific Yocto layer for support R-Switch L3 HW offload feature.
-More information about [L3 Routing offload](https://www.kernel.org/doc/html/latest/networking/switchdev.html#l3-routing-offload)
+This repository contains Renesas R-Car Gen4-specific Yocto layer for support R-Switch L3 HW offload and  initial traffic control offload features.
+More information about [L3 Routing offload](https://www.kernel.org/doc/html/latest/networking/switchdev.html#l3-routing-offload) and [traffic control](https://tldp.org/HOWTO/Traffic-Control-HOWTO/) you can find by this links.
 
 
 Those layers *may* be added and used manually, but they were written
@@ -10,10 +10,11 @@ as Moulin-based project files provide correct entries in local.conf
 
 # Status
 
-This is a release 0.8.2-l3-offload of the L3 development product for the S4 Spider board.
+This is a release 0.8.3-l3-offload of the L3 development product for the S4 Spider board.
 
-This release provides L3 routing offload feature for IPv4 based on S4 R-Switch MFWD. The feature adds hardware
-configuration to MFWD via FIB notifier in order to offload CPU and use MFWD mechanisms for routing.
+This release provides L3 routing offload feature for IPv4 based on S4 R-Switch MFWD. The feature adds hardware configuration to MFWD via FIB notifier in order to offload CPU and use MFWD mechanisms for routing.
+
+Also, initial support of traffic control filters HW offload support was introduced. Now it supports patial HW offload of two TC filters - u32 and flower. For u32 matching by IPv4 fields and several actions can be performed to matched packets: drop, destination MAC mangling with skbmod and packet redirection with mirroring. For flower the only drop action and packet matching by IPv4 addresses are currently supported.
 
 # Building
 ## Requirements
@@ -36,7 +37,7 @@ reduce possible confuse, we recommend to download only
 `prod-devel-rcar-s4.yaml`:
 
 ```
-# curl -O https://raw.githubusercontent.com/xen-troops/meta-xt-prod-devel-rcar-gen4/spider-0.8.2-l3-offload/prod-devel-rcar-s4.yaml
+# curl -O https://raw.githubusercontent.com/xen-troops/meta-xt-prod-devel-rcar-gen4/spider-0.8.3-l3-offload/prod-devel-rcar-s4.yaml
 ```
 
 ## Building
@@ -122,7 +123,7 @@ setenv bootcmd='run bootcmd_rswitch'
 
 ## Testing setup
 
-The setup can be tested using 2 PC or on the same PC. In case of the same PC, the interface connected to TSN2 should be moved to custom network namespace.
+The setup can be tested using 2 PC or on the same PC. In case of the same PC, the interface connected to TSN2 should be moved to custom network namespace. Also virtual interface in this namespace will be needed.
 
 ## On board:
 
@@ -137,12 +138,17 @@ echo 1 > /proc/sys/net/ipv4/ip_forward
 
 ```
 sudo ip route add 192.168.3.0/24 via 192.168.1.1
+sudo ip route add 192.168.5.0/24 via 192.168.1.1
 sudo ip netns add linuxhint
+
 # Interface, connected to tsn2
-sudo ifconfig enp1s0 down
+sudo ip link set enp1s0 down
 sudo ip link set enp1s0 netns linuxhint
 sudo ip netns exec linuxhint ifconfig enp1s0 up
-sudo ip netns exec linuxhint ifconfig enp1s0 192.168.3.100
+sudo ip netns exec linuxhint ip netns exec linuxhint ifconfig enp1s0 192.168.3.100
+sudo ip netns exec linuxhint ip link add virt0 type dummy
+sudo ip netns exec linuxhint ifconfig virt0 hw ether C8:D7:4A:4E:47:50 # this can be any valid addr
+sudo ip netns exec linuxhint ifconfig virt0 192.168.5.100
 ```
 
 ### 2 PC
@@ -150,13 +156,19 @@ sudo ip netns exec linuxhint ifconfig enp1s0 192.168.3.100
 On main host, connected to TSN0:
 ```
 sudo ip route add 192.168.3.0/24 via 192.168.1.1
+sudo ip route add 192.168.5.0/24 via 192.168.1.1
 ```
 
 On host connected to TSN2:
 ```
 sudo ifconfig enp1s0 192.168.3.100
+sudo ip link add virt0 type dummy
+sudo ifconfig virt0 hw ether C8:D7:4A:4E:47:50
+sudo ifconfig virt0 192.168.5.100
 ```
+## Test procedure
 
+### L3 offload
 Ping interface connected to TSN2 from host or namespace connected to TSN0:
 ```
 ping 192.168.3.100 -c 10
@@ -169,5 +181,74 @@ Routes offloaded to the device are labeled with `offload` in the ip route listin
 # ip route show
 192.168.1.0/24 dev tsn0 proto kernel scope link src 192.168.1.1 offload
 192.168.3.0/24 dev tsn2 proto kernel scope link src 192.168.3.1 offload
-192.168.5.0/24 via 192.168.3.100 dev tsn2 offload
 ```
+
+### Traffic control
+
+To add filter rules for inbound packets you need to create ingress qdisc for test interfaces on board:
+
+```
+tc qdisc add dev tsn0 ingress
+tc qdisc add dev tsn2 ingress
+```
+
+After this you can add filters for these qdiscs. Here are some test cases.
+
+#### u32 filter
+
+To perform drop actions with u32 filter offloaded rule specify it for device as follows:
+
+```
+tc filter add dev tsn2 protocol ip parent ffff: u32 match ip src 192.168.3.0/24 skip_sw action drop
+```
+Following rule will drop all packets from 192.168.3.0/24 subnet, that will come to tsn2 interface. It will lead to ICMP reply packets drop, when you will try to ping 192.168.3.100 from first PC (or without namespace on same PC).
+
+To remove the rule from tc you need to find it pref value with following command:
+```
+root@spider:~# tc filter show dev tsn2 ingress
+filter parent ffff: protocol ip pref 49152 u32 chain 0
+filter parent ffff: protocol ip pref 49152 u32 chain 0 fh 800: ht divisor 1
+filter parent ffff: protocol ip pref 49152 u32 chain 0 fh 800::800 order 2048 key ht 800 bkt 0 terminal flowid ??? skip_sw in_hw
+  match c0a80300/ffffff00 at 12
+        action order 1: gact action drop
+         random type none pass val 0
+         index 1 ref 1 bind 1
+```
+
+And now you can remove the following rule by pref (49152)
+
+```
+tc filter del dev tsn2 ingress pref 49152
+```
+
+Now the list will be empty:
+```
+root@spider:~# tc filter show dev tsn2 ingress
+root@spider:~#
+```
+
+Also you can perform setup of redirect action with mirroring. It can be done with following commands (dst mac fields should be set to coresponding addresses of connected to tsnX host ports):
+```
+tc filter add dev tsn0 protocol ip parent ffff: u32 match ip dst 192.168.5.0/24 skip_sw action skbmod set dmac 48:65:ee:1c:dd:b1 action mirred egress redirect dev tsn2
+tc filter add dev tsn2 protocol ip parent ffff: u32 match ip dst 192.168.1.0/24 skip_sw action skbmod set dmac 34:d0:b8:c1:ca:2b action mirred egress redirect dev tsn0
+```
+
+This will setup two-way mirroring between tsn0 and tsn2 for specified IPv4 subnets. Now you can try to run ping to virtual interface with 192.168.5.100 address from default namespace (or PC#1 with 2PCs setup) and it will work:
+```
+ping 192.168.5.100
+```
+The removal process is the same as for drop action.
+
+#### flower filter
+
+To setup flower filter the workflow is pretty similar as for u32 filter. After ingress qdisc creation you can run following command:
+```
+tc filter add dev tsn0 protocol ip parent ffff: flower skip_sw dst_ip 192.168.3.0/24 action drop
+```
+
+This will drop all packets that are directed to 192.168.3.0/24 subnet through tsn0 interface. You can check that this works by running ping from default port to 192.168.3.100 (without this command it should work):
+```
+ping 192.168.3.100
+```
+
+The removal process is the same as for u32 filter.
