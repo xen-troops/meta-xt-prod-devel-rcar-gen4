@@ -1,4 +1,4 @@
 RENESAS_BSP_URL = " \
     git://github.com/xen-troops/linux.git"
-BRANCH = "rcar-5.1.6.rc3-l3-hw-offload-0.8.2"
-SRCREV = "2d20c48e0493a296dc52a467b4698f5e5b4f5f48"
+BRANCH = "v5.10.41/rcar-5.1.7.rc2-l3-offload"
+SRCREV = "d9150d3add3e3fcae9b35ee5b39f45afea6029d1"
