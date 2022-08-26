@@ -1,6 +1,6 @@
-# meta-xt-rcar-gen4 #
+# meta-xt-rcar-gen4
 
-This repository contains Renesas R-Car Gen4-specific Yocto layer for support R-Switch L3 HW offload and  initial traffic control offload features.
+This repository contains Renesas R-Car Gen4-specific Yocto layer for support R-Switch L3 HW offload and traffic control offload features.
 More information about [L3 Routing offload](https://www.kernel.org/doc/html/latest/networking/switchdev.html#l3-routing-offload) and [traffic control](https://tldp.org/HOWTO/Traffic-Control-HOWTO/) you can find by this links.
 
 
@@ -10,11 +10,11 @@ as Moulin-based project files provide correct entries in local.conf
 
 # Status
 
-This is a release 0.8.3-l3-offload of the L3 development product for the S4 Spider board.
+This is a release 0.8.4-l3-offload of the L3 development product for the S4 Spider board.
 
 This release provides L3 routing offload feature for IPv4 based on S4 R-Switch MFWD. The feature adds hardware configuration to MFWD via FIB notifier in order to offload CPU and use MFWD mechanisms for routing.
 
-Also, initial support of traffic control filters HW offload support was introduced. Now it supports patial HW offload of two TC filters - u32 and flower. For u32 matching by IPv4 fields and several actions can be performed to matched packets: drop, destination MAC mangling with skbmod and packet redirection with mirroring. For flower the only drop action and packet matching by IPv4 addresses are currently supported.
+Also, release contains partial support of traffic control filters HW offload. Now it is implemented for all TC filters - matchall, u32 and flower. The list of supported actions: drop and mirred redirect (dst MAC change for u32 is performed by skbmod, but for matchall and flower - by pedit). For u32 and flower filters matching by all key parameters is supported (exc. IPv6): src/dst MACs, IPv4 addrs, L4 ports, IP keys (ToS, TTL), basic keys (EtherType, Net proto). Matchall filter selects all frames by design.
 
 # Building
 ## Requirements
@@ -37,7 +37,7 @@ reduce possible confuse, we recommend to download only
 `prod-devel-rcar-s4.yaml`:
 
 ```
-# curl -O https://raw.githubusercontent.com/xen-troops/meta-xt-prod-devel-rcar-gen4/spider-0.8.3-l3-offload/prod-devel-rcar-s4.yaml
+# curl -O https://raw.githubusercontent.com/xen-troops/meta-xt-prod-devel-rcar-gen4/spider-0.8.4-l3-offload/prod-devel-rcar-s4.yaml
 ```
 
 ## Building
@@ -125,6 +125,10 @@ setenv bootcmd='run bootcmd_rswitch'
 
 The setup can be tested using 2 PC or on the same PC. In case of the same PC, the interface connected to TSN2 should be moved to custom network namespace. Also virtual interface in this namespace will be needed.
 
+## Host requirements
+
+- Install `iperf3` package: `sudo apt install iperf3`
+
 ## On board:
 
 ```
@@ -137,11 +141,11 @@ echo 1 > /proc/sys/net/ipv4/ip_forward
 ### The same PC
 
 ```
-sudo ip route add 192.168.3.0/24 via 192.168.1.1
-sudo ip route add 192.168.5.0/24 via 192.168.1.1
 sudo ip netns add linuxhint
+```
 
-# Interface, connected to tsn2
+#### Interface, connected to tsn2
+```
 sudo ip link set enp1s0 down
 sudo ip link set enp1s0 netns linuxhint
 sudo ip netns exec linuxhint ifconfig enp1s0 up
@@ -149,6 +153,8 @@ sudo ip netns exec linuxhint ip netns exec linuxhint ifconfig enp1s0 192.168.3.1
 sudo ip netns exec linuxhint ip link add virt0 type dummy
 sudo ip netns exec linuxhint ifconfig virt0 hw ether C8:D7:4A:4E:47:50 # this can be any valid addr
 sudo ip netns exec linuxhint ifconfig virt0 192.168.5.100
+sudo ip route add 192.168.3.0/24 via 192.168.1.1
+sudo ip route add 192.168.5.0/24 via 192.168.1.1
 ```
 
 ### 2 PC
@@ -159,7 +165,7 @@ sudo ip route add 192.168.3.0/24 via 192.168.1.1
 sudo ip route add 192.168.5.0/24 via 192.168.1.1
 ```
 
-On host connected to TSN2:
+#### On host connected to TSN2:
 ```
 sudo ifconfig enp1s0 192.168.3.100
 sudo ip link add virt0 type dummy
@@ -241,14 +247,46 @@ The removal process is the same as for drop action.
 
 #### flower filter
 
-To setup flower filter the workflow is pretty similar as for u32 filter. After ingress qdisc creation you can run following command:
-```
-tc filter add dev tsn0 protocol ip parent ffff: flower skip_sw dst_ip 192.168.3.0/24 action drop
-```
+To setup flower filter the workflow is pretty similar as for u32 filter. Three actions for flower filter are supported: drop, mirred redirect and mirred redirect with dst MAC mangling (with pedit). Filter building prototypes you can find in [tc-flower man page](https://man7.org/linux/man-pages/man8/tc-flower.8.html).
 
-This will drop all packets that are directed to 192.168.3.0/24 subnet through tsn0 interface. You can check that this works by running ping from default port to 192.168.3.100 (without this command it should work):
+Filter examples:
 ```
-ping 192.168.3.100
+tc filter add dev tsn2 protocol ip parent ffff: flower skip_sw dst_ip 192.168.3.0/24 action drop
+tc filter add dev tsn0 protocol ip parent ffff: flower dst_ip 192.168.5.0/24 skip_sw action pedit ex munge eth dst set 48:65:ee:1c:dd:b1 pipe action mirred egress redirect dev tsn2
+tc filter add dev tsn2 protocol ip parent ffff: flower dst_ip 192.168.1.0/24 skip_sw action pedit ex munge eth dst set 34:d0:b8:c1:ca:2b pipe action mirred egress redirect dev tsn0
+tc filter add dev tsn2 protocol ip parent ffff: flower skip_sw ip_ttl 64 action drop
+tc filter add dev tsn2 protocol ip parent ffff: flower skip_sw ip_tos 52 action drop
 ```
 
 The removal process is the same as for u32 filter.
+
+
+#### matchall
+
+By design matchall filter selects all packets, that are available on dedicated qdisc. The set of supported actions is the same with flower filter.
+
+Example for drop action with matchall:
+```
+tc filter add dev tsn2 protocol ip parent ffff: matchall skip_sw action drop
+```
+
+Mirred redirect:
+```
+tc filter add dev tsn2 protocol ip parent ffff: matchall skip_sw action pedit ex munge eth dst set 34:d0:b8:c1:ca:2b pipe action mirred egress redirect dev tsn0
+```
+
+The removal process is the same as for u32 filter.
+
+#### How to generate traffic for testing filter matching
+
+To generate traffic for testing (e.g. with specific ToS key) you can use `iperf3` tool.
+Command examples:
+For server
+```
+iperf3 -s -p 4000 -i 2 #server with 2s interval port 4000
+```
+
+For client side:
+```
+iperf3 -c 192.168.1.100 -p 4000 -t 10 --tos 52
+```
