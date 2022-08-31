@@ -28,10 +28,10 @@ common_data:
       rev: 180241e
     - type: git
       url: "https://github.com/xen-troops/meta-xt-common.git"
-      rev: master
+      rev: 1019eca
     - type: git
       url: "https://github.com/xen-troops/meta-xt-prod-devel-rcar-gen4.git"
-      rev: master
+      rev: spider-0.8.4
   # Common configuration options for all yocto-based domains
   conf: &COMMON_CONF
     - [SSTATE_DIR, "${TOPDIR}/../../../common_data/sstate"]
