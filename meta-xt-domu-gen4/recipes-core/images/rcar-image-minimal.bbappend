@@ -8,3 +8,5 @@ IMAGE_INSTALL += " \
 
 IMAGE_INSTALL += "kernel-module-nvme"
 IMAGE_INSTALL += "kernel-module-nvme-core"
+
+IMAGE_INSTALL += "e2fsprogs"
