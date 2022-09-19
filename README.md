@@ -323,3 +323,55 @@ DHCP. User can provide own IP address by editing
 vmq0 interface is disabled in this release. But it can be enabled back
 by un-commenting corresponding line in `/etc/xen/domu.cfg` file in
 Dom0.
+
+## Ethernet controller configuration for SR-IOV
+
+### Configuring SR-IOV feature of Ethernet controller before attaching it to a DomU
+
+`lspci` should display two Ethernet devices:
+
+```
+root@spider-domd:~# lspci
+00:00.0 PCI bridge: Renesas Technology Corp. Device 0031
+01:00.0 Ethernet controller: Intel Corporation Ethernet Controller 10G X550T (rev 01)
+01:00.1 Ethernet controller: Intel Corporation Ethernet Controller 10G X550T (rev 01)
+```
+
+Bring up controller 01:00.0:
+
+```
+ip addr add 172.16.15.1/24 dev enp1s0f0
+ip link set dev enp1s0f0 up
+```
+
+Each time you want to attach virtual function to a DomU, you need to
+configure Ethernet controller resources and enable SR-IOV. 
+Execute the following command:
+
+```
+# echo 1 > /sys/bus/pci/devices/0000:01:00.0/sriov_numvfs
+```
+
+`lspci` should display three Ethernet devices (two physical functions and
+one virtual function):
+
+```
+root@spider-domd:~# lspci
+00:00.0 PCI bridge: Renesas Technology Corp. Device 0031
+01:00.0 Ethernet controller: Intel Corporation Ethernet Controller 10G X550T (rev 01)
+01:00.1 Ethernet controller: Intel Corporation Ethernet Controller 10G X550T (rev 01)
+02:10.0 Ethernet controller: Intel Corporation X550 Virtual Function
+```
+
+Now you can uncomment PCI configuration entries in `/etc/xen/domu.cfg`:
+
+```
+vpci="ecam"  
+pci=["02:10.0,seize=1"]
+```
+
+Please note you need bring up physical device before attach it to DomU
+
+Restart DomU. You should see a new `enp0s0` (or `eth1`) network device in DomU. This
+is the virtual function of first Ethernet controller (pci device 01:00.0)
+that resides in DomD.
