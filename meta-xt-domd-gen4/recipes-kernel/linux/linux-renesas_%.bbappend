@@ -1,8 +1,8 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 
 RENESAS_BSP_URL = "git://github.com/xen-troops/linux.git"
-BRANCH = "v5.10.41/rcar-5.1.7.rc2-xt"
-SRCREV = "c83a9a0e40a2252589f46695b432de42faf0ce5e"
+BRANCH = "v5.10.41/rcar-5.1.7.rc3-xt"
+SRCREV = "d1e67027b82143bd56cc8a881e11e4d475dcffb9"
 
 SRC_URI_append = "\
     file://defconfig \
