@@ -22,7 +22,7 @@ components:
         rev: 348924c
       - type: git
         url: https://github.com/xen-troops/meta-xt-prod-devel-rcar-gen4.git
-        rev: "spider-0.8.4-l3-offload"
+        rev: "spider-0.8.5-l3-offload"
     builder:
       type: yocto
       conf:
