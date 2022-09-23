@@ -10,11 +10,14 @@ as Moulin-based project files provide correct entries in local.conf
 
 # Status
 
-This is a release 0.8.4-l3-offload of the L3 development product for the S4 Spider board.
+This is a release 0.8.5-l3-offload of the L3 development product for the S4 Spider board.
 
 This release provides L3 routing offload feature for IPv4 based on S4 R-Switch MFWD. The feature adds hardware configuration to MFWD via FIB notifier in order to offload CPU and use MFWD mechanisms for routing.
 
-Also, release contains partial support of traffic control filters HW offload. Now it is implemented for all TC filters - matchall, u32 and flower. The list of supported actions: drop and mirred redirect (dst MAC change for u32 is performed by skbmod, but for matchall and flower - by pedit). For u32 and flower filters matching by all key parameters is supported (exc. IPv6): src/dst MACs, IPv4 addrs, L4 ports, IP keys (ToS, TTL), basic keys (EtherType, Net proto). Matchall filter selects all frames by design.
+Also, release contains partial support of traffic control filters HW offload. Now it is implemented for all TC filters - matchall, u32 and flower.
+The list of supported actions: drop and mirred redirect. Also, some acions are supported during redirect. It is dst MAC change (for u32 is performed by skbmod, for matchall and flower - by pedit) and VLAN ID/ VLAN prio modifying (currently only for flower and matchall filters).
+
+For u32 and flower filters matching by all key parameters is supported: src/dst MACs, IPv4 addrs, IPv6 addrs, L4 ports, IP keys (ToS, TTL), basic keys (EtherType, Net proto). Also, VLAN 802.1Q tags matching (C-Tag in MFWD terminology) is supported for flower. Matchall filter selects all frames by design.
 
 # Building
 ## Requirements
@@ -37,13 +40,12 @@ reduce possible confuse, we recommend to download only
 `prod-devel-rcar-s4.yaml`:
 
 ```
-# curl -O https://raw.githubusercontent.com/xen-troops/meta-xt-prod-devel-rcar-gen4/spider-0.8.4-l3-offload/prod-devel-rcar-s4.yaml
+curl -O https://raw.githubusercontent.com/xen-troops/meta-xt-prod-devel-rcar-gen4/spider-0.8.5-l3-offload/prod-devel-rcar-s4.yaml
 ```
 
 ## Building
 
-Moulin is used to generate Ninja build file: `moulin
-prod-devel-rcar-s4.yaml`.
+Moulin is used to generate Ninja build file: `moulin prod-devel-rcar-s4.yaml`.
 
 ## Creating SD card image
 
@@ -233,6 +235,12 @@ root@spider:~# tc filter show dev tsn2 ingress
 root@spider:~#
 ```
 
+Drop rule for IPv6 rule will look as follows:
+```
+tc filter add dev tsn0 protocol ipv6 parent ffff:0 u32 match ip6 src fe80::1ce0:30ff:fe47:aaaa action drop
+```
+
+
 Also you can perform setup of redirect action with mirroring. It can be done with following commands (dst mac fields should be set to coresponding addresses of connected to tsnX host ports):
 ```
 tc filter add dev tsn0 protocol ip parent ffff: u32 match ip dst 192.168.5.0/24 skip_sw action skbmod set dmac 48:65:ee:1c:dd:b1 action mirred egress redirect dev tsn2
@@ -256,6 +264,10 @@ tc filter add dev tsn0 protocol ip parent ffff: flower dst_ip 192.168.5.0/24 ski
 tc filter add dev tsn2 protocol ip parent ffff: flower dst_ip 192.168.1.0/24 skip_sw action pedit ex munge eth dst set 34:d0:b8:c1:ca:2b pipe action mirred egress redirect dev tsn0
 tc filter add dev tsn2 protocol ip parent ffff: flower skip_sw ip_ttl 64 action drop
 tc filter add dev tsn2 protocol ip parent ffff: flower skip_sw ip_tos 52 action drop
+tc filter add dev tsn0 protocol ipv6 parent ffff: flower skip_sw dst_ip fe80::2c09:aff:fe08:9851 action drop
+tc filter add dev tsn1 parent ffff: protocol 802.1q flower skip_sw vlan_id 10 action drop
+tc filter add dev tsn0 parent ffff:0 protocol ip flower dst_ip 192.168.20.0/24 action vlan modify id 20 pipe action pedit ex munge eth dst set 34:29:8f:75:c6:cc pipe action mirred egress redirect dev tsn1
+
 ```
 
 The removal process is the same as for u32 filter.
