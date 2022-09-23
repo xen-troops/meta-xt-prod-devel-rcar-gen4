@@ -11,7 +11,7 @@ as Moulin-based project files provide correct entries in local.conf
 
 # Status
 
-This is a release 0.8.4 of the Xen-based development product for the
+This is a release 0.8.5 of the Xen-based development product for the
 S4 Spider board.
 
 This release provides the following features:
@@ -39,7 +39,7 @@ The following HW modules were tested and are confirmed to work:
 # External dependencies
 
 At least IPL 0.5.0 is required for normal operation. Release was
-tested with IPL 0.9.0. User is required to flash ARM TF
+tested with IPL 3.6.0. User is required to flash ARM TF
 (bl31-spider.srec) and OP-TEE (tee-spider.srec) provided by the build
 to ensure that Xen and DomD/DomU will work correctly.
 
@@ -64,7 +64,7 @@ reduce possible confuse, we recommend to download only
 `prod-devel-rcar-s4.yaml`:
 
 ```
-# curl -O https://raw.githubusercontent.com/xen-troops/meta-xt-prod-devel-rcar-gen4/spider-0.8.4/prod-devel-rcar-s4.yaml
+# curl -O https://raw.githubusercontent.com/xen-troops/meta-xt-prod-devel-rcar-gen4/spider-0.8.5/prod-devel-rcar-s4.yaml
 ```
 
 ## Building
