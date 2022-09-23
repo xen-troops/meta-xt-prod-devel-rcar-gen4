@@ -311,19 +311,6 @@ Restart DomU. You should see a new `/dev/nvme0n1` device in DomU. This
 is the second namespace attached to a secondary controller of device
 that resides in DomD.
 
-
-## TSN1 pass-through
-
-In this release TSN1 network interface is assigned to DomU. DomU still
-used XEN PV Network for NFS boot, because this is more
-convenient. DomU expects that TSN1 ip address will be assigned using
-DHCP. User can provide own IP address by editing
-`/etc/systemd/network/tsn1.network` file.
-
-vmq0 interface is disabled in this release. But it can be enabled back
-by un-commenting corresponding line in `/etc/xen/domu.cfg` file in
-Dom0.
-
 ## Ethernet controller configuration for SR-IOV
 
 ### Configuring SR-IOV feature of Ethernet controller before attaching it to a DomU
@@ -345,7 +332,7 @@ ip link set dev enp1s0f0 up
 ```
 
 Each time you want to attach virtual function to a DomU, you need to
-configure Ethernet controller resources and enable SR-IOV. 
+configure Ethernet controller resources and enable SR-IOV.
 Execute the following command:
 
 ```
@@ -366,7 +353,7 @@ root@spider-domd:~# lspci
 Now you can uncomment PCI configuration entries in `/etc/xen/domu.cfg`:
 
 ```
-vpci="ecam"  
+vpci="ecam"
 pci=["02:10.0,seize=1"]
 ```
 
@@ -375,3 +362,16 @@ Please note you need bring up physical device before attach it to DomU
 Restart DomU. You should see a new `enp0s0` (or `eth1`) network device in DomU. This
 is the virtual function of first Ethernet controller (pci device 01:00.0)
 that resides in DomD.
+
+## TSN1 pass-through
+
+In this release TSN1 network interface is assigned to DomU. DomU still
+used XEN PV Network for NFS boot, because this is more
+convenient. DomU expects that TSN1 ip address will be assigned using
+DHCP. User can provide own IP address by editing
+`/etc/systemd/network/tsn1.network` file.
+
+vmq0 interface is disabled in this release. But it can be enabled back
+by un-commenting corresponding line in `/etc/xen/domu.cfg` file in
+Dom0.
+
