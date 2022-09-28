@@ -222,8 +222,9 @@
 	iommus = <&ipmmu_hc 32>;
 	iommu-map = <0x000 &ipmmu_hc 32 0x1>,
 		    <0x100 &ipmmu_hc 33 0x1>,
-		    <0x102 &ipmmu_hc 34 0x10>,
-		    <0x280 &ipmmu_hc 35 0x1>;
+		    <0x101 &ipmmu_hc 34 0x1>,
+		    <0x102 &ipmmu_hc 35 0x10>,
+		    <0x280 &ipmmu_hc 36 0x1>;
 
 };
 
