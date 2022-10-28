@@ -25,6 +25,8 @@ This release provides the following features:
    test the feature)
  - R-Switch VMQ: R-Switch virtualization feature
  - R-Switch VMQ TSN: R-Switch TSN pass-through feature
+ - R-Switch L3 routing offload
+ - R-Switch traffic control offload
  - Virtualized OP-TEE support
  - PCIe SR-IOV support
 
@@ -46,7 +48,9 @@ to ensure that Xen and DomD/DomU will work correctly.
 # Documentation
 
 - [Building][]
-- [Features][]
+- [Virtualization][]
+- [TC and L3 offload][]
 
 [Building]: ./doc/building.md
-[Features]: ./doc/features.md
+[Virtualization]: ./doc/virtualization.md
+[TC and L3 offload]: ./doc/tc-and-l3-offload.md
