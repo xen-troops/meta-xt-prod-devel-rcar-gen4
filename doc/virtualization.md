@@ -92,8 +92,22 @@ Virtual function will fail to init in DomD:
 [  317.416835] nvme nvme1: Removing after probe failure status: -19
 ```
 
-This is expected, because secondary controller is being enabled after kernel
-tries to access the new PCI device.
+This is expected, because secondary controller is being enabled after
+kernel tries to access the new PCI device. You can force reattach it
+back. Wait for the mentioned error message and then issue the
+following command:
+
+```
+root@spider-domd:~# echo 0000:01:00.2 > /sys/bus/pci/drivers/nvme/bind
+
+[ 1165.652567] nvme nvme1: pci function 0000:01:00.2
+[ 1165.737307] nvme nvme1: Shutdown timeout set to 10 seconds
+[ 1165.771506] nvme nvme1: 1/0/0 default/read/poll queues
+```
+
+After that, second device `/dev/nvme1n2` will be present in DomD. This
+is a NVMe namespace that will become visible to DomU after we'll enable
+PCI device pass-through in the next steps.
 
 `lspci` should display two NVME devices:
 
@@ -116,6 +130,13 @@ Please note that were we share second device (`01:00.2`) while first one stays i
 Restart DomU. You should see a new `/dev/nvme0n1` device in DomU. This
 is the second namespace attached to a secondary controller of device
 that resides in DomD.
+
+### Known issues
+
+There are known issue with NVMe interrupts. After virtual function is
+enabled, the system stops receiving interrupts for physical
+function. From user perspective this looks like DomD have troubles
+accessing /dev/nvme0n1.
 
 ## Ethernet controller configuration for SR-IOV
 
