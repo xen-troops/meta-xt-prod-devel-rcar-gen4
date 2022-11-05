@@ -38,3 +38,6 @@ python __anonymous () {
         dtb = fname[:-3] + "dtb"
         d.appendVar("KERNEL_DEVICETREE", " renesas/%s"%dtb)
 }
+
+KERNEL_MODULE_PROBECONF += "ixgbevf"
+module_conf_ixgbevf = "blacklist ixgbevf"
