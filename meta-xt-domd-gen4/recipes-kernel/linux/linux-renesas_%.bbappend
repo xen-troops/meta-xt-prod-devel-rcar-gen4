@@ -14,6 +14,7 @@ SRC_URI_append = " \
     file://dmatest.cfg \
     file://gpio.cfg \
     file://l3offload.cfg \
+    file://ixgbe.cfg \
     file://xen-chosen.dtsi;subdir=git/arch/arm64/boot/dts/renesas \
     file://0001-clk-shmobile-Hide-clock-for-scif3-and-hscif0.patch \
     file://0001-PCIe-MSI-support.patch \
@@ -38,3 +39,6 @@ python __anonymous () {
         dtb = fname[:-3] + "dtb"
         d.appendVar("KERNEL_DEVICETREE", " renesas/%s"%dtb)
 }
+
+KERNEL_MODULE_PROBECONF += "ixgbevf"
+module_conf_ixgbevf = "blacklist ixgbevf"
