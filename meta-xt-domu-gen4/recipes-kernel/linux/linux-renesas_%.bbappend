@@ -9,6 +9,7 @@ SRC_URI_append = "\
     file://defconfig \
     file://rswitch.cfg \
     file://dmatest.cfg \
+    file://ixgbevf.cfg \
 "
 
 KERNEL_DEVICETREE_append = " renesas/r8a779f0-spider-domu.dtb"
