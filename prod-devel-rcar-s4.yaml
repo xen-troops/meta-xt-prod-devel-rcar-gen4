@@ -1,5 +1,5 @@
 desc: "Xen-Troops development setup for Renesas RCAR Gen4 hardware"
-min_ver: "0.4"
+min_ver: "0.11"
 
 variables:
   YOCTOS_WORK_DIR: "yocto"
@@ -34,6 +34,13 @@ common_data:
     - type: git
       url: "https://github.com/xen-troops/meta-xt-prod-devel-rcar-gen4.git"
       rev: master
+
+  # Sources to be used in DomD and DomU
+  domd_domu_sources: &DOMD_DOMU_SOURCES
+    - type: git
+      url: https://github.com/renesas-rcar/meta-renesas.git
+      rev: dunfell
+
   # Common configuration options for all yocto-based domains
   conf: &COMMON_CONF
     - [SSTATE_DIR, "${TOPDIR}/../../../common_data/sstate"]
@@ -125,9 +132,7 @@ components:
     build-dir: "%{YOCTOS_WORK_DIR}"
     sources:
       - *COMMON_SOURCES
-      - type: git
-        url: https://github.com/renesas-rcar/meta-renesas.git
-        rev: dunfell
+      - *DOMD_DOMU_SOURCES
       - type: git
         url: git://git.yoctoproject.org/meta-selinux
         rev: 46bcf05
@@ -167,9 +172,7 @@ components:
     build-dir: "%{YOCTOS_WORK_DIR}"
     sources:
       - *COMMON_SOURCES
-      - type: git
-        url: https://github.com/renesas-rcar/meta-renesas.git
-        rev: dunfell
+      - *DOMD_DOMU_SOURCES
     builder:
       type: yocto
       work_dir: "%{DOMU_BUILD_DIR}"
