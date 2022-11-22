@@ -14,6 +14,8 @@ variables:
   SOC_FAMILY: "r8a779f0"
   XT_DOMD_CONFIG_NAME: "domd-spider.cfg"
   XT_DOMU_CONFIG_NAME: "domu-spider.cfg"
+  XT_KERNEL_BRANCH: "v5.10.41/rcar-5.1.7.rc3-xt"
+  XT_KERNEL_REV: "d1e67027b82143bd56cc8a881e11e4d475dcffb9"
 common_data:
   # Sources used by all yocto-based domains
   sources: &COMMON_SOURCES
@@ -137,6 +139,8 @@ components:
         - *DOMD_DOMU_CONF
         - [XT_DOM_NAME, "domd"]
         - [XT_DEVICE_TREES, "%{XT_DOMD_DTB_NAME} %{XT_XEN_DTB_NAME}"]
+        - [XT_KERNEL_BRANCH, "%{XT_KERNEL_BRANCH}"]
+        - [XT_KERNEL_REV, "%{XT_KERNEL_REV}"]
         - [IMAGE_INSTALL_append, " iperf3"]
 
       build_target: rcar-image-minimal
@@ -173,6 +177,8 @@ components:
         - *COMMON_CONF
         - *DOMD_DOMU_CONF
         - [XT_DOM_NAME, "domu"]
+        - [XT_KERNEL_BRANCH, "%{XT_KERNEL_BRANCH}"]
+        - [XT_KERNEL_REV, "%{XT_KERNEL_REV}"]
         - [IMAGE_INSTALL_append, " iperf3 "]
 
       layers:
