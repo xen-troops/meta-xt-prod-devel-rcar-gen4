@@ -3,11 +3,11 @@
 
 1. Ubuntu 18.0+ or any other Linux distribution which is supported by Poky/OE
 2. Development packages for Yocto. Refer to [Yocto
-   manual](https://www.yoctoproject.org/docs/current/mega-manual/mega-manual.html#brief-build-system-packages).
 3. You need `Moulin` installed in your PC. Recommended way is to
    install it for your user only: `pip3 install --user
    git+https://github.com/xen-troops/moulin`. Make sure that your
    `PATH` environment variable includes `${HOME}/.local/bin`.
+   manual](https://docs.yoctoproject.org/brief-yoctoprojectqs/index.html#build-host-packages).
 4. Ninja build system: `sudo apt install ninja-build` on Ubuntu
 
 ## Fetching
