@@ -8,9 +8,56 @@ Also, release contains partial support of traffic control filters HW offload. No
 
 For u32 and flower filters matching by all key parameters is supported: src/dst MACs, IPv4 addrs, IPv6 addrs, L4 ports, IP keys (ToS, TTL), basic keys (EtherType, Net proto). Also, VLAN 802.1Q (incl. 802.ad) tags matching (C-Tag and S-tag in MFWD terminology) is supported for flower. Matchall filter selects all frames by design.
 
+**NOTE**: release implements only TC rules offloading, no changes to rules structures were made. To create your own setup and rules please refer to [TC man page](https://man7.org/linux/man-pages/man8/tc.8.html).
+
+
 **Vitrualization notice:** L3 routing and TC filters/actions offload is supported only for TSNx. By default, TSN1 is passed to DomU. But, if you want to make more complex setup and use offload on all TSNx you can leave TSN1 in DomD by comenting tsn1 line in [this config][].
 
 [this config]: ../meta-xt-prod-devel-rcar-control-gen4/recipes-guests/domu/files/domu-vdevices.cfg
+
+## Traffic control overview
+
+To add filter rules for inbound packets you need to create ingress qdisc for test interfaces on board:
+
+```
+tc qdisc add dev tsn0 ingress
+tc qdisc add dev tsn2 ingress
+```
+
+After this you can add filters for these qdiscs.
+
+Filter can be added or deleted for metioned ingress (inbound) qdiscs. For example, add a following rule to TSN2 ingress qdisc (parent handle ffff: stands for ingress):
+
+```
+tc filter add dev tsn2 protocol ip parent ffff: u32 match ip src 192.168.3.0/24 skip_sw action drop
+```
+
+To check if this rule was added you can list all rules on TSN2 ingress qdisc:
+```
+root@spider:~# tc filter show dev tsn2 ingress
+filter parent ffff: protocol ip pref 49152 u32 chain 0
+filter parent ffff: protocol ip pref 49152 u32 chain 0 fh 800: ht divisor 1
+filter parent ffff: protocol ip pref 49152 u32 chain 0 fh 800::800 order 2048 key ht 800 bkt 0 terminal flowid ??? skip_sw in_hw
+  match c0a80300/ffffff00 at 12
+        action order 1: gact action drop
+         random type none pass val 0
+         index 1 ref 1 bind 1
+```
+
+If you want to remove this rule from ingress qdisc, you need to take its pref value (49152 for mentioned case) and delete it with following command:
+
+```
+tc filter del dev tsn2 ingress pref 49152
+```
+
+Now the list will be empty:
+```
+root@spider:~# tc filter show dev tsn2 ingress
+root@spider:~#
+```
+
+Workflow for all TC filters (u32, flower and matchall) will be the same.
+
 
 # Testing
 
@@ -84,55 +131,22 @@ Routes offloaded to the device are labeled with `offload` in the ip route listin
 
 ### Traffic control
 
-To add filter rules for inbound packets you need to create ingress qdisc for test interfaces on board:
+Here are few possible TC usage examples, please remove all previously setup rules before running new one (the only ingress qdiscs from TC overview section should remain).
+
+#### Drop
+
+You can perform hardware offload for drop rules. TC help to match specific fields in packets (matching field will be offloaded to MFWD and no CPU will not be engaged). For example you need to drop IP packets from IP address 192.168.3.100 and MAC address 34:d0:b8:c1:ca:2b (substitute it with MAC address of desired port) that come to TSN2 port using flower filter. TC rule for this will look as follows:
 
 ```
-tc qdisc add dev tsn0 ingress
-tc qdisc add dev tsn2 ingress
+tc filter add dev tsn2 protocol ip parent ffff: flower skip_sw src_mac 34:29:8f:75:c6:cc src_ip 192.168.3.100 action drop
 ```
 
-After this you can add filters for these qdiscs. Here are some test cases.
-
-#### u32 filter
-
-To perform drop actions with u32 filter offloaded rule specify it for device as follows:
-
-```
-tc filter add dev tsn2 protocol ip parent ffff: u32 match ip src 192.168.3.0/24 skip_sw action drop
-```
-Following rule will drop all packets from 192.168.3.0/24 subnet, that will come to tsn2 interface. It will lead to ICMP reply packets drop, when you will try to ping 192.168.3.100 from first PC (or without namespace on same PC).
-
-To remove the rule from tc you need to find it pref value with following command:
-```
-root@spider:~# tc filter show dev tsn2 ingress
-filter parent ffff: protocol ip pref 49152 u32 chain 0
-filter parent ffff: protocol ip pref 49152 u32 chain 0 fh 800: ht divisor 1
-filter parent ffff: protocol ip pref 49152 u32 chain 0 fh 800::800 order 2048 key ht 800 bkt 0 terminal flowid ??? skip_sw in_hw
-  match c0a80300/ffffff00 at 12
-        action order 1: gact action drop
-         random type none pass val 0
-         index 1 ref 1 bind 1
-```
-
-And now you can remove the following rule by pref (49152)
-
-```
-tc filter del dev tsn2 ingress pref 49152
-```
-
-Now the list will be empty:
-```
-root@spider:~# tc filter show dev tsn2 ingress
-root@spider:~#
-```
-
-Drop rule for IPv6 rule will look as follows:
-```
-tc filter add dev tsn0 protocol ipv6 parent ffff:0 u32 match ip6 src fe80::1ce0:30ff:fe47:aaaa action drop
-```
+You can verify that traffic from PC2 (or network namespace) will not be passed to TSN2 (192.168.3.1).
 
 
-Also you can perform setup of redirect action with mirroring. It can be done with following commands (dst mac fields should be set to coresponding addresses of connected to tsnX host ports):
+#### Mirred redirect
+
+You can establish connection between 2 PC (or namespaces on same PC) via set of TC rules. Here is an example using u32 filter (same action can be done with flower, please refer to tc-flower man). Lets say, that you need to establish IP connection between 192.168.1.0/24 (TSN0 connected subnet) and 192.168.5.0/24 (TSN2 connected subnet, created virt interface). This can be done with following commands on board (dst mac fields should be set to coresponding addresses of connected to tsnX host ports):
 ```
 tc filter add dev tsn0 protocol ip parent ffff: u32 match ip dst 192.168.5.0/24 skip_sw action skbmod set dmac 48:65:ee:1c:dd:b1 action mirred egress redirect dev tsn2
 tc filter add dev tsn2 protocol ip parent ffff: u32 match ip dst 192.168.1.0/24 skip_sw action skbmod set dmac 34:d0:b8:c1:ca:2b action mirred egress redirect dev tsn0
@@ -142,13 +156,17 @@ This will setup two-way mirroring between tsn0 and tsn2 for specified IPv4 subne
 ```
 ping 192.168.5.100
 ```
-The removal process is the same as for drop action.
 
-#### flower filter
+#### Rules examples
 
-To setup flower filter the workflow is pretty similar as for u32 filter. Three actions for flower filter are supported: drop, mirred redirect and mirred redirect with dst MAC mangling (with pedit). Filter building prototypes you can find in [tc-flower man page](https://man7.org/linux/man-pages/man8/tc-flower.8.html).
+u32 filter (please refer to tc-u32 man):
+```
+tc filter add dev tsn0 protocol ipv6 parent ffff: u32 match ip6 src fe80::1ce0:30ff:fe47:aaaa action drop
+tc filter add dev tsn0 protocol ip parent ffff: u32 match ether dst 34:29:8f:75:c6:cc action drop
+tc filter add dev tsn2 protocol ip parent ffff: u32 match ip src 192.168.3.0/24 skip_sw action drop
+```
 
-Filter examples:
+flower filter (to understand the functionality, please refer tc-flower man):
 ```
 tc filter add dev tsn2 protocol ip parent ffff: flower skip_sw dst_ip 192.168.3.0/24 action drop
 tc filter add dev tsn0 protocol ip parent ffff: flower dst_ip 192.168.5.0/24 skip_sw action pedit ex munge eth dst set 48:65:ee:1c:dd:b1 pipe action mirred egress redirect dev tsn2
@@ -163,26 +181,15 @@ tc filter add dev tsn0 parent ffff:0 protocol ip flower dst_ip 192.168.20.0/24 a
 
 ```
 
-The removal process is the same as for u32 filter.
-
-
-#### matchall
-
-By design matchall filter selects all packets, that are available on dedicated qdisc. The set of supported actions is the same with flower filter.
-
-Example for drop action with matchall:
+matchall filter (please refer to tc-matchall man):
 ```
 tc filter add dev tsn2 protocol ip parent ffff: matchall skip_sw action drop
-```
-
-Mirred redirect:
-```
+tc filter add dev tsn2 protocol ip parent ffff: matchall skip_sw action pedit ex munge eth dst set 34:29:8f:75:c6:cc pipe action mirred egress redirect dev tsn1
 tc filter add dev tsn2 protocol ip parent ffff: matchall skip_sw action pedit ex munge eth dst set 34:d0:b8:c1:ca:2b pipe action mirred egress redirect dev tsn0
+
 ```
 
-The removal process is the same as for u32 filter.
-
-#### How to generate traffic for testing filter matching
+### How to generate traffic for testing filter matching
 
 To generate traffic for testing (e.g. with specific ToS key) you can use `iperf3` tool.
 Command examples:
