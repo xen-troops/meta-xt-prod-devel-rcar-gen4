@@ -47,14 +47,6 @@
 	status = "okay";
 };
 
-&ipmmu_rt0 {
-	status = "okay";
-};
-
-&ipmmu_rt1 {
-	status = "okay";
-};
-
 /* Make sure Xen console is enabled. */
 &scif3	{
 	status = "okay";
