@@ -11,7 +11,7 @@ as Moulin-based project files provide correct entries in local.conf
 
 # Status
 
-This is a release 0.8.6 of the Xen-based development product for the
+This is a release 0.8.7 of the Xen-based development product for the
 S4 Spider board.
 
 This release provides the following features:
@@ -36,7 +36,8 @@ The following HW modules were tested and are confirmed to work:
  - IPMMUs
  - R-Switch
  - eMMC
- - PCIe with ITS
+ - PCIe with ITS (but there is a running issue with MSI interrupts
+   that sometimes do not work)
 
 # External dependencies
 

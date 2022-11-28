@@ -3,11 +3,12 @@
 
 1. Ubuntu 18.0+ or any other Linux distribution which is supported by Poky/OE
 2. Development packages for Yocto. Refer to [Yocto
-3. You need `Moulin` installed in your PC. Recommended way is to
-   install it for your user only: `pip3 install --user
-   git+https://github.com/xen-troops/moulin`. Make sure that your
-   `PATH` environment variable includes `${HOME}/.local/bin`.
    manual](https://docs.yoctoproject.org/brief-yoctoprojectqs/index.html#build-host-packages).
+3. You need `Moulin` of version 0.11 or newer installed in your
+   PC. Recommended way is to install it for your user only: `pip3
+   install --user git+https://github.com/xen-troops/moulin`. Make sure
+   that your `PATH` environment variable includes
+   `${HOME}/.local/bin`.
 4. Ninja build system: `sudo apt install ninja-build` on Ubuntu
 
 ## Fetching
@@ -19,7 +20,7 @@ reduce possible confuse, we recommend to download only
 `prod-devel-rcar-s4.yaml`:
 
 ```
-# curl -O https://raw.githubusercontent.com/xen-troops/meta-xt-prod-devel-rcar-gen4/spider-0.8.6/prod-devel-rcar-s4.yaml
+# curl -O https://raw.githubusercontent.com/xen-troops/meta-xt-prod-devel-rcar-gen4/spider-0.8.7/prod-devel-rcar-s4.yaml
 ```
 
 ## Building
@@ -52,6 +53,28 @@ following command line: `moulin prod-devel-rcar-s4.yaml
 Moulin will generate `build.ninja` file. After that run `ninja` to
 build the images. This will take some time and disk space as it builds
 3 separate Yocto images.
+
+## Packing boot artifacts
+
+It is possible to create `.tar.bz` archive with all artifacts that are
+required to boot the system. This does not includes DomD and DomU
+root file systems. Files that are included:
+
+* Dom0 kernel image (`Image`)
+* Dom0 rootfs image (`uInitramfs`)
+* Xen hypervisor image (`xen-spider.uImage`)
+* Xen policy (`xenpolicy-spider`)
+* Device tree (`r8a779f0-spider-xen.dtb`)
+* ARM TF BL31 (`bl31-spider.srec`)
+* OP-TEE (`tee-spider.srec`)
+
+To build this archive, you can use target `boot_artifacts` for Ninja:
+
+```
+# ninja boot_artifacts
+```
+
+Archive can be found in `artifacts` folder.
 
 ## Creating SD card image
 
