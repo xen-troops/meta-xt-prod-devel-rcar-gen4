@@ -89,7 +89,8 @@ sudo ip netns add linuxhint
 sudo ip link set enp1s0 down
 sudo ip link set enp1s0 netns linuxhint
 sudo ip netns exec linuxhint ifconfig enp1s0 up
-sudo ip netns exec linuxhint ip netns exec linuxhint ifconfig enp1s0 192.168.3.100
+sudo ip netns exec linuxhint ifconfig enp1s0 192.168.3.100
+sudo ip netns exec linuxhint ip route add 192.168.1.0/24 via 192.168.3.1
 sudo ip netns exec linuxhint ip link add virt0 type dummy
 sudo ip netns exec linuxhint ifconfig virt0 hw ether C8:D7:4A:4E:47:50 # this can be any valid addr
 sudo ip netns exec linuxhint ifconfig virt0 192.168.5.100
@@ -108,6 +109,7 @@ sudo ip route add 192.168.5.0/24 via 192.168.1.2
 #### On host connected to TSN2:
 ```
 sudo ifconfig enp1s0 192.168.3.100
+sudo ip route add 192.168.1.0/24 via 192.168.3.1
 sudo ip link add virt0 type dummy
 sudo ifconfig virt0 hw ether C8:D7:4A:4E:47:50
 sudo ifconfig virt0 192.168.5.100
