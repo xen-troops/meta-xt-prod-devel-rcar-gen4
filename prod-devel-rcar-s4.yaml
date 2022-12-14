@@ -33,7 +33,7 @@ common_data:
       rev: master
     - type: git
       url: "https://github.com/xen-troops/meta-xt-prod-devel-rcar-gen4.git"
-      rev: master
+      rev: spider-0.8.8-demo
 
   # Sources to be used in DomD and DomU
   domd_domu_sources: &DOMD_DOMU_SOURCES
@@ -148,6 +148,7 @@ components:
         - [XT_KERNEL_BRANCH, "%{XT_KERNEL_BRANCH}"]
         - [XT_KERNEL_REV, "%{XT_KERNEL_REV}"]
         - [IMAGE_INSTALL_append, " iperf3"]
+        - [IMAGE_INSTALL_append, " snort"]
 
       build_target: rcar-image-minimal
       layers:
