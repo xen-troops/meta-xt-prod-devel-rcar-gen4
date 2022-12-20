@@ -1,7 +1,7 @@
-From 88462ad413f47dbe66b8c45c0edfe8e206330f61 Mon Sep 17 00:00:00 2001
+From 4f68709ffd64c14ac960670aa2891b34a0ea026c Mon Sep 17 00:00:00 2001
 From: Volodymyr Babchuk <volodymyr_babchuk@epam.com>
-Date: Wed, 25 May 2022 20:18:06 +0300
-Subject: [PATCH 4/4] [HACK] pcie: renesas; emulate reading from ECAM under Xen
+Date: Fri, 16 Dec 2022 02:15:48 +0200
+Subject: [PATCH 5/5] [HACK] pcie: renesas; emulate reading from ECAM under Xen
 
 If kernel is running as Xen guest, hypervisor will emulate ECAM
 spaces for us. Thus, we need to replace child_ops with ops
@@ -9,25 +9,26 @@ that access ECAM address space.
 
 Signed-off-by: Volodymyr Babchuk <volodymyr_babchuk@epam.com>
 ---
- drivers/pci/controller/dwc/pcie-renesas.c | 27 +++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ drivers/pci/controller/dwc/pcie-renesas.c | 28 +++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
 diff --git a/drivers/pci/controller/dwc/pcie-renesas.c b/drivers/pci/controller/dwc/pcie-renesas.c
-index dda55696627f..d3f7d87e0c26 100644
+index 12bc8b5cf559..c2ea20fde7b9 100644
 --- a/drivers/pci/controller/dwc/pcie-renesas.c
 +++ b/drivers/pci/controller/dwc/pcie-renesas.c
-@@ -21,6 +21,7 @@
- #include <linux/platform_device.h>
+@@ -22,6 +22,7 @@
  #include <linux/pm_runtime.h>
  #include <linux/reset.h>
+ #include <linux/gpio/consumer.h>
 +#include <xen/xen.h>
  
  #include "../../pci.h"
  #include "pcie-designware.h"
-@@ -151,12 +152,38 @@ static const struct dw_pcie_ops dw_pcie_ops = {
+@@ -210,12 +211,39 @@ static const struct dw_pcie_ops dw_pcie_ops = {
  	.link_up = renesas_pcie_link_up,
  };
  
++
 +void __iomem *renesas_xen_map_bus(struct pci_bus *bus, unsigned int devfn,
 +			       int where)
 +{
@@ -64,5 +65,5 @@ index dda55696627f..d3f7d87e0c26 100644
  
  	dw_pcie_dbi_ro_wr_en(pci);
 -- 
-2.36.1
+2.38.1
 

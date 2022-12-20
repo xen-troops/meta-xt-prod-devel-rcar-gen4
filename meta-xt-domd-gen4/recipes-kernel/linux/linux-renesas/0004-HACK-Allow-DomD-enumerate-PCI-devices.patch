@@ -1,7 +1,7 @@
-From f5c0c6cb71bbc2bc21d10cf03e8fb1183e526f33 Mon Sep 17 00:00:00 2001
+From 19c66a954cd9a0d8eabfb66b9dd02483d417cfeb Mon Sep 17 00:00:00 2001
 From: Oleksandr Andrushchenko <oleksandr_andrushchenko@epam.com>
 Date: Tue, 9 Nov 2021 15:25:44 +0200
-Subject: [PATCH 3/4] HACK: Allow DomD enumerate PCI devices
+Subject: [PATCH 4/5] HACK: Allow DomD enumerate PCI devices
 
 Signed-off-by: Oleksandr Andrushchenko <oleksandr_andrushchenko@epam.com>
 ---
@@ -24,5 +24,5 @@ index 2c890f4f2cbc..5fbb8f40dc04 100644
  	return bus_register_notifier(&pci_bus_type, &device_nb);
  }
 -- 
-2.36.1
+2.38.1
 
