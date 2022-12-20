@@ -1,4 +1,4 @@
-From 3f30700cce67d686d74b8db65e5898cd8d53d941 Mon Sep 17 00:00:00 2001
+From 07844f3b5e5c293b11a2c93b3c027be518073efb Mon Sep 17 00:00:00 2001
 From: Volodymyr Babchuk <volodymyr_babchuk@epam.com>
 Date: Thu, 21 Apr 2022 16:49:53 +0300
 Subject: [PATCH] plat-rcar_gen4: extend memory available to OP-TEE
@@ -13,7 +13,7 @@ Signed-off-by: Volodymyr Babchuk <volodymyr_babchuk@epam.com>
  1 file changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/core/arch/arm/plat-rcar_gen4/platform_config.h b/core/arch/arm/plat-rcar_gen4/platform_config.h
-index 76da2172..22e98bbe 100644
+index 58530b0c..8103e4a5 100644
 --- a/core/arch/arm/plat-rcar_gen4/platform_config.h
 +++ b/core/arch/arm/plat-rcar_gen4/platform_config.h
 @@ -50,7 +50,7 @@
@@ -50,7 +50,7 @@ index 76da2172..22e98bbe 100644
 +#define NONCACHE_WORK_BASE	(0x47C00000U)	/* Non Cache Area address */
  #define NONCACHE_WORK_SIZE	(0x00100000U)	/* Non Cache Area Size */
  
- #define LIFEC_BASE		(0xE6110000U)	/* Life Cycle address	*/
+ #define ICU_FW_SHMEM_BASE	(0x41C00000U)	/* ICU FW Share Memory address */
 -- 
-2.35.1
+2.38.1
 
