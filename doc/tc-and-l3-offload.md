@@ -2,7 +2,7 @@
 
 ## Features
 
-This release provides L3 routing offload feature for IPv4 based on S4 R-Switch MFWD. The feature adds hardware configuration to MFWD via FIB notifier in order to offload CPU and use MFWD mechanisms for routing.
+This release provides L3 routing offload feature for HW and VLAN devices for IPv4 based on S4 R-Switch MFWD. The feature adds hardware configuration to MFWD via FIB notifier in order to offload CPU and use MFWD mechanisms for routing.
 
 Also, release contains partial support of traffic control filters HW offload. Now it is implemented for all TC filters - matchall, u32 and flower. The list of supported actions: drop and mirred redirect. Also, some acions are supported during redirect. It is dst MAC change (for u32 is performed by skbmod, for matchall and flower - by pedit) and VLAN ID / VLAN prio modifying for all filters.
 
@@ -130,6 +130,38 @@ Routes offloaded to the device are labeled with `offload` in the ip route listin
 192.168.1.0/24 dev tsn0 proto kernel scope link src 192.168.1.2 offload
 192.168.3.0/24 dev tsn2 proto kernel scope link src 192.168.3.1 offload
 ```
+
+### VLAN L3 offload
+The procedure is the same as in testing regular L3 offload but done to VLAN devices that have the same VLAN id.
+Example command for creating VLAN devices setup for testing
+
+#### BOARD
+```
+ifconfig tsn1 up 192.168.2.1
+ip link add link tsn0 name tsn0.10 type vlan id 10
+ifconfig tsn0.10 up 192.168.10.1
+ip link add link tsn1 name tsn1.10 type vlan id 10
+ifconfig tsn1.10 up 192.168.21.1
+```
+#### HOST TSN0 namespace or TSN0 connected PC (in case of 2 PC setup)
+```
+ip link add link eth-tsn0 name eth-tsn0.10 type vlan id 10
+ifconfig eth-tsn0.10 up 192.168.10.100
+sudo ip route add 192.168.21.0/24 via 192.168.10.1
+```
+#### HOST TSN1 namespace or TSN1 connected PC (in case of 2 PC setup)
+```
+ip link add link eth-tsn1 name eth-tsn1.10 type vlan id 10
+ifconfig eth-tsn1.10 up 192.168.21.101
+ip route add 192.168.10.0/24 via 192.168.21.1
+```
+Ensure, that HW routing is used via checking counters on R-Switch interfaces or using `tcpdump` tool.
+Routes offloaded to the device are labeled with `offload` in the ip route listing:
+```
+192.168.10.0/24 dev tsn0.10 proto kernel scope link src 192.168.10.1 offload
+192.168.21.0/24 dev tsn1.10 proto kernel scope link src 192.168.21.1 offload
+```
+
 
 ### Traffic control
 
