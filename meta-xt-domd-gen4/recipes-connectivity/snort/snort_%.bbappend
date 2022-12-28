@@ -13,6 +13,7 @@ do_install_append() {
     install -m 0644 ${WORKDIR}/snort-tsn0.service ${D}${systemd_unitdir}/system/
     install -m 0644 ${WORKDIR}/snort-tsn1.service ${D}${systemd_unitdir}/system/
     install -m 0644 ${WORKDIR}/snort-tsn2.service ${D}${systemd_unitdir}/system/
+    echo "config daq: rswitch_offload" >> ${D}/etc/snort/snort.conf
 }
 
 
