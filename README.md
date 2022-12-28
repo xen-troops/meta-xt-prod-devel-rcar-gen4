@@ -11,34 +11,8 @@ as Moulin-based project files provide correct entries in local.conf
 
 # Status
 
-This is a release 0.8.8 of the Xen-based development product for the
-S4 Spider board.
-
-This release provides the following features:
-
- - Xen build compatible with S4 SoC
- - Thin Dom0
- - Driver domain (DomD), which has access to all available hardware
- - Optional generic domain (DomU)
- - Support for OP-TEE in virtualization mode
- - ICCOM partitioning demo (proprietary components are required to
-   test the feature)
- - R-Switch VMQ: R-Switch virtualization feature
- - R-Switch VMQ TSN: R-Switch TSN pass-through feature
- - R-Switch L3 routing offload (including VLAN routes)
- - R-Switch traffic control offload
- - Virtualized OP-TEE support
- - PCIe SR-IOV support
-
-The following HW modules were tested and are confirmed to work:
-
- - Serial console (HSCIF)
- - IPMMUs
- - R-Switch
- - eMMC
- - PCIe with ITS (but there is a running issue with MSI interrupts
-   that sometimes do not work)
-
+This is a demo setup with offloaded IPS/IDS based on 0.8.8 release of the Xen-based
+development product for the S4 Spider board.
 # External dependencies
 
 At least IPL 0.5.0 is required for normal operation. Release was
@@ -51,7 +25,9 @@ to ensure that Xen and DomD/DomU will work correctly.
 - [Building][]
 - [Virtualization][]
 - [TC and L3 offload][]
+- [IPD/IDS][]
 
 [Building]: ./doc/building.md
 [Virtualization]: ./doc/virtualization.md
 [TC and L3 offload]: ./doc/tc-and-l3-offload.md
+[IPD/IDS]: ./doc/ips-ids.md
