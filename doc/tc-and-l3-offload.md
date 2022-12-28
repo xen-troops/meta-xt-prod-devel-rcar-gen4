@@ -11,8 +11,6 @@ For u32 and flower filters matching by all key parameters is supported: src/dst 
 **NOTE**: release implements only TC rules offloading, no changes to rules structures were made. To create your own setup and rules please refer to [TC man page](https://man7.org/linux/man-pages/man8/tc.8.html).
 
 
-**Vitrualization notice:** L3 routing and TC filters/actions offload is supported only for TSNx. By default, TSN1 is passed to DomU. But, if you want to make more complex setup and use offload on all TSNx you can leave TSN1 in DomD by comenting tsn1 line in [this config][].
-
 [this config]: ../meta-xt-prod-devel-rcar-control-gen4/recipes-guests/domu/files/domu-vdevices.cfg
 
 ## Traffic control overview
