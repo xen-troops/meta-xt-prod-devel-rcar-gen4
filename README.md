@@ -55,3 +55,4 @@ to ensure that Xen and DomD/DomU will work correctly.
 [Building]: ./doc/building.md
 [Virtualization]: ./doc/virtualization.md
 [TC and L3 offload]: ./doc/tc-and-l3-offload.md
+[IPD/IDS]: ./doc/ips-ids.md
