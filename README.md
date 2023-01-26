@@ -11,7 +11,7 @@ as Moulin-based project files provide correct entries in local.conf
 
 # Status
 
-This is a release 0.8.8 of the Xen-based development product for the
+This is a release 0.8.9 of the Xen-based development product for the
 S4 Spider board.
 
 This release provides the following features:
@@ -26,6 +26,7 @@ This release provides the following features:
  - R-Switch VMQ: R-Switch virtualization feature
  - R-Switch VMQ TSN: R-Switch TSN pass-through feature
  - R-Switch L3 routing offload (including VLAN routes)
+ - R-Switch offloaded IPS/IDS Snort support
  - R-Switch traffic control offload
  - Virtualized OP-TEE support
  - PCIe SR-IOV support
