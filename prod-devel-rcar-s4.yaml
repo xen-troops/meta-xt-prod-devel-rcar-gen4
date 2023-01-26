@@ -15,7 +15,7 @@ variables:
   XT_DOMD_CONFIG_NAME: "domd-spider.cfg"
   XT_DOMU_CONFIG_NAME: "domu-spider.cfg"
   XT_KERNEL_BRANCH: "v5.10.41/rcar-5.1.7.rc6-xt"
-  XT_KERNEL_REV: "${AUTOREV}"
+  XT_KERNEL_REV: "2d602dab92cbb696d93e21d165539eee490c3b01"
 common_data:
   # Sources used by all yocto-based domains
   sources: &COMMON_SOURCES
@@ -30,16 +30,16 @@ common_data:
       rev: 180241e
     - type: git
       url: "https://github.com/xen-troops/meta-xt-common.git"
-      rev: master
+      rev: 273650379b2785465820ac9f61c6340d1cd86cac
     - type: git
       url: "https://github.com/xen-troops/meta-xt-prod-devel-rcar-gen4.git"
-      rev: master
+      rev: spider-0.8.9
 
   # Sources to be used in DomD and DomU
   domd_domu_sources: &DOMD_DOMU_SOURCES
     - type: git
       url: https://github.com/renesas-rcar/meta-renesas.git
-      rev: dunfell
+      rev: c5b39adbabdb8fd51517cf37190552b8fb57d062
 
   # Common configuration options for all yocto-based domains
   conf: &COMMON_CONF
