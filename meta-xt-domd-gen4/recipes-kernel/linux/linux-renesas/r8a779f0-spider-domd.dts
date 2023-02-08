@@ -122,3 +122,8 @@
 &ipmmu_hc {
 	status = "disabled";
 };
+
+/* Force enable UFS */
+&ufs {
+        status = "okay";
+};

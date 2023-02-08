@@ -227,6 +227,12 @@
 	iommu-map-mask = <0xff00>;
 };
 
+&ufs {
+	status = "okay";
+        iommus = <&ipmmu_hc 15>;
+	xen,passthrough;
+};
+
 &dmac0			{ xen,passthrough; };
 &dmac1			{ xen,passthrough; };
 &rt_dmac0		{ xen,passthrough; };
