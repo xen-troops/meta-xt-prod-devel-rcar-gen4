@@ -149,6 +149,7 @@ components:
         - [XT_KERNEL_REV, "%{XT_KERNEL_REV}"]
         - [IMAGE_INSTALL_append, " iperf3"]
         - [IMAGE_INSTALL_append, " snort"]
+        - [EXTRA_IMAGEDEPENDS_append, " boot-script"]
 
       build_target: rcar-image-minimal
       layers:
@@ -176,6 +177,8 @@ components:
         - "tmp/deploy/images/%{MACHINE}/xen-%{MACHINE}.uImage"
         - "tmp/deploy/images/%{MACHINE}/xenpolicy-%{MACHINE}"
         - "tmp/deploy/images/%{MACHINE}/r8a779f0-%{MACHINE}-xen.dtb"
+        - "tmp/deploy/images/%{MACHINE}/boot-tftp.uImage"
+        - "tmp/deploy/images/%{MACHINE}/boot-emmc.uImage"
   domu:
     build-dir: "%{YOCTOS_WORK_DIR}"
     sources:
@@ -218,6 +221,8 @@ components:
         - "%{YOCTOS_WORK_DIR}/%{DOMD_BUILD_DIR}/tmp/deploy/images/%{MACHINE}/xen-%{MACHINE}.uImage"
         - "%{YOCTOS_WORK_DIR}/%{DOMD_BUILD_DIR}/tmp/deploy/images/%{MACHINE}/xenpolicy-%{MACHINE}"
         - "%{YOCTOS_WORK_DIR}/%{DOMD_BUILD_DIR}/tmp/deploy/images/%{MACHINE}/r8a779f0-%{MACHINE}-xen.dtb"
+        - "%{YOCTOS_WORK_DIR}/%{DOMD_BUILD_DIR}/tmp/deploy/images/%{MACHINE}/boot-emmc.uImage"
+        - "%{YOCTOS_WORK_DIR}/%{DOMD_BUILD_DIR}/tmp/deploy/images/%{MACHINE}/boot-tftp.uImage"
 
 images:
   full:
@@ -234,6 +239,7 @@ images:
           "xen": "%{YOCTOS_WORK_DIR}/build-domd/tmp/deploy/images/%{MACHINE}/xen-%{MACHINE}.uImage"
           "xenpolicy": "%{YOCTOS_WORK_DIR}/build-domd/tmp/deploy/images/%{MACHINE}/xenpolicy-%{MACHINE}"
           "xen.dtb": "%{YOCTOS_WORK_DIR}/build-domd/tmp/deploy/images/%{MACHINE}/%{XT_XEN_DTB_NAME}"
+          "boot-emmc.uImage": "%{YOCTOS_WORK_DIR}/build-domd/tmp/deploy/images/%{MACHINE}/boot-emmc.uImage"
       domd_rootfs:
         gpt_type: B921B045-1DF0-41C3-AF44-4C6F280D3FAE # Linux aarch64 root
         type: raw_image

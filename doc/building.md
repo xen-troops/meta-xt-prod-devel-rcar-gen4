@@ -98,7 +98,7 @@ If you want to write image directly to a SD card (e.g. without
 creating `full.img` file), you will need to use manual mode, which is
 described in the next subsection.
 
-### Manually, using `rouge`
+### <a name="writing_emmc"></a>Manually, using `rouge`
 
 Image file can be created with `rouge` tool. This is a companion
 application for `moulin`.
@@ -143,6 +143,40 @@ Please make sure 'bootargs' variable is unset while running with Xen:
 ```
 unset bootargs
 ```
+
+### Booting from eMMC using boot script
+
+First, you need to write generated `full.img` into eMMC. You can't do
+this if you are booting via eMMC, so to write `full.img` you need to
+boot TFTP/NFS first. Please see the next section on how to do
+this. How to write `full.img` to eMMC is described in the end of [this
+section](#writing_emmc).
+
+Generated eMMC image contains the boot script for U-Boot, so to boot
+via eMMC all you need is to set the following variable:
+
+```
+setenv bootcmd 'ext2load mmc 0:1 0x83000000 boot-emmc.uImage; source 0x83000000'
+```
+
+### Booting via TFTP/NFS using boot script
+
+TFTP/NFS is done via `boot-tftp.uImage` boot script that can be found
+in DomD deploy directory. Put this file into your TFTP server
+directory and configure the following variables:
+
+```
+editenv ipaddr # Set your board IP address there
+editenv serveraddr # Set your boot server IP address there
+editenv nfs_domd_dir # (Optinal) Set NFS root directory for DomD
+editenv nfs_domu_dir # (Optinal) Set NFS root directory for DomU
+setenv bootcmd 'tftp 0x83000000 boot-tftp.uImage; source 0x83000000;'
+```
+
+### Manual way of booting via hand-written commands
+
+This is an older approach which provides more flexibility (especially
+when booting via network), but requires more actions.
 
 It is possible to run the build from TFTP+NFS and eMMC. With NFS boot
 is is possible to configure board IP, server IP and NFS path for DomD
