@@ -1,8 +1,13 @@
+PV = "2.9.20"
+SRC_URI[md5sum] = ""
+SRC_URI[sha256sum] = "29400e13f53b1831e0b8b10ec1224a1cbaa6dc1533a5322a20dd80bb84b4981c"
 
+SRC_URI_remove = "file://configure.in-disable-tirpc-checking-for-fedora.patch"
 
 SRC_URI += " file://snort-tsn0.service \
     file://snort-tsn1.service \
     file://snort-tsn2.service \
+    file://configure.in-disable-tirpc-checking-for-fedora-snort-20.patch \
 "
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
