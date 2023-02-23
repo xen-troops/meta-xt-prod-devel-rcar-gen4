@@ -20,7 +20,7 @@ reduce possible confuse, we recommend to download only
 `prod-devel-rcar-s4.yaml`:
 
 ```
-# curl -O https://raw.githubusercontent.com/xen-troops/meta-xt-prod-devel-rcar-gen4/spider-0.8.9/prod-devel-rcar-s4.yaml
+# curl -O https://raw.githubusercontent.com/xen-troops/meta-xt-prod-devel-rcar-gen4/spider-1.0/prod-devel-rcar-s4.yaml
 ```
 
 ## Building

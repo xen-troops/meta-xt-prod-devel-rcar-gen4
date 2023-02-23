@@ -162,6 +162,23 @@ Routes offloaded to the device are labeled with `offload` in the ip route listin
 192.168.21.0/24 dev tsn1.10 proto kernel scope link src 192.168.21.1 offload
 ```
 
+#### Runtime disabling of L3 offload
+For testing purposes, L3 offload can be disabled and enabled in runtime. By default, L3 offload is enabled,
+but in case of needing to disable it write '0' to appropriate sysfs file. To enable L3 offload again write
+'1' to the same file:
+```
+# ip route
+192.168.1.0/24 dev tsn0 proto kernel scope link src 192.168.1.2 offload
+192.168.3.0/24 dev tsn2 proto kernel scope link src 192.168.3.1 offload
+# echo 0 > /sys/devices/platform/soc/e68c0000.ethernet/l3_offload
+# ip route
+192.168.1.0/24 dev tsn0 proto kernel scope link src 192.168.1.2
+192.168.3.0/24 dev tsn2 proto kernel scope link src 192.168.3.1
+# echo 1 > /sys/devices/platform/soc/e68c0000.ethernet/l3_offload
+# ip route
+192.168.1.0/24 dev tsn0 proto kernel scope link src 192.168.1.2 offload
+192.168.3.0/24 dev tsn2 proto kernel scope link src 192.168.3.1 offload
+```
 
 ### Traffic control
 
