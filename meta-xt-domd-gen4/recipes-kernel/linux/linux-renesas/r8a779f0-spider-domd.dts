@@ -127,3 +127,8 @@
 &ufs {
         status = "okay";
 };
+
+/delete-node/&pciec0;
+/delete-node/&pciec0_ep;
+/delete-node/&pciec1;
+/delete-node/&pciec1_ep;
