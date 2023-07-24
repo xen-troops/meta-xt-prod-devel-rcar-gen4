@@ -1,4 +1,4 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 
 # Enable virtualization support
 EXTRA_OEMAKE += "CFG_VIRTUALIZATION=y \
@@ -8,7 +8,7 @@ EXTRA_OEMAKE += "CFG_VIRTUALIZATION=y \
 		 CFG_CRYPT_HW_CRYPTOENGINE=n \
 "
 
-SRC_URI_append = " \
+SRC_URI:append = " \
     file://0001-plat-rcar_gen4-extend-memory-available-to-OP-TEE.patch \
 "
 
@@ -25,5 +25,5 @@ do_install () {
     done
 }
 
-INSANE_SKIP_${PN}-dev = "staticdev"
+INSANE_SKIP:${PN}-dev = "staticdev"
 INHIBIT_PACKAGE_STRIP = "1"

@@ -1,14 +1,14 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
 RENESAS_BSP_URL = "git://github.com/xen-troops/linux.git"
 BRANCH = "${XT_KERNEL_BRANCH}"
 SRCREV = "${XT_KERNEL_REV}"
 
-SRC_URI_append = "\
+SRC_URI:append = "\
     file://defconfig \
 "
 
-SRC_URI_append = " \
+SRC_URI:append = " \
     file://r8a779f0.cfg \
     file://rswitch.cfg \
     file://dmatest.cfg \

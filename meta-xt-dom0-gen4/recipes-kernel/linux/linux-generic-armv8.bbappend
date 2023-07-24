@@ -1,4 +1,4 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
 BRANCH = "v5.10.41/rcar-5.1.7.rc5"
 SRCREV = "${AUTOREV}"

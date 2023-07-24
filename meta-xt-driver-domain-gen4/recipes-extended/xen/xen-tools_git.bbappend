@@ -1,7 +1,7 @@
-PACKAGECONFIG_append = " \
+PACKAGECONFIG:append = " \
     xsm \
 "
 
-FILES_${PN}-flask = " \
+FILES:${PN}-flask = " \
     /boot/xenpolicy-${XEN_REL}* \
 "
