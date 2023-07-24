@@ -1,4 +1,4 @@
-IMAGE_INSTALL_append = " \
+IMAGE_INSTALL:append = " \
     xen \
     xen-tools-devd \
     xen-tools-scripts-network \

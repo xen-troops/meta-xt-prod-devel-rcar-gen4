@@ -53,7 +53,7 @@ common_data:
     - [SERIAL_CONSOLES, "115200;hvc0"]
 
     # Remove features that we are not using
-    - [DISTRO_FEATURES_remove, "x11 gtk gobject-introspection-data wifi nfc
+    - [DISTRO_FEATURES:remove, "x11 gtk gobject-introspection-data wifi nfc
             bluetooth irda zeroconf 3g sysvinit acl alsa argp pcmcia usbgadget
             usbhost opengl ptest multiarch wayland vulkan sysvinit"]
   # Conf options for domain that are built used renesas layer
@@ -62,23 +62,23 @@ common_data:
     - [SOC_FAMILY, "%{SOC_FAMILY}"]
 
     # Add systemd configuration
-    - [DISTRO_FEATURES_append, " systemd"]
+    - [DISTRO_FEATURES:append, " systemd"]
     - [VIRTUAL-RUNTIME_init_manager, "systemd"]
 
     # add the static lib to SDK toolchain
-    - [SDKIMAGE_FEATURES_append, " staticdev-pkgs"]
+    - [SDKIMAGE_FEATURES:append, " staticdev-pkgs"]
 
     # Add for gstreamer plugins ugly
     - [LICENSE_FLAGS_WHITELIST, "commercial"]
 
     # Add Capacity Aware migration Strategy (CAS)
-    - [MACHINE_FEATURES_append, " cas"]
+    - [MACHINE_FEATURES:append, " cas"]
 
     # Remove ptest to reduce the build time
-    - [DISTRO_FEATURES_remove, "ptest"]
+    - [DISTRO_FEATURES:remove, "ptest"]
 
     # Generate ext4 image files
-    - [IMAGE_FSTYPES_append, " ext4"]
+    - [IMAGE_FSTYPES:append, " ext4"]
 
 components:
   dom0:
@@ -100,14 +100,14 @@ components:
         - [XT_GUEST_INSTALL, "%{XT_GENERIC_DOMU_TAG} domd"]
 
         # Disable HWDB which quite huge (around 15MB) and is not required at all
-        - [BAD_RECOMMENDATIONS_append, " udev-hwdb"]
+        - [BAD_RECOMMENDATIONS:append, " udev-hwdb"]
 
         # Enable systemd on dom0
-        - [DISTRO_FEATURES_append, " systemd"]
+        - [DISTRO_FEATURES:append, " systemd"]
         - [VIRTUAL-RUNTIME_init_manager, "systemd"]
 
         # Do not install kernel image to rootfs to decrease initrd size
-        - ["RDEPENDS_${KERNEL_PACKAGE_NAME}-base", ""]
+        - ["RDEPENDS:${KERNEL_PACKAGE_NAME}-base", ""]
 
       layers:
         - "../meta-virtualization"
@@ -147,10 +147,10 @@ components:
         - [XT_DEVICE_TREES, "%{XT_DOMD_DTB_NAME} %{XT_XEN_DTB_NAME}"]
         - [XT_KERNEL_BRANCH, "%{XT_KERNEL_BRANCH}"]
         - [XT_KERNEL_REV, "%{XT_KERNEL_REV}"]
-        - [IMAGE_INSTALL_append, " iperf3"]
-        - [IMAGE_INSTALL_append, " smcroute"]
-        - [IMAGE_INSTALL_append, " snort"]
-        - [EXTRA_IMAGEDEPENDS_append, " boot-script"]
+        - [IMAGE_INSTALL:append, " iperf3"]
+        - [IMAGE_INSTALL:append, " smcroute"]
+        - [IMAGE_INSTALL:append, " snort"]
+        - [EXTRA_IMAGEDEPENDS:append, " boot-script"]
 
       build_target: rcar-image-minimal
       layers:
@@ -194,7 +194,7 @@ components:
         - [XT_DOM_NAME, "domu"]
         - [XT_KERNEL_BRANCH, "%{XT_KERNEL_BRANCH}"]
         - [XT_KERNEL_REV, "%{XT_KERNEL_REV}"]
-        - [IMAGE_INSTALL_append, " iperf3 "]
+        - [IMAGE_INSTALL:append, " iperf3 "]
 
       layers:
         - "../meta-openembedded/meta-oe"

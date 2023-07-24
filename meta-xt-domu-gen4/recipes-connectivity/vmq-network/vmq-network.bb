@@ -11,7 +11,7 @@ SRC_URI = " \
 
 S = "${WORKDIR}"
 
-FILES_${PN} = " \
+FILES:${PN} = " \
     ${sysconfdir}/systemd/network/vmq0.network \
     ${sysconfdir}/systemd/network/tsn1.network \
 "
