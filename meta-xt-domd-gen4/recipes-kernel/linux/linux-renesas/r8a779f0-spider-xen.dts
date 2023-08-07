@@ -256,7 +256,8 @@
 &hscif1			{ xen,passthrough; };
 &rswitch		{ xen,passthrough; };
 &tsc			{ xen,passthrough; };
-&iccom00		{ xen,passthrough; };
+&mailbox		{ xen,passthrough; };
+&iccom_reg00		{ xen,passthrough; };
 &rtdmac_control0_00     { xen,passthrough; };
 &rtdmac_control0_01     { xen,passthrough; };
 &rtdmac_control0_02     { xen,passthrough; };
@@ -352,6 +353,7 @@
 		iommus = <&ipmmu_hc 7>, <&ipmmu_hc 23>;
 	};
 
+	iccom00		{ xen,passthrough; };
 	iccom01		{ xen,passthrough; };
 	iccom02		{ xen,passthrough; };
 	iccom03		{ xen,passthrough; };
