@@ -16,6 +16,7 @@ SRC_URI_append = " \
     file://l3offload.cfg \
     file://ixgbe.cfg \
     file://ufs.cfg \
+    file://multicast_routing.cfg \
     file://xen-chosen.dtsi;subdir=git/arch/arm64/boot/dts/renesas \
     file://0001-clk-shmobile-Hide-clock-for-scif3-and-hscif0.patch \
     file://0002-PCIe-MSI-support.patch \
