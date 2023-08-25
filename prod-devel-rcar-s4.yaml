@@ -148,6 +148,7 @@ components:
         - [XT_KERNEL_BRANCH, "%{XT_KERNEL_BRANCH}"]
         - [XT_KERNEL_REV, "%{XT_KERNEL_REV}"]
         - [IMAGE_INSTALL_append, " iperf3"]
+        - [IMAGE_INSTALL_append, " smcroute"]
         - [IMAGE_INSTALL_append, " snort"]
         - [EXTRA_IMAGEDEPENDS_append, " boot-script"]
 
