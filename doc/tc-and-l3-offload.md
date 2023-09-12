@@ -162,6 +162,50 @@ Routes offloaded to the device are labeled with `offload` in the ip route listin
 192.168.21.0/24 dev tsn1.10 proto kernel scope link src 192.168.21.1 offload
 ```
 
+### Multicast L3 offload
+Example commands for testing multicast offload:
+
+#### BOARD
+Add config on a board (DomD) for smcroute to /etc/smcroute.conf:
+```
+mgroup from tsn2 group 225.1.2.3
+mroute from tsn2 group 225.1.2.3 to tsn0 tsn1
+```
+This config will configure smcroute to forward multicast traffic (group 225.1.2.3) from tsn2 to tsn1 and tsn0.
+```
+ifconfig tsn1 192.168.2.1
+ifconfig tsn2 192.168.3.1
+smcroute -d -f /etc/smcroute.conf
+```
+#### HOST TSN0 namespace or TSN0 connected PC (in case of 2 PC setup)
+```
+sudo ip route add 225.1.2.3 dev eth-tsn0
+sudo ip route add 192.168.3.0/24 via 192.168.1.2
+iperf -s -u -B 225.1.2.3 -i 1
+```
+#### HOST TSN1 namespace or TSN1 connected PC (in case of 2 PC setup)
+```
+sudo ifconfig eth-tsn1 192.168.2.100
+sudo ip route add 225.1.2.3 dev eth-tsn1
+sudo ip route add 192.168.3.0/24 via 192.168.2.1
+iperf -s -u -B 225.1.2.3 -i 1
+```
+#### HOST TSN2 namespace or TSN2 connected PC (in case of 2 PC setup)
+```
+sudo ifconfig eth-tsn2 192.168.3.100
+sudo ip route add 225.1.2.3 dev eth-tsn2
+iperf -c 225.1.2.3 -u -T 3 -t 10 -i 1 -b 1000M
+```
+After this, the traffic should be multicasted via TSN2 to TSN0 and TSN1. Also, after iperf test, daemon adds route to mroute table and can be displayed via the command:
+```
+ip mroute
+(192.168.3.100,225.1.2.3)        Iif: tsn2       Oifs: tsn0 tsn1  State: resolved offload
+```
+To stop multicast daemon and remove multicast routes:
+```
+smcroute -k
+```
+
 #### Runtime disabling of L3 offload
 For testing purposes, L3 offload can be disabled and enabled in runtime. By default, L3 offload is enabled,
 but in case of needing to disable it write '0' to appropriate sysfs file. To enable L3 offload again write
