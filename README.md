@@ -11,7 +11,7 @@ as Moulin-based project files provide correct entries in local.conf
 
 # Status
 
-This is a release 1.0 of the Xen-based development product for the
+This is a release 1.3.0 of the Xen-based development product for the
 S4 Spider board.
 
 This release provides the following features:
