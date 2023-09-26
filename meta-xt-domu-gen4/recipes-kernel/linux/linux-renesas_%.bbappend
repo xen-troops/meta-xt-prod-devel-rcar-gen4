@@ -6,7 +6,6 @@ SRCREV = "${XT_KERNEL_REV}"
 
 SRC_URI_append = "\
     file://r8a779f0-spider-domu.dts;subdir=git/arch/${ARCH}/boot/dts/renesas \
-    file://defconfig \
     file://rswitch.cfg \
     file://dmatest.cfg \
     file://ixgbevf.cfg \
