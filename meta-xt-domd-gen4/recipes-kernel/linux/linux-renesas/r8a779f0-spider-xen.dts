@@ -38,13 +38,6 @@
 			no-map;
 			reg = <0x0 0x47fc9000 0x0 0x2000>;
 		};
-
-		/* R-Switch LINKFIX table */
-		rswitch_linkfix_mem@48000000 {
-			compatible = "renesas,rswitch-linkfix";
-			no-map;
-			reg = <0x0 0x48000000 0x0 0x200000>;
-		};
 	};
 };
 
