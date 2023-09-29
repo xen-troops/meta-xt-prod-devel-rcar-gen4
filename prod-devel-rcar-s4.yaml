@@ -40,6 +40,9 @@ common_data:
     - type: git
       url: https://github.com/renesas-rcar/meta-renesas.git
       rev: dunfell
+    - type: git
+      url: https://github.com/xen-troops/meta-xt-rcar
+      rev: dunfell
 
   # Common configuration options for all yocto-based domains
   conf: &COMMON_CONF
@@ -166,6 +169,8 @@ components:
         - "../meta-renesas/meta-rcar-gateway"
         - "../meta-xt-common/meta-xt-domx"
         - "../meta-xt-common/meta-xt-driver-domain"
+        - "../meta-xt-rcar/meta-xt-gateway/meta-xt-domd-gen4"
+        - "../meta-xt-rcar/meta-xt-gateway/meta-xt-domx-gen4"
         - "../meta-xt-prod-devel-rcar-gen4/meta-xt-domd-gen4"
         - "../meta-xt-prod-devel-rcar-gen4/meta-xt-domx-gen4"
         - "../meta-xt-prod-devel-rcar-gen4/meta-xt-driver-domain-gen4"
@@ -202,6 +207,7 @@ components:
         - "../meta-openembedded/meta-python"
         - "../meta-renesas/meta-rcar-gateway"
         - "../meta-xt-common/meta-xt-domu"
+        - "../meta-xt-rcar/meta-xt-gateway/meta-xt-domx-gen4"
         - "../meta-xt-prod-devel-rcar-gen4/meta-xt-domx-gen4"
         - "../meta-xt-prod-devel-rcar-gen4/meta-xt-domu-gen4"
       build_target: rcar-image-minimal
