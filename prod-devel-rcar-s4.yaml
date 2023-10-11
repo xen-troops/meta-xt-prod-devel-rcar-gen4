@@ -79,6 +79,7 @@ common_data:
 
     # Generate ext4 image files
     - [IMAGE_FSTYPES:append, " ext4"]
+    - [IMAGE_INSTALL:append, " perf"]
 
 components:
   dom0:
