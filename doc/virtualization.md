@@ -201,3 +201,16 @@ DHCP. User can provide own IP address by editing
 vmq0 interface is disabled in this release. But it can be enabled back
 by un-commenting corresponding line in `/etc/xen/domu.cfg` file in
 Dom0.
+
+## PMU
+Note, that this feature is not security supported because the PMU registers
+are not virtualized and the physical registers are directly accessible when
+this parameter is enabled.
+see https://xenbits.xen.org/xsa/advisory-163.html.
+It's not recommended to use it for production builds but it may be
+used for development or debugging.
+PMU is disabled by default. It can be enabled by by un-commenting corresponding
+lines in `/etc/xen/domu.cfg` or `/etc/xen/domd.cfg` file in Dom0.
+Also, this feature requires pinning CPUs to appropriate domain because
+domain can migrate to different CPU during the execution that leading
+to invalid counting by perf tool.
