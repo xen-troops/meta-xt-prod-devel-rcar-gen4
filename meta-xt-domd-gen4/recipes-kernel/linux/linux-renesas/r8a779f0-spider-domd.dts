@@ -45,6 +45,13 @@
 	 * CPU nodes to be present get broken. This is why we have to explicitly
 	 * remove the following.
 	 */
+	/*
+	 * Remove interrupts-extended node from guest domain
+	 * as it can not be shared by Xen.
+	 */
+	pmu_a76 {
+		/delete-property/interrupts-extended;
+	};
 };
 
 /* Xen will provide its own GIC, mask ours */

@@ -24,6 +24,14 @@
 		};
 	};
 
+	/*
+	 * Remove interrupts-extended node from guest domain
+	 * as it can not be shared by Xen.
+	 */
+	pmu_a76 {
+		/delete-property/interrupts-extended;
+	};
+
 	passthrough {
 		compatible = "simple-bus";
 		ranges;
