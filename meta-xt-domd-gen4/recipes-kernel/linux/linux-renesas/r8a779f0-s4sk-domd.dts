@@ -1,0 +1,3 @@
+#include "r8a779f0-s4sk.dts"
+
+#include "r8a779f0-domd.dts"

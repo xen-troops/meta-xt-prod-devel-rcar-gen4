@@ -1,10 +1,10 @@
-#include "r8a779f0-spider.dts"
+#include "r8a779f0-s4sk.dts"
 #include "xen-chosen.dtsi"
 #include "r8a779f0-xen.dts"
 
 / {
 
-	model = "Renesas Spider CPU and Breakout boards based on r8a779f0, running XEN hypervisor";
+	model = "Renesas S4 Starter Kit board based on r8a779f0, running XEN hypervisor";
 
 	/* Workaround U-Boot issue with memory nodes duplication */
 	/delete-node/ memory@48000000;
@@ -42,4 +42,7 @@
 	};
 };
 
-&i2c0			{ xen,passthrough; };
+&i2c2			{ xen,passthrough; };
+&i2c5			{ xen,passthrough; };
+&scif3			{ xen,passthrough; };
+
