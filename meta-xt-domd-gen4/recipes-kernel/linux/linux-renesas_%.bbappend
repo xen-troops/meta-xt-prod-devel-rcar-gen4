@@ -10,6 +10,8 @@ SRC_URI:append = " \
     file://0003-xen-pciback-allow-compiling-on-other-archs-than-x86.patch \
     file://0004-HACK-Allow-DomD-enumerate-PCI-devices.patch \
     file://0005-HACK-pcie-renesas-emulate-reading-from-ECAM-under-Xe.patch \
+    file://r8a779f0-domd.dts;subdir=git/arch/arm64/boot/dts/renesas \
+    file://r8a779f0-xen.dts;subdir=git/arch/arm64/boot/dts/renesas \
 "
 
 KERNEL_MODULE_PROBECONF += "ixgbevf"
