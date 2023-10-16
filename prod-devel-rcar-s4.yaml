@@ -257,6 +257,10 @@ parameters:
       overrides:
         variables:
           MACHINE: "spider"
+    "s4sk":
+      overrides:
+        variables:
+          MACHINE: "s4sk"
 
   ENABLE_DOMU:
     desc: "Build generic Yocto-based DomU"
