@@ -4,7 +4,7 @@
 1. Ubuntu 18.0+ or any other Linux distribution which is supported by Poky/OE
 2. Development packages for Yocto. Refer to [Yocto
    manual](https://docs.yoctoproject.org/brief-yoctoprojectqs/index.html#build-host-packages).
-3. You need `Moulin` of version 0.11 or newer installed in your
+3. You need `Moulin` of version 0.15 or newer installed in your
    PC. Recommended way is to install it for your user only: `pip3
    install --user git+https://github.com/xen-troops/moulin`. Make sure
    that your `PATH` environment variable includes
