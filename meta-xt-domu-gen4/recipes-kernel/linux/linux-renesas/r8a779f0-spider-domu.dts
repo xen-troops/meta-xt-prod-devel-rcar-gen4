@@ -25,11 +25,11 @@
 	};
 
 	/*
-	 * Remove interrupts-extended node from guest domain
-	 * as it can not be shared by Xen.
+	 * Just add compatible string without interrupts-extended
+	 * node as it can not be shared by Xen.
 	 */
 	pmu_a76 {
-		/delete-property/interrupts-extended;
+		compatible = "arm,cortex-a55-pmu";
 	};
 
 	passthrough {
