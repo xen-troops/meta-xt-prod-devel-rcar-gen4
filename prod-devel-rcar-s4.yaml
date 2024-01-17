@@ -157,9 +157,6 @@ components:
 
       build_target: rcar-image-minimal
       layers:
-        - "../poky/meta"
-        - "../poky/meta-poky"
-        - "../poky/meta-yocto-bsp"
         - "../meta-virtualization"
         - "../meta-selinux"
         - "../meta-openembedded/meta-oe"
