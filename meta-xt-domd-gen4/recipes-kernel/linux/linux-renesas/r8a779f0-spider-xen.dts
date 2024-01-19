@@ -346,6 +346,7 @@
 		iommus = <&ipmmu_hc 7>, <&ipmmu_hc 23>;
 	};
 
+	mfis_mbox	{ xen,passthrough; };
 	iccom00		{ xen,passthrough; };
 	iccom01		{ xen,passthrough; };
 	iccom02		{ xen,passthrough; };
