@@ -7,7 +7,6 @@ SRC_URI += " \
 "
 
 PACKAGES:append = "\
-    ${PN}-test \
     ${PN}-pcid \
 "
 
@@ -20,6 +19,12 @@ FILES:${PN}-pcid = "\
     ${systemd_unitdir}/system/xenpcid.service \
     ${systemd_unitdir}/system/xenpcid.service.d/xenpcid-xenstore.conf \
 "
+
+# Remove the recommendation for Qemu for non-hvm x86 added in meta-virtualization layer
+RRECOMMENDS:${PN}:remove = "qemu"
+
+# Avoid redundant runtime dependency on python3-core
+RDEPENDS:${PN}:remove:class-target = "${PYTHON_PN}-core"
 
 SYSTEMD_SERVICE:${PN}-pcid = "xenpcid.service"
 

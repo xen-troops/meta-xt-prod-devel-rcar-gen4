@@ -20,16 +20,16 @@ common_data:
   sources: &COMMON_SOURCES
     - type: git
       url: "git://git.yoctoproject.org/poky"
-      rev: 232b5533d
+      rev: kirkstone
     - type: git
       url: "git://git.openembedded.org/meta-openembedded"
-      rev: 814eec96c
+      rev: kirkstone
     - type: git
       url: "git://git.yoctoproject.org/meta-virtualization"
-      rev: 180241e
+      rev: kirkstone
     - type: git
       url: "https://github.com/xen-troops/meta-xt-common.git"
-      rev: dunfell
+      rev: master
     - type: git
       url: "https://github.com/xen-troops/meta-xt-prod-devel-rcar-gen4.git"
       rev: master
@@ -38,10 +38,10 @@ common_data:
   domd_domu_sources: &DOMD_DOMU_SOURCES
     - type: git
       url: https://github.com/renesas-rcar/meta-renesas.git
-      rev: dunfell
+      rev: kirkstone-dev
     - type: git
       url: https://github.com/xen-troops/meta-xt-rcar
-      rev: dunfell
+      rev: master
 
   # Common configuration options for all yocto-based domains
   conf: &COMMON_CONF
@@ -71,7 +71,7 @@ common_data:
     - [SDKIMAGE_FEATURES:append, " staticdev-pkgs"]
 
     # Add for gstreamer plugins ugly
-    - [LICENSE_FLAGS_WHITELIST, "commercial"]
+    - [LICENSE_FLAGS_ACCEPTED, "commercial"]
 
     # Add Capacity Aware migration Strategy (CAS)
     - [MACHINE_FEATURES:append, " cas"]
@@ -110,7 +110,10 @@ components:
         - [VIRTUAL-RUNTIME_init_manager, "systemd"]
 
         # Do not install kernel image to rootfs to decrease initrd size
-        - ["RDEPENDS:${KERNEL_PACKAGE_NAME}-base", ""]
+        - ["RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base", ""]
+
+        - [PREFERRED_VERSION_xen-tools, "4.17.0+git%"]
+        - [PREFERRED_VERSION_xen, "4.17.0+git%"]
 
       layers:
         - "../meta-virtualization"
@@ -139,7 +142,7 @@ components:
       - *DOMD_DOMU_SOURCES
       - type: git
         url: git://git.yoctoproject.org/meta-selinux
-        rev: 46bcf05
+        rev: kirkstone
     builder:
       type: yocto
       work_dir: "%{DOMD_BUILD_DIR}"
@@ -154,6 +157,8 @@ components:
         - [IMAGE_INSTALL:append, " smcroute"]
         - [IMAGE_INSTALL:append, " snort"]
         - [EXTRA_IMAGEDEPENDS:append, " boot-script"]
+        - [PREFERRED_VERSION_xen-tools, "4.17.0+git%"]
+        - [PREFERRED_VERSION_xen, "4.17.0+git%"]
 
       build_target: rcar-image-minimal
       layers:
@@ -197,6 +202,9 @@ components:
         - [XT_KERNEL_BRANCH, "%{XT_KERNEL_BRANCH}"]
         - [XT_KERNEL_REV, "%{XT_KERNEL_REV}"]
         - [IMAGE_INSTALL:append, " iperf3 "]
+        # This is temporary workaround required because we use linux-libc-headers 5.10
+        # and xt-common provides 6.4 already. So we need this bbmask until upgrade to 6.4
+        - [BBMASK:append, " meta-xt-common/meta-xt-domu/recipes-kernel/linux-libc-headers/"]
 
       layers:
         - "../meta-openembedded/meta-oe"
