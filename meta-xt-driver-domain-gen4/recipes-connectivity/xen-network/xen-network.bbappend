@@ -7,7 +7,7 @@ SRC_URI += "\
     file://vmq0.network \
 "
 
-FILES_${PN} += " \
+FILES:${PN} += " \
     ${sysconfdir}/systemd/network/tsn0.network \
     ${sysconfdir}/systemd/network/tsn1.network \
     ${sysconfdir}/systemd/network/vmq0.network \
