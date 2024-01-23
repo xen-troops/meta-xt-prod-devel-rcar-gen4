@@ -1,4 +1,4 @@
-SRC_URI = "git://github.com/xen-troops/libdaq-legacy;protocol=https"
+SRC_URI = "git://github.com/xen-troops/libdaq-legacy;branch=${BRANCH};protocol=https"
 BRANCH = "master"
 SRCREV = "${AUTOREV}"
 S = "${WORKDIR}/git"
