@@ -38,7 +38,7 @@ FILES:${PN} += " ${systemd_unitdir}/system/snort-tsn0.service \
     ${systemd_unitdir}/system/snort-tsn1.service \
 "
 
-FILES:${PN}:append:spider += " \
+FILES:${PN}:append:spider = " \
     ${systemd_unitdir}/system/snort-tsn2.service \
 "
 
