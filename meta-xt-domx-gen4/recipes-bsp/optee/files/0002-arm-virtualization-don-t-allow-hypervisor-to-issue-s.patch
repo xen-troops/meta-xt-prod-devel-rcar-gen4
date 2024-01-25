@@ -1,0 +1,101 @@
+From 57df5a2b5ddd6788f8d32874382a00f07050db62 Mon Sep 17 00:00:00 2001
+From: Volodymyr Babchuk <volodymyr_babchuk@epam.com>
+Date: Thu, 18 Jan 2024 00:38:27 +0200
+Subject: [PATCH 2/2] arm: virtualization: don't allow hypervisor to issue std
+ calls
+
+There is standing issue with having two versions of OP-TEE binary:
+with virtualization enabled and without it. Correct variant needs to
+be present on board before booting rest of the system.
+
+If non-virtualized variant is present and user tries to boot a
+hypervisor, hypervisor can (and should) detect that OP-TEE does not
+provide OPTEE_SMC_SEC_CAP_VIRTUALIZATION capability and fail
+gracefully.
+
+On other hand, when virtualized variant of OP-TEE is booted, but user
+then boots directly into Linux (or any other OS), OP-TEE crashes:
+
+E/TC:0 0 0 Core data-abort at address 0xffffffffffffffa0 (translation fault)
+E/TC:0 0 0  esr 0x96000044  ttbr0 0x4418d000   ttbr1 0x00000000   cidr 0x0
+E/TC:0 0 0  cpu #0          cpsr 0x00000184
+E/TC:0 0 0  x0  0000000032000004 x1  0000000000000004
+E/TC:0 0 0  x2  000000008183c000 x3  0000000000000000
+E/TC:0 0 0  x4  0000000000000000 x5  0000000000000000
+E/TC:0 0 0  x6  0000000000000000 x7  0000000000000000
+E/TC:0 0 0  x8  0000000000000000 x9  0000000000000000
+E/TC:0 0 0  x10 0000000000000000 x11 0000000000000000
+E/TC:0 0 0  x12 0000000000000000 x13 0000000000000000
+E/TC:0 0 0  x14 0000000000000000 x15 0000000000000000
+E/TC:0 0 0  x16 0000000000000000 x17 0000000000000000
+E/TC:0 0 0  x18 0000000000000000 x19 0000000000000000
+E/TC:0 0 0  x20 0000000000000000 x21 0000000000000000
+E/TC:0 0 0  x22 0000000000000000 x23 0000000000000000
+E/TC:0 0 0  x24 0000000000000000 x25 0000000000000000
+E/TC:0 0 0  x26 0000000000000000 x27 0000000000000000
+E/TC:0 0 0  x28 0000000000000000 x29 0000000000000000
+E/TC:0 0 0  x30 0000000044103ce4 elr 0000000044106314
+E/TC:0 0 0  sp_el0 0000000000000000
+E/TC:0 0 0 TEE load address @ 0x44100000
+E/TC:0 0 0 Call stack:
+E/TC:0 0 0  0x44106314 thread_handle_std_smc at core/arch/arm/kernel/thread_optee_smc.c:62
+E/TC:0 0 0 Panic 'unhandled pageable abort' at core/arch/arm/kernel/abort.c:584 <abort_handler>
+E/TC:0 0 0 TEE load address @ 0x44100000
+E/TC:0 0 0 Call stack:
+E/TC:0 0 0  0x44107e14 print_kernel_stack at core/arch/arm/kernel/unwind_arm64.c:89
+E/TC:0 0 0  0x44114ffc __do_panic at core/kernel/panic.c:73
+E/TC:0 0 0  0x44107050 get_fault_type at core/arch/arm/kernel/abort.c:500
+
+This crash happens because virtualization code has special case for
+guest_id == HYP_CLNT_ID. This case is needed to allow hypervisor to
+call fast SMCs, so it can check OP-TEE version, capabilities and ask
+OP-TEE to create/destroy guest partitions. Problem is that
+thread_handle_std_smc() assumes that virt_set_guest() really sets the
+guest partition, which does not happen in this special case.
+
+This patch removes this special case from virt_set_guest(). Instead
+thread_handle_fast_smc() function checks for HYP_CLNT_ID explicitly.
+
+If hypervisor really want to be able to issue STD calls, it should
+create a partition for itself using OPTEE_SMC_VM_CREATED call.
+
+With this patch applied, virtualized variant of OP-TEE does not crash
+anymore when users tries to boot into a baremetal setup.
+
+Signed-off-by: Volodymyr Babchuk <volodymyr_babchuk@epam.com>
+Reviewed-by: Jens Wiklander <jens.wiklander@linaro.org>
+Acked-by: Etienne Carriere <etienne.carriere@foss.st.com>
+---
+ core/arch/arm/kernel/thread_optee_smc.c | 2 +-
+ core/arch/arm/kernel/virtualization.c   | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/core/arch/arm/kernel/thread_optee_smc.c b/core/arch/arm/kernel/thread_optee_smc.c
+index 567528def..a2640374b 100644
+--- a/core/arch/arm/kernel/thread_optee_smc.c
++++ b/core/arch/arm/kernel/thread_optee_smc.c
+@@ -38,7 +38,7 @@ void thread_handle_fast_smc(struct thread_smc_args *args)
+ 	thread_check_canaries();
+ 
+ #ifdef CFG_VIRTUALIZATION
+-	if (!virt_set_guest(args->a7)) {
++	if (!virt_set_guest(args->a7) && args->a7 != HYP_CLNT_ID) {
+ 		args->a0 = OPTEE_SMC_RETURN_ENOTAVAIL;
+ 		goto out;
+ 	}
+diff --git a/core/arch/arm/kernel/virtualization.c b/core/arch/arm/kernel/virtualization.c
+index fbf80d850..19dc69117 100644
+--- a/core/arch/arm/kernel/virtualization.c
++++ b/core/arch/arm/kernel/virtualization.c
+@@ -339,7 +339,7 @@ bool virt_set_guest(uint16_t guest_id)
+ 	}
+ 	cpu_spin_unlock_xrestore(&prtn_list_lock, exceptions);
+ 
+-	return guest_id == HYP_CLNT_ID;
++	return false;
+ }
+ 
+ void virt_unset_guest(void)
+-- 
+2.43.0
+
