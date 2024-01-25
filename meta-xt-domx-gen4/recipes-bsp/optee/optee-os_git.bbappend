@@ -10,6 +10,7 @@ EXTRA_OEMAKE += "CFG_VIRTUALIZATION=y \
 
 SRC_URI:append = " \
     file://0001-plat-rcar_gen4-extend-memory-available-to-OP-TEE.patch \
+    file://0002-arm-virtualization-don-t-allow-hypervisor-to-issue-s.patch \
 "
 
 python __anonymous () {
