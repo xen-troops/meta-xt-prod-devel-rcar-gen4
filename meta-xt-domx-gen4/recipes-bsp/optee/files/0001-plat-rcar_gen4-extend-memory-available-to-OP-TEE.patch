@@ -1,56 +1,57 @@
-From 07844f3b5e5c293b11a2c93b3c027be518073efb Mon Sep 17 00:00:00 2001
+From 7b243cd01706c898a404c7f6ea0214b8c79b923d Mon Sep 17 00:00:00 2001
 From: Volodymyr Babchuk <volodymyr_babchuk@epam.com>
-Date: Thu, 21 Apr 2022 16:49:53 +0300
-Subject: [PATCH] plat-rcar_gen4: extend memory available to OP-TEE
+Date: Thu, 25 Jan 2024 04:05:49 +0200
+Subject: [PATCH 1/2] plat-rcar_gen4: extend memory available to OP-TEE
 
-Reclaim memory that was designated for BL3, as it is not used.
-Move all special areas to end of secure RAM and extend TA_RAM_SIZE
-to 54MB.
+There is a bit of unused memory between OP-TEE and BL31 so we can move
+portions of the OP-TEE regions further back. Also we can reduce
+TEE_RAM_VA_SIZE by one megabyte. All this will allow us to get 29MB
+for TA RAM, which is crucial in virtualized setup.
 
 Signed-off-by: Volodymyr Babchuk <volodymyr_babchuk@epam.com>
 ---
- core/arch/arm/plat-rcar_gen4/platform_config.h | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ core/arch/arm/plat-rcar_gen4/platform_config.h | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/core/arch/arm/plat-rcar_gen4/platform_config.h b/core/arch/arm/plat-rcar_gen4/platform_config.h
-index 58530b0c..8103e4a5 100644
+index 58530b0cd..c34ac1bd8 100644
 --- a/core/arch/arm/plat-rcar_gen4/platform_config.h
 +++ b/core/arch/arm/plat-rcar_gen4/platform_config.h
-@@ -50,7 +50,7 @@
-  * but is smaller due to SECTION_SIZE alignment, can be fixed once
-  * OP-TEE OS is mapped using small pages instead.
+@@ -52,26 +52,26 @@
   */
--#define TZDRAM_SIZE		(0x02400000U)
-+#define TZDRAM_SIZE		(0x03E00000U)
+ #define TZDRAM_SIZE		(0x02400000U)
  
- #define TEE_RAM_VA_SIZE		(1024 * 1024 * 3)
+-#define TEE_RAM_VA_SIZE		(1024 * 1024 * 3)
++#define TEE_RAM_VA_SIZE		(1024 * 1024 * 2)
  
-@@ -58,20 +58,20 @@
- #define TEE_RAM_PH_SIZE		(0x00300000U)	/* TEE RAM size		*/
+ #define TEE_RAM_START		(0x44100000)	/* TEE RAM address	*/
+-#define TEE_RAM_PH_SIZE		(0x00300000U)	/* TEE RAM size		*/
++#define TEE_RAM_PH_SIZE		(0x00200000U)	/* TEE RAM size		*/
  
- #define TA_RAM_START		(0x44400000U)	/* TA RAM address	*/
+-#define TA_RAM_START		(0x44400000U)	/* TA RAM address	*/
 -#define TA_RAM_SIZE		(0x01800000U)	/* TA RAM size		*/
-+#define TA_RAM_SIZE		(0x03600000U)	/* TA RAM size		*/
++#define TA_RAM_START		(0x44300000U)	/* TA RAM address	*/
++#define TA_RAM_SIZE		(0x01D00000U)	/* TA RAM size		*/
  
  #define TEE_SHMEM_START		(0x47E00000U)	/* Share Memory address	*/
  #define TEE_SHMEM_SIZE		(0x00100000U)	/* Share Memory size	*/
  
 -#define OPTEE_LOG_BASE		(0x45E00000U)	/* OP-TEE Log Area address */
-+#define OPTEE_LOG_BASE		(0x47B00000U)	/* OP-TEE Log Area address */
++#define OPTEE_LOG_BASE		(0x46100000U)	/* OP-TEE Log Area address */
  #define OPTEE_LOG_NS_BASE	(0x47FEC000U)	/* OP-TEE Log Area NS addr */
  #define OPTEE_LOG_NS_SIZE	(0x00014000U)   /* OP-TEE Log Area NS size */
  
 -#define TA_VERIFICATION_BASE	(0x45C00000U)	/* TA area for verification */
-+#define TA_VERIFICATION_BASE	(0x47A00000U)	/* TA area for verification */
++#define TA_VERIFICATION_BASE	(0x46000000U)	/* TA area for verification */
  #define TA_VERIFICATION_SIZE	(0x00100000U)	/* TA verification size */
 -#define CRYPTOENGINE_WORK_BASE	(0x46000000U)	/* Crypto Enegine Work area */
-+#define CRYPTOENGINE_WORK_BASE	(0x47D00000U)	/* Crypto Enegine Work area */
++#define CRYPTOENGINE_WORK_BASE	(0x46300000U)	/* Crypto Enegine Work area */
  
 -#define NONCACHE_WORK_BASE	(0x45F00000U)	/* Non Cache Area address */
-+#define NONCACHE_WORK_BASE	(0x47C00000U)	/* Non Cache Area address */
++#define NONCACHE_WORK_BASE	(0x46200000U)	/* Non Cache Area address */
  #define NONCACHE_WORK_SIZE	(0x00100000U)	/* Non Cache Area Size */
  
  #define ICU_FW_SHMEM_BASE	(0x41C00000U)	/* ICU FW Share Memory address */
 -- 
-2.38.1
+2.43.0
 
