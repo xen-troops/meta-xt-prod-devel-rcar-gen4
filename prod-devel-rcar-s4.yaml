@@ -57,7 +57,7 @@ common_data:
     # Remove features that we are not using
     - [DISTRO_FEATURES:remove, "x11 gtk gobject-introspection-data wifi nfc
             bluetooth irda zeroconf 3g sysvinit acl alsa argp pcmcia usbgadget
-            usbhost opengl ptest multiarch wayland vulkan sysvinit"]
+            usbhost opengl ptest multiarch wayland vulkan sysvinit pulseaudio"]
   # Conf options for domain that are built used renesas layer
   domd_domu_conf: &DOMD_DOMU_CONF
     - [MACHINE, "%{MACHINE}"]
