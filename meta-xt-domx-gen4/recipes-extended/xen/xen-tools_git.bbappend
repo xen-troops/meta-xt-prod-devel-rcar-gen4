@@ -26,6 +26,8 @@ RRECOMMENDS:${PN}:remove = "qemu"
 # Avoid redundant runtime dependency on python3-core
 RDEPENDS:${PN}:remove:class-target = "${PYTHON_PN}-core"
 
+DEPENDS:remove = "pixman virtual/libsdl"
+
 SYSTEMD_SERVICE:${PN}-pcid = "xenpcid.service"
 
 SYSTEMD_PACKAGES += "${PN}-pcid"
