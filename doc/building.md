@@ -143,7 +143,7 @@ For more information about `rouge` check its
 
 Please make sure 'bootargs' variable is unset while running with Xen:
 ```
-unset bootargs
+env delete bootargs
 ```
 
 ### Booting from eMMC using boot script
@@ -156,12 +156,6 @@ section](#writing_emmc).
 
 Generated eMMC image contains the boot script for U-Boot, so to boot
 via eMMC all you need is to set the following variable:
-
-for the Spider board
-```
-setenv bootcmd 'ext2load mmc 0:1 0x83000000 boot-emmc.uImage; source 0x83000000'
-```
-for the S4SK board
 ```
 setenv bootcmd 'ext4load mmc 0:1 0x83000000 boot-emmc.uImage; source 0x83000000'
 ```
