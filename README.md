@@ -51,10 +51,10 @@ to ensure that Xen and DomD/DomU will work correctly.
 
 # Documentation
 
-- [Building][]
+- [Building and booting][]
 - [Virtualization][]
 - [TC and L3 offload][]
 
-[Building]: ./doc/building.md
+[Building and booting]: ./doc/building.md
 [Virtualization]: ./doc/virtualization.md
 [TC and L3 offload]: ./doc/tc-and-l3-offload.md
