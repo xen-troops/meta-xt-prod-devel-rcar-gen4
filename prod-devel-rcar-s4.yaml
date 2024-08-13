@@ -30,9 +30,6 @@ common_data:
     - type: git
       url: "https://github.com/xen-troops/meta-xt-common.git"
       rev: master
-    - type: git
-      url: "https://github.com/xen-troops/meta-xt-prod-devel-rcar-gen4.git"
-      rev: master
 
   # Sources to be used in DomD and DomU
   domd_domu_sources: &DOMD_DOMU_SOURCES
@@ -128,9 +125,9 @@ components:
         - "../meta-xt-common/meta-xt-dom0"
         - "../meta-xt-common/meta-xt-domx"
         - "../meta-xt-rcar/meta-xt-gateway/meta-xt-dom0-gen4"
-        - "../meta-xt-prod-devel-rcar-gen4/meta-xt-dom0-gen4"
-        - "../meta-xt-prod-devel-rcar-gen4/meta-xt-domx-gen4"
-        - "../meta-xt-prod-devel-rcar-gen4/meta-xt-prod-devel-rcar-control-gen4"
+        - "../../layers/meta-xt-dom0-gen4"
+        - "../../layers/meta-xt-domx-gen4"
+        - "../../layers/meta-xt-prod-devel-rcar-control-gen4"
       build_target: core-image-thin-initramfs
       external_src:
         domd: "%{YOCTOS_WORK_DIR}/%{DOMD_BUILD_DIR}/tmp/deploy/images/%{MACHINE}/"
@@ -178,9 +175,9 @@ components:
         - "../meta-xt-common/meta-xt-security"
         - "../meta-xt-rcar/meta-xt-gateway/meta-xt-domd-gen4"
         - "../meta-xt-rcar/meta-xt-gateway/meta-xt-domx-gen4"
-        - "../meta-xt-prod-devel-rcar-gen4/meta-xt-domd-gen4"
-        - "../meta-xt-prod-devel-rcar-gen4/meta-xt-domx-gen4"
-        - "../meta-xt-prod-devel-rcar-gen4/meta-xt-driver-domain-gen4"
+        - "../../layers/meta-xt-domd-gen4"
+        - "../../layers/meta-xt-domx-gen4"
+        - "../../layers/meta-xt-driver-domain-gen4"
       target_images:
         - "tmp/deploy/images/%{MACHINE}/Image"
         - "tmp/deploy/images/%{MACHINE}/rcar-image-minimal-%{MACHINE}.ext4"
@@ -219,8 +216,8 @@ components:
         - "../meta-xt-common/meta-xt-domu"
         - "../meta-xt-common/meta-xt-security"
         - "../meta-xt-rcar/meta-xt-gateway/meta-xt-domx-gen4"
-        - "../meta-xt-prod-devel-rcar-gen4/meta-xt-domx-gen4"
-        - "../meta-xt-prod-devel-rcar-gen4/meta-xt-domu-gen4"
+        - "../../layers/meta-xt-domx-gen4"
+        - "../../layers/meta-xt-domu-gen4"
       build_target: rcar-image-minimal
       target_images:
         - "tmp/deploy/images/%{MACHINE}/Image"
