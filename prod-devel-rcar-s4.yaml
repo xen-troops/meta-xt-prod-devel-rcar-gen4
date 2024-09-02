@@ -20,25 +20,25 @@ common_data:
   sources: &COMMON_SOURCES
     - type: git
       url: "git://git.yoctoproject.org/poky"
-      rev: "e938b18b5342bd28eadb44ad39dbf1f5cf5be09b" # kirkstone
+      rev: "1678bb9ee2a1ce476b5b153d9e79bb9813c33574" # scarthgap
     - type: git
       url: "git://git.openembedded.org/meta-openembedded"
-      rev: "9a24b7679810628b594cc5a9b52f77f53d37004f" # kirkstone
+      rev: "1235dd4ed4a57e67683c045ad76b6a0f9e896b45" # scarthgap
     - type: git
       url: "git://git.yoctoproject.org/meta-virtualization"
-      rev: "e0cd09e3b8367e2745a27db2e7ff1f8452c8cf41" # kirkstone
+      rev: "66ee8d268db25a9f2848bda6858c284c745f549f" # scarthgap
     - type: git
       url: "https://github.com/xen-troops/meta-xt-common.git"
-      rev: "09d7a4c5fd4ebff2f78129f6798af1f4d699b26d" # master
+      rev: "TO DEFINE YET" # master
 
   # Sources to be used in DomD and DomU
   domd_domu_sources: &DOMD_DOMU_SOURCES
     - type: git
       url: https://github.com/renesas-rcar/meta-renesas.git
-      rev: "11221be7ff3a535f17357bc8ac7e2851d0e8ff02" # kirkstone-dev
+      rev: "bdab02fbfbbd79565b6db52a6fa62aad9b15aa99" # scarthgap-dev
     - type: git
       url: https://github.com/xen-troops/meta-xt-rcar
-      rev: "abc6c8bae27293ca2d04c7810006df4bb984cf8f" # master
+      rev: "TO DEFINE YET" # master
 
   # Common configuration options for all yocto-based domains
   conf: &COMMON_CONF
@@ -140,7 +140,7 @@ components:
       - *DOMD_DOMU_SOURCES
       - type: git
         url: git://git.yoctoproject.org/meta-selinux
-        rev: "a401f4b2816a0b41ce8d9351542658c721935bcd" # kirkstone
+        rev: "9f5a46620a07d7b15722593a33e46a4d19392b75" # scarthgap
     builder:
       type: yocto
       work_dir: "%{DOMD_BUILD_DIR}"
