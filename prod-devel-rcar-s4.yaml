@@ -127,6 +127,7 @@ components:
         - "../meta-xt-common/meta-xt-control-domain"
         - "../meta-xt-common/meta-xt-dom0"
         - "../meta-xt-common/meta-xt-domx"
+        - "../meta-xt-rcar/meta-xt-gateway/meta-xt-dom0-gen4"
         - "../meta-xt-prod-devel-rcar-gen4/meta-xt-dom0-gen4"
         - "../meta-xt-prod-devel-rcar-gen4/meta-xt-domx-gen4"
         - "../meta-xt-prod-devel-rcar-gen4/meta-xt-prod-devel-rcar-control-gen4"
