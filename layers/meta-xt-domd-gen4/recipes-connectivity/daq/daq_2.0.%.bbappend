@@ -1,5 +1,5 @@
 SRC_URI = "git://github.com/xen-troops/libdaq-legacy;branch=${BRANCH};protocol=https"
 BRANCH = "master"
-SRCREV = "${AUTOREV}"
+SRCREV = "b67b2fa95e687ce2208215c0900081c14c39fc44"
 S = "${WORKDIR}/git"
 DISABLE_STATIC = " --disable-static"
