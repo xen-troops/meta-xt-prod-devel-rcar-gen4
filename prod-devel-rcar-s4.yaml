@@ -61,7 +61,7 @@ common_data:
     - [SOC_FAMILY, "%{SOC_FAMILY}"]
 
     # Add systemd configuration
-    - [DISTRO_FEATURES:append, " systemd"]
+    - [DISTRO_FEATURES:append, " usrmerge systemd"]
     - [VIRTUAL-RUNTIME_init_manager, "systemd"]
 
     # add the static lib to SDK toolchain
@@ -106,7 +106,7 @@ components:
         - [BAD_RECOMMENDATIONS:append, " udev-hwdb"]
 
         # Enable systemd on dom0
-        - [DISTRO_FEATURES:append, " systemd"]
+        - [DISTRO_FEATURES:append, " usrmerge systemd"]
         - [VIRTUAL-RUNTIME_init_manager, "systemd"]
 
         # Do not install kernel image to rootfs to decrease initrd size
