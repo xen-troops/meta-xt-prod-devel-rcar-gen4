@@ -28,6 +28,9 @@ do_install:append:spider() {
     install -m 0644 ${WORKDIR}/snort-tsn2.service ${D}${systemd_unitdir}/system/
 }
 
+PACKAGES:append = " snort-tsn0 snort-tsn1"
+PACKAGES:append:spider = " snort-tsn2"
+
 SYSTEMD_PACKAGES = "snort-tsn0 snort-tsn1"
 SYSTEMD_PACKAGES:append:spider = " snort-tsn2"
 SYSTEMD_SERVICE:snort-tsn0 = "snort-tsn0.service"
