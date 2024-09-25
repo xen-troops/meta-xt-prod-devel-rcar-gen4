@@ -55,14 +55,15 @@ common_data:
     - [DISTRO_FEATURES:remove, "x11 gtk gobject-introspection-data wifi nfc
             bluetooth irda zeroconf 3g sysvinit acl alsa argp pcmcia usbgadget
             usbhost opengl ptest multiarch wayland vulkan sysvinit pulseaudio"]
+
+    # We use systemd in all linux domains
+    - [DISTRO_FEATURES:append, " usrmerge systemd"]
+    - [VIRTUAL-RUNTIME_init_manager, "systemd"]
+
   # Conf options for domain that are built used renesas layer
   domd_domu_conf: &DOMD_DOMU_CONF
     - [MACHINE, "%{MACHINE}"]
     - [SOC_FAMILY, "%{SOC_FAMILY}"]
-
-    # Add systemd configuration
-    - [DISTRO_FEATURES:append, " usrmerge systemd"]
-    - [VIRTUAL-RUNTIME_init_manager, "systemd"]
 
     # add the static lib to SDK toolchain
     - [SDKIMAGE_FEATURES:append, " staticdev-pkgs"]
@@ -104,10 +105,6 @@ components:
 
         # Disable HWDB which quite huge (around 15MB) and is not required at all
         - [BAD_RECOMMENDATIONS:append, " udev-hwdb"]
-
-        # Enable systemd on dom0
-        - [DISTRO_FEATURES:append, " usrmerge systemd"]
-        - [VIRTUAL-RUNTIME_init_manager, "systemd"]
 
         # Do not install kernel image to rootfs to decrease initrd size
         - ["RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base", ""]
