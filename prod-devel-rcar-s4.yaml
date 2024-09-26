@@ -208,6 +208,7 @@ components:
       layers:
         - "../meta-openembedded/meta-oe"
         - "../meta-openembedded/meta-filesystems"
+        - "../meta-openembedded/meta-networking"
         - "../meta-openembedded/meta-python"
         - "../meta-renesas/meta-rcar-gateway"
         - "../meta-xt-common/meta-xt-domu"
