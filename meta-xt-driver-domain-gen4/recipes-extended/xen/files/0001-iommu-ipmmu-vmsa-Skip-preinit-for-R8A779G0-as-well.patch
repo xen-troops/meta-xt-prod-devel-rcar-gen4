@@ -1,0 +1,41 @@
+From 5a55364c403b11c674821374cf8fac9be7c8a995 Mon Sep 17 00:00:00 2001
+From: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+Date: Fri, 23 Aug 2024 08:49:18 +0300
+Subject: [PATCH] iommu/ipmmu-vmsa: Skip preinit for R8A779G0 as well
+
+Signed-off-by: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+---
+ xen/drivers/passthrough/arm/ipmmu-vmsa.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/xen/drivers/passthrough/arm/ipmmu-vmsa.c b/xen/drivers/passthrough/arm/ipmmu-vmsa.c
+index 411fe2f1fc..a10f714f7e 100644
+--- a/xen/drivers/passthrough/arm/ipmmu-vmsa.c
++++ b/xen/drivers/passthrough/arm/ipmmu-vmsa.c
+@@ -1388,7 +1388,7 @@ static const struct iommu_ops ipmmu_iommu_ops =
+ 
+ static __init int ipmmu_init(struct dt_device_node *node, const void *data)
+ {
+-    static bool s4;
++    static bool gen4;
+     int ret;
+ 
+     /*
+@@ -1398,10 +1398,11 @@ static __init int ipmmu_init(struct dt_device_node *node, const void *data)
+     dt_device_set_used_by(node, DOMID_XEN);
+ 
+ 
+-    if ( !s4 && dt_device_is_compatible(node, "renesas,ipmmu-r8a779f0") )
+-        s4 = true;
++    if ( !gen4 && (dt_device_is_compatible(node, "renesas,ipmmu-r8a779f0") ||
++         (dt_device_is_compatible(node, "renesas,ipmmu-r8a779g0"))))
++        gen4 = true;
+ 
+-    if ( !s4 )
++    if ( !gen4 )
+     {
+         /*
+          * Perform platform specific actions such as power-on, errata maintenance
+-- 
+2.34.1
+

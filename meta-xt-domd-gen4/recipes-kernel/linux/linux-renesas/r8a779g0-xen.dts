@@ -1,0 +1,286 @@
+/* Make sure Xen console is enabled. */
+&scif3	{
+	status = "okay";
+};
+
+&gic {
+	#address-cells = <2>;
+	#size-cells = <2>;
+	ranges;
+
+	gic_its: msi-controller@f1040000 {
+		compatible = "arm,gic-v3-its";
+		msi-controller;
+		#msi-cells = <1>;
+		reg = <0x0 0xf1040000 0 0x20000>;
+	};
+};
+
+/ {
+	reserved-memory {
+		/delete-node/ linux,cma@80000000;
+	};
+};
+
+&gsx {
+	xen,passthrough;
+};
+
+&ipmmu_mm {
+	status = "okay";
+};
+&ipmmu_hc {
+	status = "okay";
+};
+&ipmmu_vc {
+	compatible = "renesas,ipmmu-r8a779g0";
+	status = "okay";
+};
+&ipmmu_ir {
+	status = "okay";
+};
+
+&ipmmu_rt0 {
+	status = "okay";
+};
+&ipmmu_rt1 {
+	status = "okay";
+};
+&ipmmu_ds0{
+	status = "okay";
+};
+&ipmmu_3dg{
+	status = "okay";
+};
+&ipmmu_vi0{
+	status = "okay";
+};
+&ipmmu_vi1{
+	status = "okay";
+};
+&ipmmu_vip0{
+	status = "okay";
+};
+&ipmmu_vip1{
+	status = "okay";
+};
+
+&avb0 {
+	iommus = <&ipmmu_hc 0>;
+};
+
+&avb1 {
+	iommus = <&ipmmu_hc 1>;
+};
+
+&avb2 {
+	iommus = <&ipmmu_hc 2>;
+};
+
+&tsn0 {
+	iommus = <&ipmmu_hc 5>;
+};
+
+&mmc0 {
+	iommus = <&ipmmu_ds0 32>;
+
+};
+
+&pciec0 {
+	iommus = <&ipmmu_hc 32>;
+	msi-map = <0x0 &gic_its 0x0 0x1000>;
+	interrupt-map = <0 0 0 1 &gic 0 0 GIC_SPI 449 IRQ_TYPE_LEVEL_HIGH
+					0 0 0 2 &gic 0 0 GIC_SPI 449 IRQ_TYPE_LEVEL_HIGH
+					0 0 0 3 &gic 0 0 GIC_SPI 449 IRQ_TYPE_LEVEL_HIGH
+					0 0 0 4 &gic 0 0 GIC_SPI 449 IRQ_TYPE_LEVEL_HIGH>;
+};
+
+&pciec1 {
+	iommus = <&ipmmu_hc 48>;
+	interrupt-map = <0 0 0 1 &gic 0 0 GIC_SPI 456 IRQ_TYPE_LEVEL_HIGH
+					0 0 0 2 &gic 0 0 GIC_SPI 456 IRQ_TYPE_LEVEL_HIGH
+					0 0 0 3 &gic 0 0 GIC_SPI 456 IRQ_TYPE_LEVEL_HIGH
+					0 0 0 4 &gic 0 0 GIC_SPI 456 IRQ_TYPE_LEVEL_HIGH>;
+};
+
+/delete-node/ &pciec0_ep;
+/delete-node/ &pciec1_ep;
+&avb0			{ xen,passthrough; };
+&avb1			{ xen,passthrough; };
+&avb2			{ xen,passthrough; };
+&tsn0			{ xen,passthrough; };
+&i2c0			{ xen,passthrough; };
+&i2c1			{ xen,passthrough; };
+&i2c2			{ xen,passthrough; };
+&i2c3			{ xen,passthrough; };
+&i2c4			{ xen,passthrough; };
+&i2c5			{ xen,passthrough; };
+&vin00          { xen,passthrough; };
+&vin01          { xen,passthrough; };
+&vin02          { xen,passthrough; };
+&vin03          { xen,passthrough; };
+&vin10          { xen,passthrough; };
+&vin11          { xen,passthrough; };
+&vin12          { xen,passthrough; };
+&vin13          { xen,passthrough; };
+&csi40		   	{ xen,passthrough; };
+&csi41		   	{ xen,passthrough; };
+&dmac0			{ xen,passthrough; };
+&dmac1			{ xen,passthrough; };
+&rt_dmac0		{ xen,passthrough; };
+&rt_dmac1		{ xen,passthrough; };
+&rt_dmac2		{ xen,passthrough; };
+&rt_dmac3		{ xen,passthrough; };
+&gpio0			{ xen,passthrough; };
+&gpio1			{ xen,passthrough; };
+&gpio2			{ xen,passthrough; };
+&gpio3			{ xen,passthrough; };
+&gpio4			{ xen,passthrough; };
+&gpio5			{ xen,passthrough; };
+&gpio6			{ xen,passthrough; };
+&gpio7			{ xen,passthrough; };
+&gpio8			{ xen,passthrough; };
+&i2c4			{ xen,passthrough; };
+&mmc0			{ xen,passthrough; };
+&pciec0			{ xen,passthrough; };
+&pciec1			{ xen,passthrough; };
+&scif0			{ xen,passthrough; };
+&hscif1			{ xen,passthrough; };
+&tsc			{ xen,passthrough; };
+&vspd0 { xen,passthrough; };
+&vspd1 { xen,passthrough; };
+&du { xen,passthrough; };
+&dsc { xen,passthrough; };
+&dsi0 { xen,passthrough; };
+&dsi1 { xen,passthrough; };
+&isp0 { xen,passthrough; };
+&isp1 { xen,passthrough; };
+
+&soc {
+    /delete-node/video@e6ef4000;
+    /delete-node/video@e6ef5000;
+    /delete-node/video@e6ef6000;
+    /delete-node/video@e6ef7000;
+    /delete-node/video@e6efc000;
+    /delete-node/video@e6efd000;
+    /delete-node/video@e6efe000;
+    /delete-node/video@e6eff000;
+
+	/delete-node/du0;
+	/delete-node/du_01;
+	/delete-node/dsi0_01;
+	/delete-node/dsi0_02;
+	/delete-node/dsi0_03;
+	/delete-node/dsi0_04;
+	/delete-node/dsi0_05;
+	/delete-node/dsi0_06;
+	/delete-node/dsi0_07;
+	/delete-node/dsi0_08;
+	/delete-node/dsi1_01;
+	/delete-node/dsi1_02;
+	/delete-node/dsi1_03;
+	/delete-node/dsi1_04;
+	/delete-node/dsi1_05;
+	/delete-node/dsi1_06;
+	/delete-node/dsi1_07;
+	/delete-node/dsi1_08;
+
+    /delete-node/vdsp@f1400000;
+    /delete-node/vdsp@f1600000;
+    /delete-node/vdsp@f1800000;
+    /delete-node/vdsp@f1a00000;
+
+	/delete-node/ impvdsp00_00_01;
+	/delete-node/ impvdsp00_00_02;
+	/delete-node/ impvdsp00_00_03;
+	/delete-node/ impvdsp00_00_04;
+	/delete-node/ impvdsp00_01;
+	/delete-node/ impvdsp00_02;
+	/delete-node/ impvdsp00_03;
+	/delete-node/ impvdsp00_04;
+	/delete-node/ impvdsp00_05;
+	/delete-node/ impvdsp00_06;
+	/delete-node/ impvdsp00_07;
+	/delete-node/ impvdsp01_00;
+	/delete-node/ impvdsp01_00_01;
+	/delete-node/ impvdsp01_00_02;
+	/delete-node/ impvdsp01_00_03;
+	/delete-node/ impvdsp01_00_04;
+	/delete-node/ impvdsp01_01;
+	/delete-node/ impvdsp01_02;
+	/delete-node/ impvdsp01_03;
+	/delete-node/ impvdsp01_04;
+	/delete-node/ impvdsp01_05;
+	/delete-node/ impvdsp01_06;
+	/delete-node/ impvdsp01_07;
+	/delete-node/ impvdsp02_00;
+	/delete-node/ impvdsp02_00_01;
+	/delete-node/ impvdsp02_00_02;
+	/delete-node/ impvdsp02_00_03;
+	/delete-node/ impvdsp02_00_04;
+	/delete-node/ impvdsp02_01;
+	/delete-node/ impvdsp02_02;
+	/delete-node/ impvdsp02_03;
+	/delete-node/ impvdsp02_04;
+	/delete-node/ impvdsp02_05;
+	/delete-node/ impvdsp02_06;
+	/delete-node/ impvdsp02_07;
+	/delete-node/ impvdsp03_00;
+	/delete-node/ impvdsp03_00_01;
+	/delete-node/ impvdsp03_00_02;
+	/delete-node/ impvdsp03_00_03;
+	/delete-node/ impvdsp03_00_04;
+	/delete-node/ impvdsp03_01;
+	/delete-node/ impvdsp03_02;
+	/delete-node/ impvdsp03_03;
+	/delete-node/ impvdsp03_04;
+	/delete-node/ impvdsp03_05;
+	/delete-node/ impvdsp03_06;
+	/delete-node/ impvdsp03_07;
+
+
+	/delete-node/ icumx_cmd0_01;
+	/delete-node/ icumx_cmd0_02;
+	/delete-node/ icumx_cmd0_03;
+	/delete-node/ icumx_cmd0_04;
+	/delete-node/ icumx_cmd0_05;
+	/delete-node/ icumx_cmd0_06;
+	/delete-node/ icumx_cmd0_07;
+	/delete-node/ icumx_cmd0_08;
+	/delete-node/ icumx_cmd0_09;
+	/delete-node/ icumx_cmd0_10;
+	/delete-node/ icumx_cmd0_11;
+	/delete-node/ icumx_cmd0_12;
+	/delete-node/ icumx_cmd0_13;
+	/delete-node/ icumx_cmd0_14;
+	/delete-node/ icumx_cmd0_15;
+	/delete-node/ icumx_cmd0_16;
+	/delete-node/ icumx_cmd0_17;
+	/delete-node/ icumx_cmd0_18;
+	/delete-node/ icumx_cmd0_19;
+
+	/delete-node/ tisp0;
+	/delete-node/ tisp1;
+
+	/delete-node/ vip_wrap;
+	/delete-node/ ipmmu_mm0;
+	/delete-node/ ipmmu_mm0_01;
+	/delete-node/ ipmmu_cache_vi0;
+	/delete-node/ ipmmu_cache_vi1;
+	/delete-node/ ipmmu_cache_vc;
+	/delete-node/ ipmmu_cache_ir;
+	/delete-node/ ipmmu_cache_rt0;
+	/delete-node/ ipmmu_cache_rt1;
+	/delete-node/ ipmmu_cache_ds0;
+	/delete-node/ ipmmu_cache_hsc;
+	/delete-node/ ipmmu_cache_vip0;
+	/delete-node/ ipmmu_cache_vip1;
+	/delete-node/ ipmmu_cache_3dg;
+	/delete-node/ tisp@fed00000;
+	/delete-node/ tisp@fed20000;
+
+	vip_wrap {
+		status = "disabled";
+		/delete-property/iommus;
+	};
+};

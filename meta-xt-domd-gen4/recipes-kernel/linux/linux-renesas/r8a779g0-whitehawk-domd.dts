@@ -1,0 +1,4 @@
+#include "r8a779g0-whitehawk.dts"
+
+#include "r8a779g0-domd.dts"
+

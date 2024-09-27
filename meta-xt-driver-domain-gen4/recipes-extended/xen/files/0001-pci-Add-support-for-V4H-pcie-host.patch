@@ -1,0 +1,28 @@
+From e020bcbdbd53f08bb8636d5127d2e636d7fb38c4 Mon Sep 17 00:00:00 2001
+Message-Id: <e020bcbdbd53f08bb8636d5127d2e636d7fb38c4.1727079585.git.mykyta_poturai@epam.com>
+From: Mykyta Poturai <mykyta_poturai@epam.com>
+Date: Mon, 23 Sep 2024 11:19:06 +0300
+Subject: [PATCH] pci: Add support for V4H pcie host
+
+Update pci-host-rcar4 compatible to also include r8a779g0 boards.
+
+Signed-off-by: Mykyta Poturai <mykyta_poturai@epam.com>
+---
+ xen/arch/arm/pci/pci-host-rcar4.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/xen/arch/arm/pci/pci-host-rcar4.c b/xen/arch/arm/pci/pci-host-rcar4.c
+index a1dc0538f5..dfbfec2cbd 100644
+--- a/xen/arch/arm/pci/pci-host-rcar4.c
++++ b/xen/arch/arm/pci/pci-host-rcar4.c
+@@ -474,6 +474,7 @@ const struct pci_ecam_ops rcar4_pcie_child_ops = {
+ static const struct dt_device_match __initconstrel rcar4_pcie_dt_match[] =
+ {
+     { .compatible = "renesas,r8a779f0-pcie" },
++    { .compatible = "renesas,r8a779g0-pcie" },
+     { },
+ };
+ 
+-- 
+2.34.1
+
