@@ -13,12 +13,15 @@
 
 ## Fetching
 
-You can clone this whole repository, or download it as an archive.
-During the build few directories will be created and additional
-dependencies will be fetched into them.
-The build system will create build directory `yocto/` for yocto's
-meta-layers, and `zephyr/` and/or `android/` directories,
-depending on the build options.
+You can fetch/clone this whole repository, but you actually only need
+one file from it: `prod-devel-rcar-s4.yaml`. During the build `moulin`
+will fetch this repository again into `yocto/` directory. So, to
+reduce possible confuse, we recommend to download only
+`prod-devel-rcar-s4.yaml`:
+
+```
+# curl -O https://raw.githubusercontent.com/xen-troops/meta-xt-prod-devel-rcar-gen4/master/prod-devel-rcar-s4.yaml
+```
 
 ## Building
 
@@ -52,24 +55,6 @@ following command line: `moulin prod-devel-rcar-s4.yaml
 Moulin will generate `build.ninja` file. After that run `ninja` to
 build the images. This will take some time and disk space as it builds
 3 separate Yocto images.
-
-## Build products
-
-During the build the following artifacts will be created.
-
-After `moulin prod-devel-rcar-s4.yaml`:
-```
-| build.ninja
-```
-
-After `ninja full.img`
-```
-| .stamps/
-| .ninja_*
-| yocto/            # Linux-based domains
-  | build_dom?/
-  | <fetched meta layers>/
-```
 
 ## Packing boot artifacts
 

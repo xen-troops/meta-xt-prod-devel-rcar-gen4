@@ -1,0 +1,20 @@
+/dts-v1/;
+
+#include <dt-bindings/interrupt-controller/arm-gic.h>
+#include <dt-bindings/gpio/gpio.h>
+#define PHANDLE_GIC (65000)
+#define PHANDLE_ITS (64999)
+
+/ {
+
+	#address-cells = <2>;
+	#size-cells = <2>;
+
+	passthrough {
+		interrupt-parent = <PHANDLE_GIC>;
+		compatible = "simple-bus";
+		ranges;
+		#address-cells = <2>;
+		#size-cells = <2>;
+	};
+};

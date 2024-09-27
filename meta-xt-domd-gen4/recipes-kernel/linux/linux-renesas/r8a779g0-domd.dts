@@ -1,0 +1,297 @@
+/*
+ * The device tree compiler (DTC) is allocating the phandle from 1 to
+ * onwards. Reserve a high value for the GIC phandle.
+ */
+#define PHANDLE_GIC (65000)
+#define PHANDLE_ITS (64999)
+
+/ {
+	soc {
+		/* This must point to Xen interrupt-parent. */
+		interrupt-parent = <PHANDLE_GIC>;
+		/delete-node/ du0;
+		/delete-node/ du_01;
+		/delete-node/dsi0 ;
+		/delete-node/dsi0_01 ;
+		/delete-node/dsi0_02 ;
+		/delete-node/dsi0_03 ;
+		/delete-node/dsi0_04 ;
+		/delete-node/dsi0_05 ;
+		/delete-node/dsi0_06 ;
+		/delete-node/dsi0_07 ;
+		/delete-node/dsi0_08 ;
+		/delete-node/dsi1 ;
+		/delete-node/dsi1_01 ;
+		/delete-node/dsi1_02 ;
+		/delete-node/dsi1_03 ;
+		/delete-node/dsi1_04 ;
+		/delete-node/dsi1_05 ;
+		/delete-node/dsi1_06 ;
+		/delete-node/dsi1_07 ;
+		/delete-node/dsi1_08 ;
+	};
+
+	passthrough {
+	};
+
+	reserved-memory {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		ranges;
+	};
+	/*
+	 * When creating DT for the guest domain Xen inserts only dummy CPU nodes.
+	 * And the number of these inserted CPU nodes is equal to the number of
+	 * vCPUs assigned to this domain. All CPU properties which original DT has,
+	 * such as OPP, clock, regulator, etc are not passed to the guest’s DT.
+	 *
+	 * Example of guest vCPU node:
+	 *
+	 * cpu@0 {
+	 *     device_type = "cpu";
+	 *     compatible = "arm,armv8";
+	 *     enable-method = "psci";
+	 *     reg = <0x0>;
+	 * };
+	 *
+	 * This results in the fact that all features expecting a57_x or a53_x
+	 * CPU nodes to be present get broken. This is why we have to explicitly
+	 * remove the following.
+	 */
+	/*
+	 * Remove interrupts-extended node from guest domain
+	 * as it can not be shared by Xen.
+	 */
+	pmu_a76 {
+		/delete-property/interrupts-extended;
+	};
+
+};
+
+/delete-node/ &vdsp0_region;
+
+/delete-node/ &vdsp1_region;
+
+/delete-node/ &vdsp2_region;
+
+/delete-node/ &vdsp3_region;
+
+/delete-node/ &pap_region;
+
+/delete-node/ &cr_region;
+
+/delete-node/ &region_40bit;
+
+/ {
+	/delete-node/ cmem;
+
+	reserved-memory {
+		linux,cma@80000000 {
+			compatible = "shared-dma-pool";
+			reusable;
+			reg = <0x00000000 0x90000000 0x0 0x30000000>;
+			//        0x0000000040000000-0x00000000bfffffff
+			linux,cma-default;
+		};
+	};
+};
+
+&gsx {
+	status = "okay";
+};
+&gic {
+	compatible = "";
+	status = "disabled";
+};
+
+&gpio0 {
+	status = "okay";
+};
+
+&gpio1 {
+	status = "okay";
+};
+
+&gpio2 {
+	status = "okay";
+};
+
+&gpio3 {
+	status = "okay";
+};
+
+&gpio4 {
+	status = "okay";
+};
+
+&gpio5 {
+	status = "okay";
+};
+
+&gpio6 {
+	status = "okay";
+};
+
+&gpio7 {
+	status = "okay";
+};
+&gpio8 {
+	status = "okay";
+};
+
+&canfd {
+	status = "disabled";
+};
+
+&io_expander_a {
+	status = "okay";
+};
+
+&tsc {
+	status = "disabled";
+};
+
+&pciec0 {
+	status = "okay";
+	ranges = <0x82000000 0 0x30000000 0 0x30000000 0 0x8000000>;
+	msi-map = <0x0 PHANDLE_ITS 0x0 0x1000>;
+};
+
+/* Xen serial consoles */
+&scif3	{
+	status = "disabled";
+};
+
+&hscif0	{
+	status = "disabled";
+};
+
+&dmac0 {
+	/delete-property/iommus;
+};
+
+&dmac1 {
+	/delete-property/iommus;
+};
+
+&rt_dmac0  {
+	/delete-property/iommus;
+};
+
+&rt_dmac1  {
+	/delete-property/iommus;
+};
+
+&rt_dmac2  {
+	/delete-property/iommus;
+};
+
+&rt_dmac3  {
+	/delete-property/iommus;
+};
+
+&ipmmu_mm {
+	status = "disabled";
+};
+
+&ipmmu_rt0 {
+	status = "disabled";
+};
+
+&ipmmu_rt1 {
+	status = "disabled";
+};
+
+
+&ipmmu_ds0{
+	status = "disabled";
+};
+
+&ipmmu_hc {
+	status = "disabled";
+};
+
+&vspd0 {
+	status = "okay";
+};
+
+&vspd1 {
+	status = "okay";
+};
+
+&du {
+	status = "okay";
+};
+
+&dsc {
+	status = "disabled";
+};
+
+&dsi0 {
+	status = "okay";
+};
+
+&dsi1 {
+	status = "okay";
+};
+
+&i2c0 {
+	status = "okay";
+};
+
+&i2c1 {
+	status = "okay";
+	sn65dsi86_0@2c {
+		status = "okay";
+	};
+	max96789@60 {
+		status = "okay";
+	};
+
+};
+
+&i2c2 {
+	status = "okay";
+};
+
+&i2c3 {
+	status = "okay";
+};
+
+&i2c4 {
+	status = "okay";
+	sn65dsi86_1@2c {
+		status = "okay";
+	};
+};
+
+&i2c5 {
+	status = "okay";
+};
+
+&isp0 {
+	status = "okay";
+};
+
+&isp1 {
+	status = "okay";
+};
+
+&vin00          { status = "disabled";};
+&vin01          { status = "disabled";};
+&vin02          { status = "disabled";};
+&vin03          { status = "disabled";};
+&vin10          { status = "disabled";};
+&vin11          { status = "disabled";};
+&vin12          { status = "disabled";};
+&vin13          { status = "disabled";};
+&csi40		   	{ status = "disabled";};
+&csi41		   	{ status = "disabled";};
+
+&gmsl0 {
+	status = "disabled";
+};
+
+&gmsl1 {
+	status = "disabled";
+};
