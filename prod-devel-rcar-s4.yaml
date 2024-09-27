@@ -30,14 +30,14 @@ common_data:
       url: "https://github.com/Deedone/meta-xt-common.git"
       rev: v4h_xt_wip
     - type: git
-      url: "https://github.com/Deedone/meta-xt-prod-devel-rcar-gen4.git"
-      rev: v4h_xt_wip
+      url: "https://github.com/xen-troops/meta-xt-prod-devel-rcar-gen4.git"
+      rev: v4h_demo
 
   # Sources to be used in DomD and DomU
   domd_domu_sources: &DOMD_DOMU_SOURCES
     - type: git
-      url: https://github.com/renesas-rcar/meta-renesas.git
-      rev: scarthgap-dev
+      url: https://github.com/rshym/meta-renesas.git
+      rev: rsm_v4h_kirkstone
     - type: git
       url: https://github.com/Deedone/meta-xt-rcar
       rev: v4h_xt_wip
@@ -80,7 +80,6 @@ common_data:
 
     # Generate ext4 image files
     - [IMAGE_FSTYPES:append, " ext4"]
-    - [IMAGE_INSTALL:append, " perf"]
 
     # Mask Renesas OP-TEE
     - [BBMASK:append, " /meta-renesas/meta-rcar-gateway/recipes-bsp/optee"]
@@ -162,6 +161,12 @@ components:
         - [PREFERRED_VERSION_xen-tools, "4.17.0+git%"]
         - [PREFERRED_VERSION_xen, "4.17.0+git%"]
 
+        - [KERNEL_DEVICETREE:remove, "renesas/r8a779g0-whitehawk-native.dtb"]
+        - [PACKAGECONFIG:remove, "perf"]
+        - [PACKAGECONFIG:remove, "tools-profile"]
+        - [RENESAS_EXTRA_IMAGE_FEATURES:remove, "tools-profile"]
+        - [CORE_IMAGE_EXTRA_INSTALL:remove, "perf"]
+
       build_target: rcar-image-minimal
       layers:
         - "../meta-virtualization"
@@ -173,6 +178,8 @@ components:
         - "../meta-xt-common/meta-xt-domx"
         - "../meta-xt-common/meta-xt-driver-domain"
         - "../meta-xt-common/meta-xt-security"
+        - "../meta-xt-rcar/meta-xt-gateway/meta-xt-domd-gen4"
+        - "../meta-xt-rcar/meta-xt-gateway/meta-xt-domx-gen4"
         - "../meta-xt-prod-devel-rcar-gen4/meta-xt-domd-gen4"
         - "../meta-xt-prod-devel-rcar-gen4/meta-xt-domx-gen4"
         - "../meta-xt-prod-devel-rcar-gen4/meta-xt-driver-domain-gen4"
@@ -184,7 +191,7 @@ components:
         - "tmp/deploy/images/%{MACHINE}/u-boot-elf-%{MACHINE}.srec"
         - "tmp/deploy/images/%{MACHINE}/xen-%{MACHINE}.uImage"
         - "tmp/deploy/images/%{MACHINE}/xenpolicy-%{MACHINE}"
-        - "tmp/deploy/images/%{MACHINE}/r8a779f0-%{MACHINE}-xen.dtb"
+        - "tmp/deploy/images/%{MACHINE}/%{XT_XEN_DTB_NAME}"
         - "tmp/deploy/images/%{MACHINE}/boot-tftp.uImage"
         - "tmp/deploy/images/%{MACHINE}/boot-emmc.uImage"
   domu:
@@ -231,7 +238,7 @@ components:
         - "%{YOCTOS_WORK_DIR}/%{DOMD_BUILD_DIR}/tmp/deploy/images/%{MACHINE}/u-boot-elf-%{MACHINE}.srec"
         - "%{YOCTOS_WORK_DIR}/%{DOMD_BUILD_DIR}/tmp/deploy/images/%{MACHINE}/xen-%{MACHINE}.uImage"
         - "%{YOCTOS_WORK_DIR}/%{DOMD_BUILD_DIR}/tmp/deploy/images/%{MACHINE}/xenpolicy-%{MACHINE}"
-        - "%{YOCTOS_WORK_DIR}/%{DOMD_BUILD_DIR}/tmp/deploy/images/%{MACHINE}/r8a779f0-%{MACHINE}-xen.dtb"
+        - "%{YOCTOS_WORK_DIR}/%{DOMD_BUILD_DIR}/tmp/deploy/images/%{MACHINE}/%{XT_XEN_DTB_NAME}"
         - "%{YOCTOS_WORK_DIR}/%{DOMD_BUILD_DIR}/tmp/deploy/images/%{MACHINE}/boot-emmc.uImage"
         - "%{YOCTOS_WORK_DIR}/%{DOMD_BUILD_DIR}/tmp/deploy/images/%{MACHINE}/boot-tftp.uImage"
 
@@ -270,8 +277,6 @@ parameters:
             builder:
               layers:
                 - "../meta-renesas/meta-rcar-gateway"
-                - "../meta-xt-rcar/meta-xt-gateway/meta-xt-domd-gen4"
-                - "../meta-xt-rcar/meta-xt-gateway/meta-xt-domx-gen4"
     "s4sk":
       overrides:
         variables:
@@ -282,8 +287,6 @@ parameters:
             builder:
               layers:
                 - "../meta-renesas/meta-rcar-gateway"
-                - "../meta-xt-rcar/meta-xt-gateway/meta-xt-domd-gen4"
-                - "../meta-xt-rcar/meta-xt-gateway/meta-xt-domx-gen4"
     "whitehawk":
       overrides:
         variables:
