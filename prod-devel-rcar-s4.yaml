@@ -84,6 +84,11 @@ common_data:
     # Mask Renesas OP-TEE
     - [BBMASK:append, " /meta-renesas/meta-rcar-gateway/recipes-bsp/optee"]
 
+    - [PACKAGECONFIG:remove, "perf"]
+    - [PACKAGECONFIG:remove, "tools-profile"]
+    - [RENESAS_EXTRA_IMAGE_FEATURES:remove, "tools-profile"]
+    - [CORE_IMAGE_EXTRA_INSTALL:remove, "perf"]
+
 components:
   dom0:
     build-dir: "%{YOCTOS_WORK_DIR}"
@@ -162,10 +167,6 @@ components:
         - [PREFERRED_VERSION_xen, "4.17.0+git%"]
 
         - [KERNEL_DEVICETREE:remove, "renesas/r8a779g0-whitehawk-native.dtb"]
-        - [PACKAGECONFIG:remove, "perf"]
-        - [PACKAGECONFIG:remove, "tools-profile"]
-        - [RENESAS_EXTRA_IMAGE_FEATURES:remove, "tools-profile"]
-        - [CORE_IMAGE_EXTRA_INSTALL:remove, "perf"]
 
       build_target: rcar-image-minimal
       layers:
@@ -298,6 +299,12 @@ parameters:
               layers:
                 - "../meta-renesas/meta-rcar-bsp"
                 - "../meta-renesas/meta-rcar-adas"
+          domu:
+            builder:
+              layers:
+                - "../meta-renesas/meta-rcar-bsp"
+                - "../meta-renesas/meta-rcar-adas"
+
   ENABLE_DOMU:
     desc: "Build generic Yocto-based DomU"
     "no":
