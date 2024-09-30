@@ -29,7 +29,7 @@ common_data:
       rev: "66ee8d268db25a9f2848bda6858c284c745f549f" # scarthgap
     - type: git
       url: "https://github.com/xen-troops/meta-xt-common.git"
-      rev: "TO DEFINE YET" # master
+      rev: "0890d85d29c29265663b5e0eac7998916462c05c" # master
 
   # Sources to be used in DomD and DomU
   domd_domu_sources: &DOMD_DOMU_SOURCES
@@ -38,7 +38,7 @@ common_data:
       rev: "bdab02fbfbbd79565b6db52a6fa62aad9b15aa99" # scarthgap-dev
     - type: git
       url: https://github.com/xen-troops/meta-xt-rcar
-      rev: "TO DEFINE YET" # master
+      rev: "aaf7d0ba3c11ee5a9876d1a8b0b875b9dedfc1a3" # master
 
   # Common configuration options for all yocto-based domains
   conf: &COMMON_CONF
