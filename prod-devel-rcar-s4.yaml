@@ -44,8 +44,7 @@ common_data:
 
   # Common configuration options for all yocto-based domains
   conf: &COMMON_CONF
-    - [SSTATE_DIR, "${TOPDIR}/../../../common_data/sstate"]
-    - [DL_DIR, "${TOPDIR}/../../../common_data/downloads"]
+    - [DL_DIR, "${TOPDIR}/../common_data/downloads"]
 
     # Skip warning about missing "virtualization" distro feature
     - [SKIP_META_VIRT_SANITY_CHECK, "1"]
