@@ -15,7 +15,13 @@ FILES:${PN} += " \
 CFG_FILE="${D}${sysconfdir}/xen/domu.cfg"
 
 do_install:append() {
-    cat ${WORKDIR}/domu-vdevices.cfg >> ${CFG_FILE}
+
+    # HACK: FOR V4H ONLY!
+    # Right now we can't append vdevices, because they are absent,
+    # also we have isssue with proper work of the domu-set-root,
+    # so the only working device (disk) is added directly in
+    # the domu-whitehawk.cfg
+    # cat ${WORKDIR}/domu-vdevices.cfg >> ${CFG_FILE}
 
     # Install domu-set-root script
     install -d ${D}${libdir}/xen/bin
