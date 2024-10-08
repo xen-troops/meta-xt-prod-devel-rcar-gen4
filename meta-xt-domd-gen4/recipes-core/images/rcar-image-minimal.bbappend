@@ -10,6 +10,7 @@ IMAGE_INSTALL:append:r8a779f0 = " \
 IMAGE_INSTALL += "iproute2 iproute2-tc tcpdump nvme-cli"
 
 IMAGE_INSTALL += " kernel-module-nvme-core kernel-module-nvme"
+IMAGE_INSTALL += " kernel-module-gles gles-user-module libdrm"
 
 IMAGE_INSTALL += " kernel-module-ixgbe"
 
