@@ -167,8 +167,12 @@ components:
         - [PREFERRED_VERSION_xen, "4.17.0+git%"]
 
         - [KERNEL_DEVICETREE:remove, "renesas/r8a779g0-whitehawk-native.dtb"]
+        # we have to use opencv 4.1, but meta-oe provides 4.5.5
+        - [BBMASK:append, "  meta-openembedded/meta-oe/recipes-support/opencv"]
+        # we have to use tbb 2020.2 instead of 2021.5 for opencv 4.1
+        - [BBMASK:append, "  meta-openembedded/meta-oe/recipes-support/tbb"]
 
-      build_target: rcar-image-minimal
+      build_target: rcar-image-adas
       layers:
         - "../meta-virtualization"
         - "../meta-selinux"
@@ -187,7 +191,7 @@ components:
         - "../meta-xt-prod-devel-rcar-gen4/meta-xt-driver-domain-gen4"
       target_images:
         - "tmp/deploy/images/%{MACHINE}/Image"
-        - "tmp/deploy/images/%{MACHINE}/rcar-image-minimal-%{MACHINE}.ext4"
+        - "tmp/deploy/images/%{MACHINE}/rcar-image-adas-%{MACHINE}.ext4"
         - "tmp/deploy/images/%{MACHINE}/bl31-%{MACHINE}.srec"
         - "tmp/deploy/images/%{MACHINE}/tee-%{MACHINE}.srec"
         - "tmp/deploy/images/%{MACHINE}/u-boot-elf-%{MACHINE}.srec"
@@ -214,6 +218,10 @@ components:
         # This is temporary workaround required because we use linux-libc-headers 5.10
         # and xt-common provides 6.4 already. So we need this bbmask until upgrade to 6.4
         - [BBMASK:append, " meta-xt-common/meta-xt-domu/recipes-kernel/linux-libc-headers/"]
+        # we have to use opencv 4.1, but meta-oe provides 4.5.5
+        - [BBMASK:append, "  meta-openembedded/meta-oe/recipes-support/opencv"]
+        # we have to use tbb 2020.2 instead of 2021.5 for opencv 4.1
+        - [BBMASK:append, "  meta-openembedded/meta-oe/recipes-support/tbb"]
 
       layers:
         - "../meta-openembedded/meta-oe"
@@ -224,10 +232,10 @@ components:
         - "../meta-xt-prod-devel-rcar-gen4/meta-xt-domx-gen4"
         - "../meta-xt-prod-devel-rcar-gen4/meta-xt-domu-gen4"
         - "../meta-xt-rcar/meta-xt-rcar-gles_common"
-      build_target: rcar-image-minimal
+      build_target: rcar-image-adas
       target_images:
         - "tmp/deploy/images/%{MACHINE}/Image"
-        - "tmp/deploy/images/%{MACHINE}/rcar-image-minimal-%{MACHINE}.ext4"
+        - "tmp/deploy/images/%{MACHINE}/rcar-image-adas-%{MACHINE}.ext4"
 
   boot_artifacts:
     build-dir: "artifacts"
@@ -264,7 +272,7 @@ images:
       domd_rootfs:
         gpt_type: B921B045-1DF0-41C3-AF44-4C6F280D3FAE # Linux aarch64 root
         type: raw_image
-        image_path: "%{YOCTOS_WORK_DIR}/build-domd/tmp/deploy/images/%{MACHINE}/rcar-image-minimal-%{MACHINE}.ext4"
+        image_path: "%{YOCTOS_WORK_DIR}/build-domd/tmp/deploy/images/%{MACHINE}/rcar-image-adas-%{MACHINE}.ext4"
 
 parameters:
   MACHINE:
@@ -328,4 +336,4 @@ parameters:
               domu-rootfs:
                 type: raw_image
                 gpt_type: 0FC63DAF-8483-4772-8E79-3D69D8477DE4 # Linux filesystem data
-                image_path: "%{YOCTOS_WORK_DIR}/%{DOMU_BUILD_DIR}/tmp/deploy/images/%{MACHINE}/rcar-image-minimal-%{MACHINE}.ext4"
+                image_path: "%{YOCTOS_WORK_DIR}/%{DOMU_BUILD_DIR}/tmp/deploy/images/%{MACHINE}/rcar-image-adas-%{MACHINE}.ext4"
