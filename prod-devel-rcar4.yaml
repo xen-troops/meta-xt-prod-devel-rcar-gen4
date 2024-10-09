@@ -87,7 +87,7 @@ common_data:
     - [PACKAGECONFIG:remove, "tools-profile"]
     - [RENESAS_EXTRA_IMAGE_FEATURES:remove, "tools-profile"]
     - [CORE_IMAGE_EXTRA_INSTALL:remove, "perf"]
-    - [DISTRO_FEATURES:append, " gsx"]
+    - [MACHINE_FEATURES:append, " gsx"]
 
 components:
   dom0:
