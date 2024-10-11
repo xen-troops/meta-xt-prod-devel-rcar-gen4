@@ -160,6 +160,8 @@
 &dsi1 { xen,passthrough; };
 &isp0 { xen,passthrough; };
 &isp1 { xen,passthrough; };
+&cisp0 { xen,passthrough; };
+&cisp1 { xen,passthrough; };
 
 &soc {
     /delete-node/video@e6ef4000;
