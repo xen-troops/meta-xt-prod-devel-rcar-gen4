@@ -139,18 +139,6 @@
 	status = "okay";
 };
 
-&canfd {
-	status = "disabled";
-};
-
-&io_expander_a {
-	status = "okay";
-};
-
-&tsc {
-	status = "disabled";
-};
-
 &pciec0 {
 	status = "okay";
 	ranges = <0x82000000 0 0x30000000 0 0x30000000 0 0x8000000>;
@@ -282,21 +270,21 @@
 	status = "okay";
 };
 
-&vin00          { status = "disabled";};
-&vin01          { status = "disabled";};
-&vin02          { status = "disabled";};
-&vin03          { status = "disabled";};
-&vin10          { status = "disabled";};
-&vin11          { status = "disabled";};
-&vin12          { status = "disabled";};
-&vin13          { status = "disabled";};
-&csi40		   	{ status = "disabled";};
-&csi41		   	{ status = "disabled";};
+&vin00          { status = "okay";};
+&vin01          { status = "okay";};
+&vin02          { status = "okay";};
+&vin03          { status = "okay";};
+&vin10          { status = "okay";};
+&vin11          { status = "okay";};
+&vin12          { status = "okay";};
+&vin13          { status = "okay";};
+&csi40		   	{ status = "okay";};
+&csi41		   	{ status = "okay";};
 
 &gmsl0 {
-	status = "disabled";
+	status = "okay";
 };
 
 &gmsl1 {
-	status = "disabled";
+	status = "okay";
 };
