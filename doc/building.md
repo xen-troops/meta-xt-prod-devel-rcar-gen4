@@ -23,13 +23,13 @@ depending on the build options.
 ## Building
 
 Moulin is used to generate Ninja build file: `moulin
-prod-devel-rcar-s4.yaml`. This project provides number of additional
+prod-devel-rcar4.yaml`. This project provides number of additional
 parameters. You can check them with `--help-config` command
 line option:
 
 ```
-# moulin prod-devel-rcar-s4.yaml --help-config
-usage: moulin prod-devel-rcar-s4.yaml [--MACHINE {spider,s4sk}] [--ENABLE_DOMU {no,yes}]
+# moulin prod-devel-rcar4.yaml --help-config
+usage: moulin prod-devel-rcar4.yaml [--MACHINE {spider,s4sk}] [--ENABLE_DOMU {no,yes}]
 
 Config file description: Xen-Troops development setup for Renesas RCAR Gen4
 hardware
@@ -46,7 +46,7 @@ You can enable or disable DomU build with `--ENABLE_DOMU=yes` option.
 Be default it is disabled.
 
 So, to build with DomU (generic Yocto-based virtual machine) use the
-following command line: `moulin prod-devel-rcar-s4.yaml
+following command line: `moulin prod-devel-rcar4.yaml
 --ENABLE_DOMU=yes`.
 
 Moulin will generate `build.ninja` file. After that run `ninja` to
@@ -57,7 +57,7 @@ build the images. This will take some time and disk space as it builds
 
 During the build the following artifacts will be created.
 
-After `moulin prod-devel-rcar-s4.yaml`:
+After `moulin prod-devel-rcar4.yaml`:
 ```
 | build.ninja
 ```
@@ -128,7 +128,7 @@ This XT product provides only one image: `full`.
 You can prepare the image by running
 
 ```
-# rouge prod-devel-rcar-s4.yaml --ENABLE_DOMU=yes -i full
+# rouge prod-devel-rcar4.yaml --ENABLE_DOMU=yes -i full
 ```
 
 This will create file `full.img` in your current directory.
