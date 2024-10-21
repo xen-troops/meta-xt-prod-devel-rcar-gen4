@@ -124,7 +124,6 @@ components:
         - "../meta-xt-rcar/meta-xt-gateway/meta-xt-dom0-gen4"
         - "../../layers/meta-xt-dom0-gen4"
         - "../../layers/meta-xt-domx-gen4"
-        - "../../layers/meta-xt-prod-devel-rcar-control-gen4"
       build_target: core-image-thin-initramfs
       external_src:
         domd: "%{YOCTOS_WORK_DIR}/%{DOMD_BUILD_DIR}/tmp/deploy/images/%{MACHINE}/"
@@ -174,7 +173,6 @@ components:
         - "../meta-xt-rcar/meta-xt-gateway/meta-xt-domx-gen4"
         - "../../layers/meta-xt-domd-gen4"
         - "../../layers/meta-xt-domx-gen4"
-        - "../../layers/meta-xt-driver-domain-gen4"
       target_images:
         - "tmp/deploy/images/%{MACHINE}/Image"
         - "tmp/deploy/images/%{MACHINE}/rcar-image-minimal-%{MACHINE}.rootfs.ext4"
