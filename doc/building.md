@@ -11,6 +11,9 @@
    `${HOME}/.local/bin`.
 4. Ninja build system: `sudo apt install ninja-build` on Ubuntu
 
+You may use Docker container for the build. See [docker.md](docker.md) for
+details regarding setting up and running the container.
+
 ## Fetching
 
 You can clone this whole repository, or download it as an archive.
