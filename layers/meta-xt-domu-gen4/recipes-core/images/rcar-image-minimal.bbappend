@@ -1,4 +1,4 @@
-IMAGE_INSTALL += " \
+IMAGE_INSTALL:append = " \
     pciutils \
     devmem2 \
     iccom-support \
@@ -6,10 +6,10 @@ IMAGE_INSTALL += " \
     vmq-network \
 "
 
-IMAGE_INSTALL += "kernel-module-nvme"
-IMAGE_INSTALL += "kernel-module-nvme-core"
+IMAGE_INSTALL:append = " kernel-module-nvme"
+IMAGE_INSTALL:append = " kernel-module-nvme-core"
 
-IMAGE_INSTALL += "kernel-module-ixgbevf"
+IMAGE_INSTALL:append = " kernel-module-ixgbevf"
 
-IMAGE_INSTALL += "e2fsprogs"
-IMAGE_INSTALL += "iproute2 iproute2-tc"
+IMAGE_INSTALL:append = " e2fsprogs"
+IMAGE_INSTALL:append = " iproute2 iproute2-tc"
