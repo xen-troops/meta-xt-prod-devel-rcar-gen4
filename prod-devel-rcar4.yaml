@@ -6,6 +6,8 @@ variables:
   DOM0_BUILD_DIR: "build-dom0"
   DOMD_BUILD_DIR: "build-domd"
   DOMU_BUILD_DIR: "build-domu"
+  BUILD_TARGET_DOMD: "rcar-image-minimal"
+  BUILD_TARGET_DOMU: "rcar-image-minimal"
   XT_DOMD_DTB_NAME: "%{SOC_FAMILY}-%{MACHINE}-domd.dtb"
   XT_DOMU_DTB_NAME: "%{SOC_FAMILY}-%{MACHINE}-domu.dtb"
   XT_XEN_DTB_NAME: "%{SOC_FAMILY}-%{MACHINE}-xen.dtb"
@@ -157,7 +159,7 @@ components:
         - [PREFERRED_VERSION_xen-tools, "4.17.0+git%"]
         - [PREFERRED_VERSION_xen, "4.17.0+git%"]
 
-      build_target: rcar-image-minimal
+      build_target: "%{BUILD_TARGET_DOMD}"
       layers:
         - "../meta-virtualization"
         - "../meta-selinux"
@@ -175,7 +177,7 @@ components:
         - "../../layers/meta-xt-domx-gen4"
       target_images:
         - "tmp/deploy/images/%{MACHINE}/Image"
-        - "tmp/deploy/images/%{MACHINE}/rcar-image-minimal-%{MACHINE}.rootfs.ext4"
+        - "tmp/deploy/images/%{MACHINE}/%{BUILD_TARGET_DOMD}-%{MACHINE}.rootfs.ext4"
         - "tmp/deploy/images/%{MACHINE}/bl31-%{MACHINE}.srec"
         - "tmp/deploy/images/%{MACHINE}/tee-%{MACHINE}.srec"
         - "tmp/deploy/images/%{MACHINE}/u-boot-elf-%{MACHINE}.srec"
@@ -214,10 +216,10 @@ components:
         - "../meta-xt-rcar/meta-xt-gateway/meta-xt-domx-gen4"
         - "../../layers/meta-xt-domx-gen4"
         - "../../layers/meta-xt-domu-gen4"
-      build_target: rcar-image-minimal
+      build_target: "%{BUILD_TARGET_DOMU}"
       target_images:
         - "tmp/deploy/images/%{MACHINE}/Image"
-        - "tmp/deploy/images/%{MACHINE}/rcar-image-minimal-%{MACHINE}.rootfs.ext4"
+        - "tmp/deploy/images/%{MACHINE}/%{BUILD_TARGET_DOMU}-%{MACHINE}.rootfs.ext4"
   boot_artifacts:
     build-dir: "artifacts"
     builder:
@@ -254,7 +256,7 @@ images:
       domd_rootfs:
         gpt_type: B921B045-1DF0-41C3-AF44-4C6F280D3FAE # Linux aarch64 root
         type: raw_image
-        image_path: "%{YOCTOS_WORK_DIR}/build-domd/tmp/deploy/images/%{MACHINE}/rcar-image-minimal-%{MACHINE}.rootfs.ext4"
+        image_path: "%{YOCTOS_WORK_DIR}/build-domd/tmp/deploy/images/%{MACHINE}/%{BUILD_TARGET_DOMD}-%{MACHINE}.rootfs.ext4"
 
 parameters:
   MACHINE:
@@ -290,4 +292,4 @@ parameters:
               domu-rootfs:
                 type: raw_image
                 gpt_type: 0FC63DAF-8483-4772-8E79-3D69D8477DE4 # Linux filesystem data
-                image_path: "%{YOCTOS_WORK_DIR}/%{DOMU_BUILD_DIR}/tmp/deploy/images/%{MACHINE}/rcar-image-minimal-%{MACHINE}.rootfs.ext4"
+                image_path: "%{YOCTOS_WORK_DIR}/%{DOMU_BUILD_DIR}/tmp/deploy/images/%{MACHINE}/%{BUILD_TARGET_DOMU}-%{MACHINE}.rootfs.ext4"
