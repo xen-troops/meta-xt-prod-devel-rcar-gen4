@@ -159,11 +159,6 @@ For more information about `rouge` check its
 
 ## U-boot environment
 
-Please make sure 'bootargs' variable is unset while running with Xen:
-```
-env delete bootargs
-```
-
 ### Booting from eMMC using boot script
 
 First, you need to write generated `full.img` into eMMC. You can't do
@@ -196,6 +191,12 @@ setenv bootcmd 'tftp 0x83000000 boot-tftp.uImage; source 0x83000000;'
 
 This is an older approach which provides more flexibility (especially
 when booting via network), but requires more actions.
+
+As the first step, please make sure 'bootargs' variable is unset while
+running with Xen:
+```
+env delete bootargs
+```
 
 It is possible to run the build from TFTP+NFS and eMMC. With NFS boot
 is is possible to configure board IP, server IP and NFS path for DomD
