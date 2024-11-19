@@ -201,9 +201,6 @@ components:
         - [XT_KERNEL_BRANCH, "%{XT_KERNEL_BRANCH}"]
         - [XT_KERNEL_REV, "%{XT_KERNEL_REV}"]
         - [IMAGE_INSTALL:append, " iperf3 "]
-        # This is temporary workaround required because we use linux-libc-headers 5.10
-        # and xt-common provides 6.4 already. So we need this bbmask until upgrade to 6.4
-        - [BBMASK:append, " meta-xt-common/meta-xt-domu/recipes-kernel/linux-libc-headers/"]
 
       layers:
         - "../meta-openembedded/meta-oe"
