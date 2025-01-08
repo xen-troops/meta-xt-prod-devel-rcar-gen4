@@ -1,8 +1,6 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
-RENESAS_BSP_URL = "git://github.com/xen-troops/linux.git"
-BRANCH = "${XT_KERNEL_BRANCH}"
-SRCREV = "${XT_KERNEL_REV}"
+require recipes-kernel/inc/linux-sources.inc
 
 SRC_URI:append = "\
     file://r8a779f0-${MACHINE}-domu.dts;subdir=git/arch/${ARCH}/boot/dts/renesas \
